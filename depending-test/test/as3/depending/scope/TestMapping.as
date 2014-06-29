@@ -51,6 +51,16 @@ public class TestMapping {
         ));
     }
 
+    [Test]
+    public function toProvider_on_getValue_returns_instance():void {
+        const provider:ProviderMock = new ProviderMock();
+        mapping.toProvider(provider);
+
+        mapping.getValue();
+
+        assertThat(provider.callsTo_provide, 1);
+    }
+
 
     [Test]
     public function getValue_uses_resolver_to_inject_to_provided_Depending_instance():void {

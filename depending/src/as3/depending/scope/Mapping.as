@@ -21,8 +21,18 @@ public class Mapping {
 
     private var provider:Provider;
 
+    public function toProvider(provider:Provider):Mapping {
+        this.provider = provider;
+        return this;
+    }
+
     public function toType(implementing:Class):Mapping {
         provider = new TypeProvider(implementing);
+        return this;
+    }
+
+    public function toInstance(value:Object):Mapping {
+        provider = new InstanceProvider(value);
         return this;
     }
 
@@ -35,11 +45,6 @@ public class Mapping {
             Depending(value).fetchDependencies(resolver);
         }
         return value;
-    }
-
-    public function toInstance(value:Object):Mapping {
-        provider = new InstanceProvider(value);
-        return this;
     }
 }
 }
