@@ -2,6 +2,12 @@ package as3.depending.scope {
 
 public class Mapping {
 
+    private var forType:Class;
+
+    public function Mapping(forType:Class) {
+        this.forType = forType;
+    }
+
     private var typeToCreate:Class;
     private var value:Object;
 
@@ -11,11 +17,13 @@ public class Mapping {
     }
 
     public function getValue():Object {
-        if (typeToCreate)
-            return new typeToCreate();
-        if (value)
+        if (value){
             return value;
-        return null;
+        }
+        if(typeToCreate == null){
+            typeToCreate = forType;
+        }
+        return new typeToCreate();
     }
 
     public function toInstance(value:Object):Mapping {

@@ -4,8 +4,8 @@ internal class TestableScope extends Scope {
         super();
     }
 
-    override internal function createMapping(/*type:Class*/):Mapping {
-        return new MappingStub();
+    override internal function createMapping(type:Class):Mapping {
+        return new MappingStub(type);
     }
 }
 }

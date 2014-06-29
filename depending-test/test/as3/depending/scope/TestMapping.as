@@ -11,9 +11,20 @@ public class TestMapping {
 
     [Before]
     public function setUp():void {
-        mapping = new Mapping();
+        mapping = new Mapping(IDefinition);
     }
 
+
+    [Test]
+    public function getValue_returns_new_instance_of_mapped_type():void {
+        mapping = new Mapping(DefinitionImpl);
+
+        var first:Object = mapping.getValue();
+        assertThat(first, allOf(
+                isA(DefinitionImpl),
+                not(equalTo(mapping.getValue()))
+        ));
+    }
 
     [Test]
     public function toType_on_getValue_returns_new_instance():void {

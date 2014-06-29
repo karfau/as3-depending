@@ -20,14 +20,14 @@ public class Scope implements Resolver {
     public function map(type:Class):Mapping {
         var mapping:Mapping = getMapping(type);
         if (mapping == null) {
-            mapping = createMapping(/*type*/);
+            mapping = createMapping(type);
             mappings[type] = mapping;
         }
         return mapping;
     }
 
-    internal function createMapping(/*type:Class*/):Mapping {
-        return new Mapping(/*type, this*/);
+    internal function createMapping(type:Class):Mapping {
+        return new Mapping(type);
     }
 
     public function getByType(type:Class, required:Boolean = true):* {
