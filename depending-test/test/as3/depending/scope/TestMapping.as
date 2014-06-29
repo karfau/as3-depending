@@ -3,7 +3,7 @@ import as3.depending.examples.tests.*;
 import as3.depending.scope.impl.*;
 
 import org.flexunit.assertThat;
-import org.hamcrest.collection.array;
+import org.hamcrest.collection.*;
 import org.hamcrest.core.*;
 import org.hamcrest.object.*;
 
@@ -14,6 +14,7 @@ public class TestMapping {
     [Before]
     public function setUp():void {
         mapping = new Mapping(IDefinition);
+        callsTo_factoryMethod = [];
     }
 
 
@@ -52,13 +53,28 @@ public class TestMapping {
     }
 
     [Test]
-    public function toProvider_on_getValue_returns_instance():void {
+    public function toProvider_on_getValue_uses_provider():void {
         const provider:ProviderMock = new ProviderMock();
         mapping.toProvider(provider);
 
         mapping.getValue();
 
         assertThat(provider.callsTo_provide, 1);
+    }
+
+    private var callsTo_factoryMethod:Array;
+    private function factoryMethodNoArgs():*{
+        callsTo_factoryMethod.push([]);
+        return undefined;
+    }
+    [Test]
+    public function toFactory_on_getValue_calls_factory_method():void {
+
+        mapping.toFactory(factoryMethodNoArgs);
+
+        mapping.getValue();
+
+        assertThat(callsTo_factoryMethod, arrayWithSize(1));
     }
 
 

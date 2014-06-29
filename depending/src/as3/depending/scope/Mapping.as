@@ -8,9 +8,10 @@ public class Mapping {
     private var forType:Class;
 
     private var _resolver:Resolver;
-    internal function get resolver():Resolver{
+    internal function get resolver():Resolver {
         return _resolver;
     }
+
     internal function set resolver(resolver:Resolver):void {
         this._resolver = resolver;
     }
@@ -36,8 +37,13 @@ public class Mapping {
         return this;
     }
 
+    public function toFactory(method:Function, ...params):Mapping {
+        provider = new FactoryProvider(method, params);
+        return this;
+    }
+
     public function getValue():Object {
-        if(provider == null){
+        if (provider == null) {
             toType(forType);
         }
         var value:Object = provider.provide();
