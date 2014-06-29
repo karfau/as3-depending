@@ -1,5 +1,6 @@
 # Build and Release Folders
 bin/
+out/
 bin-debug/
 bin-release/
 
