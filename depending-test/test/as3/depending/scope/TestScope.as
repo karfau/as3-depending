@@ -1,6 +1,7 @@
 package as3.depending.scope {
 import as3.depending.errors.UnresolvedDependencyError;
 import as3.depending.examples.tests.*;
+import as3.depending.scope.impl.MappingStub;
 
 import org.flexunit.assertThat;
 import org.flexunit.asserts.assertTrue;

@@ -1,5 +1,7 @@
-package as3.depending.scope {
-internal class MappingStub extends Mapping {
+package as3.depending.scope.impl {
+import as3.depending.scope.*;
+
+public class MappingStub extends Mapping {
 
     public var testValue:Object;
 

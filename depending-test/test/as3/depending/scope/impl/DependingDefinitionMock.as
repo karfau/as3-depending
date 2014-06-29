@@ -1,4 +1,4 @@
-package as3.depending.scope {
+package as3.depending.scope.impl {
 import as3.depending.examples.tests.*;
 import as3.depending.Depending;
 import as3.depending.Resolver;

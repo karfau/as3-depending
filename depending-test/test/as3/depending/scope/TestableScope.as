@@ -1,4 +1,6 @@
 package as3.depending.scope {
+import as3.depending.scope.impl.*;
+
 internal class TestableScope extends Scope {
     public function TestableScope() {
         super();

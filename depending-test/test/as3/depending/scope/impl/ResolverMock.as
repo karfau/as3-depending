@@ -1,4 +1,4 @@
-package as3.depending.scope {
+package as3.depending.scope.impl {
 import as3.depending.Resolver;
 
 public class ResolverMock implements Resolver {
