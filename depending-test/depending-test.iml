@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="Flex" version="4">
+  <component name="FlexBuildConfigurationManager" active="depending-test">
+    <configurations>
+      <configuration name="depending-test" output-type="Library" output-file="depending-test.swc" output-folder="$MODULE_DIR$/../out/production/depending-test">
+        <dependencies target-player="10.2">
+          <entries>
+            <entry module-name="depending" build-configuration-name="depending">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="1594f40c-b60e-489b-8902-c196252aaffc">
+              <dependency linkage="Test" />
+            </entry>
+          </entries>
+          <sdk name="4.5.1.21328A" />
+        </dependencies>
+        <compiler-options />
+        <packaging-air-desktop />
+        <packaging-android />
+        <packaging-ios />
+      </configuration>
+    </configurations>
+    <compiler-options />
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
+    </content>
+    <orderEntry type="jdk" jdkName="4.5.1.21328A" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="1594f40c-b60e-489b-8902-c196252aaffc" />
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/libs" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/libs" recursive="false" />
+      </library>
+    </orderEntry>
+    <orderEntry type="module" module-name="depending" exported="" />
+  </component>
+</module>
+
