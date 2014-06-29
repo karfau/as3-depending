@@ -1,9 +1,8 @@
 package as3.depending.scope {
 import org.flexunit.assertThat;
-import org.hamcrest.core.allOf;
-import org.hamcrest.core.isA;
-import org.hamcrest.core.not;
+import org.hamcrest.core.*;
 import org.hamcrest.object.equalTo;
+import org.hamcrest.object.strictlyEqualTo;
 
 public class TestMapping {
 
@@ -17,7 +16,7 @@ public class TestMapping {
 
 
     [Test]
-    public function toType_on_getValue_returns_new_instance_each_time():void {
+    public function toType_on_getValue_returns_new_instance():void {
         mapping.toType(DefinitionImpl);
 
         var first:Object = mapping.getValue();
@@ -26,5 +25,19 @@ public class TestMapping {
                 not(equalTo(mapping.getValue()))
         ));
     }
+
+    [Test]
+    public function toInstance_on_getValue_returns_instance():void {
+        const singleton:IDefinition = new DefinitionImpl();
+        mapping.toInstance(singleton);
+
+        var first:Object = mapping.getValue();
+        assertThat(first, allOf(
+                strictlyEqualTo(singleton),
+                strictlyEqualTo(mapping.getValue())
+        ));
+    }
+
+
 }
 }
