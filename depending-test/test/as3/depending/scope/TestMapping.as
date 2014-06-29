@@ -2,13 +2,13 @@ package as3.depending.scope {
 import as3.depending.examples.tests.*;
 
 import org.flexunit.assertThat;
+import org.hamcrest.collection.array;
 import org.hamcrest.core.*;
 import org.hamcrest.object.*;
 
 public class TestMapping {
 
     private var mapping:Mapping;
-
 
     [Before]
     public function setUp():void {
@@ -51,5 +51,16 @@ public class TestMapping {
     }
 
 
+    [Test]
+    public function getValue_uses_resolver_to_inject_to_provided_Depending_instance():void {
+        mapping.resolver = new ResolverMock();
+        mapping.toType(DependingDefinitionMock);
+
+        var value:DependingDefinitionMock = DependingDefinitionMock(mapping.getValue());
+
+        assertThat(value.callsTo_fetchDependencies, array(
+                array(strictlyEqualTo(mapping.resolver))
+        ));
+    }
 }
 }
