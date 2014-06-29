@@ -11,18 +11,12 @@ public class Mapping {
 
     private var provider:Provider;
 
-//    private var typeToCreate:Class;
-    private var value:Object;
-
     public function toType(implementing:Class):Mapping {
         provider = new TypeProvider(implementing);
         return this;
     }
 
     public function getValue():Object {
-        if (value){
-            return value;
-        }
         if(provider == null){
             toType(forType);
         }
@@ -30,7 +24,7 @@ public class Mapping {
     }
 
     public function toInstance(value:Object):Mapping {
-        this.value = value;
+        provider = new InstanceProvider(value);
         return this;
     }
 }
