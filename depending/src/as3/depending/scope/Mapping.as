@@ -1,4 +1,5 @@
 package as3.depending.scope {
+import as3.depending.Provider;
 
 public class Mapping {
 
@@ -8,11 +9,13 @@ public class Mapping {
         this.forType = forType;
     }
 
-    private var typeToCreate:Class;
+    private var provider:Provider;
+
+//    private var typeToCreate:Class;
     private var value:Object;
 
     public function toType(implementing:Class):Mapping {
-        typeToCreate = implementing;
+        provider = new TypeProvider(implementing);
         return this;
     }
 
@@ -20,10 +23,10 @@ public class Mapping {
         if (value){
             return value;
         }
-        if(typeToCreate == null){
-            typeToCreate = forType;
+        if(provider == null){
+            toType(forType);
         }
-        return new typeToCreate();
+        return provider.provide();
     }
 
     public function toInstance(value:Object):Mapping {
