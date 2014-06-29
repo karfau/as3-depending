@@ -30,6 +30,12 @@ public class TestScope {
     }
 
     [Test]
+    public function map_returns_Mapping_with_resolver_set_to_scope():void {
+        var mapping:Mapping = scope.map(IDefinition);
+        assertThat(mapping.resolver, strictlyEqualTo(scope));
+    }
+
+    [Test]
     public function getByType_throws_when_no_mapping_but_required():void {
         assertThat(function ():void {
             scope.getByType(IDefinition, true);

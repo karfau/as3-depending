@@ -21,6 +21,7 @@ public class Scope implements Resolver {
         var mapping:Mapping = getMapping(type);
         if (mapping == null) {
             mapping = createMapping(type);
+            mapping.resolver = this;
             mappings[type] = mapping;
         }
         return mapping;
