@@ -1,13 +1,11 @@
 package as3.depending.scope {
 import as3.depending.errors.UnresolvedDependencyError;
+import as3.depending.examples.tests.*;
 
 import org.flexunit.assertThat;
 import org.flexunit.asserts.assertTrue;
-import org.hamcrest.core.allOf;
-import org.hamcrest.core.isA;
-import org.hamcrest.core.throws;
-import org.hamcrest.object.notNullValue;
-import org.hamcrest.object.strictlyEqualTo;
+import org.hamcrest.core.*;
+import org.hamcrest.object.*;
 
 public class TestScope {
 

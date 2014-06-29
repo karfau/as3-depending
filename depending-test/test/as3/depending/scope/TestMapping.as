@@ -1,8 +1,9 @@
 package as3.depending.scope {
+import as3.depending.examples.tests.*;
+
 import org.flexunit.assertThat;
 import org.hamcrest.core.*;
-import org.hamcrest.object.equalTo;
-import org.hamcrest.object.strictlyEqualTo;
+import org.hamcrest.object.*;
 
 public class TestMapping {
 
