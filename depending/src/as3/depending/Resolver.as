@@ -18,7 +18,7 @@ public interface Resolver {
      *
      * @return the value if one was configured, undefined otherwise
      *
-     * @throws Error when required is true(default) and the resolver can not resolve it.
+     * @throws UnresolvedDependencyError when required is true(default) and the resolver can not resolve it.
      */
     function getByType(clazz:Class, required:Boolean = true):*;
 

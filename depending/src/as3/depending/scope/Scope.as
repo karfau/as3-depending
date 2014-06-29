@@ -1,14 +1,44 @@
 package as3.depending.scope {
 import as3.depending.*;
+import as3.depending.errors.UnresolvedDependencyError;
 
-public class Scope implements Resolver{
+import avmplus.getQualifiedClassName;
 
-    public function map(type:Class):Mapping {
-        return null;
+public class Scope implements Resolver {
+
+    private var mappings:Object;
+
+    private function getMapping(type:Class):Mapping {
+        var mapping:Mapping = Mapping(mappings[type]);
+        return mapping;
     }
 
-    public function getByType(clazz:Class, required:Boolean = true):* {
-        return null;
+    public function Scope() {
+        mappings = {};
+    }
+
+    public function map(type:Class):Mapping {
+        var mapping:Mapping = getMapping(type);
+        if (mapping == null) {
+            mapping = createMapping(/*type*/);
+            mappings[type] = mapping;
+        }
+        return mapping;
+    }
+
+    internal function createMapping(/*type:Class*/):Mapping {
+        return new Mapping(/*type, this*/);
+    }
+
+    public function getByType(type:Class, required:Boolean = true):* {
+        var mapping:Mapping = getMapping(type);
+        if (mapping == null) {
+            if (required)
+                throw new UnresolvedDependencyError("couldn't find a mapping for class <" + getQualifiedClassName(type) + ">");
+            else
+                return undefined;
+        }
+        return mapping.getValue();
     }
 
 }
