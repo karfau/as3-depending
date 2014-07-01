@@ -36,6 +36,7 @@ This was inspired by [this article from Manfred Karrer](http://www.screenshot.at
 
 The inclusion of dependencies into your application code, can of course be seen as a drawback. 
 I think it is not too bad, because 
+
 1. you only add dependencies to really simple interfaces, not to an implementation.
 2. you don't need to implement `Depending`, you could have any method taking a `Resolver` to handle dependencies, even a static one. Which would reduces the dependencies to one interface.
 
