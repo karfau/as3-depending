@@ -29,7 +29,9 @@ public class Main extends Sprite implements Depending {
 This was inspired by [this article from Manfred Karrer](http://www.screenshot.at/blog/2012/01/31/dependency-injection-without-reflection/), especially by the last section where he concludes that:
 
 > So you may ask that **fetching dependencies is not the same like injecting them**, and classes should get the dependencies from outside instead of fetching them from inside.
+>
 > [...]
+>
 > It is **not about getting or fetching**, it it about to keep the class clean from static dependencies.`
 
 The inclusion of dependencies into your application code, can of course be seen as a drawback. 
