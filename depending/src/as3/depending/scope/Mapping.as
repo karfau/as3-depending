@@ -38,6 +38,9 @@ public class Mapping {
     }
 
     public function toFactory(method:Function, ...params):Mapping {
+        if(params.length == 0 && method.length == 1){
+            params[0] = _resolver;
+        }
         provider = new FactoryProvider(method, params);
         return this;
     }

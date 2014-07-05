@@ -67,14 +67,45 @@ public class TestMapping {
         callsTo_factoryMethod.push([]);
         return undefined;
     }
+
+    private function factoryMethodOneArgs(obj:Object):*{
+        callsTo_factoryMethod.push([obj]);
+        return undefined;
+    }
+
+    private function factoryMethodVarArgs(...args):*{
+        callsTo_factoryMethod.push(args);
+        return undefined;
+    }
+
     [Test]
-    public function toFactory_on_getValue_calls_factory_method():void {
+    public function toFactory_no_given_argument_but_with_length_1_on_getValue_calls_factory_method_with_resolver():void {
+        mapping.resolver = new ResolverMock();
+        mapping.toFactory(factoryMethodOneArgs);
+
+        mapping.getValue();
+
+        assertThat(callsTo_factoryMethod, array(array(mapping.resolver)));
+    }
+
+    [Test]
+    public function toFactory_withNoArgument_on_getValue_calls_factory_method():void {
 
         mapping.toFactory(factoryMethodNoArgs);
 
         mapping.getValue();
 
-        assertThat(callsTo_factoryMethod, arrayWithSize(1));
+        assertThat(callsTo_factoryMethod, array(array()));
+    }
+
+    [Test]
+    public function toFactory_withArgument_on_getValue_calls_factory_method():void {
+
+        mapping.toFactory(factoryMethodVarArgs,"first",2);
+
+        mapping.getValue();
+
+        assertThat(callsTo_factoryMethod, array(array("first",2)));
     }
 
 
