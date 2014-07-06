@@ -10,6 +10,8 @@ public class Main extends Sprite{
     public function Main() {
 
         var scope:Scope = new Scope();
+
+        //Scope is an implementation of Resolver that allows configuration at runtime:
         scope.map(Inspector).toInstance(new Inspector('Tom Barnaby'));
 
         scope.map(IEngine).toType(SportEngine);
@@ -17,7 +19,6 @@ public class Main extends Sprite{
 
         scope.map(IEngine).toType(FamilyEngine);//overwrites the mapping to SportEngine
         var familyCar:Car = scope.get(Car);
-
 
         sportCar.accelerate();
         trace(sportCar.speed);//120
