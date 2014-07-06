@@ -1,10 +1,12 @@
 package as3.depending.scope {
 import as3.depending.errors.UnresolvedDependencyError;
 import as3.depending.examples.tests.*;
+import as3.depending.scope.impl.DependingDefinitionMock;
 import as3.depending.scope.impl.MappingStub;
 
 import org.flexunit.assertThat;
 import org.flexunit.asserts.assertTrue;
+import org.hamcrest.collection.array;
 import org.hamcrest.core.*;
 import org.hamcrest.object.*;
 
@@ -12,12 +14,10 @@ public class TestScope {
 
     private var scope:Scope;
 
-
     [Before]
     public function setUp():void {
         scope = new Scope();
     }
-
 
     [Test]
     public function map_returns_same_Mapping_for_same_type():void {
@@ -36,25 +36,38 @@ public class TestScope {
     }
 
     [Test]
-    public function getByType_throws_when_no_mapping_but_required():void {
+    public function get_throws_when_no_mapping_but_required():void {
         assertThat(function ():void {
-            scope.getByType(IDefinition, true);
+            scope.get(IDefinition, true);
         }, throws(isA(UnresolvedDependencyError)))
     }
 
     [Test]
-    public function getByType_returns_undefined_when_no_mapping_and_not_required():void {
-        var value:* = scope.getByType(IDefinition, false);
+    public function get_for_simpleClass_returns_instance_when_no_mapping():void {
+        var value:Independent = scope.get(Independent, true);
+        assertThat(value, notNullValue());
+    }
+
+    [Test]
+    public function get_for_dependingClass_returns_instance_when_no_mapping():void {
+        var value:DependingDefinitionMock = scope.get(DependingDefinitionMock, true);
+        assertThat(value, notNullValue());
+        assertThat(value.callsTo_fetchDependencies, array(array(scope)));
+    }
+
+    [Test]
+    public function get_returns_undefined_when_no_mapping_and_not_required():void {
+        var value:* = scope.get(IDefinition, false);
         assertTrue(value === undefined);
     }
 
     [Test]
-    public function getByType_returns_Mapping_getValue():void {
+    public function get_returns_Mapping_getValue():void {
         scope = new TestableScope();
         var mapping:MappingStub = MappingStub(scope.map(IDefinition));
         mapping.testValue = new DefinitionImpl();
 
-        assertThat(scope.getByType(IDefinition), strictlyEqualTo(mapping.testValue));
+        assertThat(scope.get(IDefinition), strictlyEqualTo(mapping.testValue));
     }
 
 }

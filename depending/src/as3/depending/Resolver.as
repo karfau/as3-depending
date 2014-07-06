@@ -20,7 +20,7 @@ public interface Resolver {
      *
      * @throws UnresolvedDependencyError when required is true(default) and the resolver can not resolve it.
      */
-    function getByType(clazz:Class, required:Boolean = true):*;
+    function get(clazz:Class, required:Boolean = true):*;
 
 }
 }

@@ -2,23 +2,26 @@ package as3.depending.examples.factory {
 import as3.depending.examples.factory.engine.*;
 import as3.depending.scope.Scope;
 
-public class Main {
+import flash.display.Sprite;
+
+public class Main extends Sprite{
+
+
     public function Main() {
 
-        var factory:CarFactory = new CarFactory();
+        var scope:Scope = new Scope();
+        scope.map(Inspector).toInstance(new Inspector('Tom Barnaby'));
 
-        var sportScope:Scope = new Scope();
-        sportScope.map(IEngine).toType(SportEngine);
+        scope.map(IEngine).toType(SportEngine);
+        var sportCar:Car = scope.get(Car);
 
-        var familyScope:Scope = new Scope();
-        familyScope.map(IEngine).toType(FamilyEngine);
+        scope.map(IEngine).toType(FamilyEngine);//overwrites the mapping to SportEngine
+        var familyCar:Car = scope.get(Car);
 
 
-        var sportCar:Car = factory.createCar(sportScope);
         sportCar.accelerate();
         trace(sportCar.speed);//120
 
-        var familyCar:Car = factory.createCar(familyScope);
         familyCar.accelerate();
         trace(familyCar.speed);//50
 
