@@ -12,12 +12,9 @@ public class Mapping {
         return _resolver;
     }
 
-    internal function set resolver(resolver:Resolver):void {
-        this._resolver = resolver;
-    }
-
-    public function Mapping(forType:Class) {
+    public function Mapping(forType:Class, resolver:Resolver) {
         this.forType = forType;
+        _resolver = resolver;
     }
 
     private var provider:Provider;
@@ -51,7 +48,7 @@ public class Mapping {
         }
         var value:Object = provider.provide();
         if ((value is Depending)/* && !(provider is InstanceProvider)*/) {//TODO: avoid calling injection twice!
-            Depending(value).fetchDependencies(resolver);
+            Depending(value).fetchDependencies(_resolver);
         }
         return value;
     }

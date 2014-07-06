@@ -1,4 +1,5 @@
 package as3.depending.scope {
+import as3.depending.Resolver;
 import as3.depending.examples.tests.*;
 import as3.depending.scope.impl.*;
 
@@ -10,17 +11,19 @@ import org.hamcrest.object.*;
 public class TestMapping {
 
     private var mapping:Mapping;
+    private var resolver:Resolver;
 
     [Before]
     public function setUp():void {
-        mapping = new Mapping(IDefinition);
+        resolver = new ResolverMock();
+        mapping = new Mapping(IDefinition, resolver);
         callsTo_factoryMethod = [];
     }
 
 
     [Test]
     public function getValue_returns_new_instance_of_mapped_type():void {
-        mapping = new Mapping(DefinitionImpl);
+        mapping = new Mapping(DefinitionImpl, resolver);
 
         var first:Object = mapping.getValue();
         assertThat(first, allOf(
@@ -80,7 +83,6 @@ public class TestMapping {
 
     [Test]
     public function toFactory_no_given_argument_but_with_length_1_on_getValue_calls_factory_method_with_resolver():void {
-        mapping.resolver = new ResolverMock();
         mapping.toFactory(factoryMethodOneArgs);
 
         mapping.getValue();
@@ -111,7 +113,6 @@ public class TestMapping {
 
     [Test]
     public function getValue_uses_resolver_to_inject_to_provided_Depending_instance():void {
-        mapping.resolver = new ResolverMock();
         mapping.toType(DependingDefinitionMock);
 
         var value:DependingDefinitionMock = DependingDefinitionMock(mapping.getValue());

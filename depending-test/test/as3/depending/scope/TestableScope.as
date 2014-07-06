@@ -7,7 +7,7 @@ internal class TestableScope extends Scope {
     }
 
     override internal function createMapping(type:Class):Mapping {
-        return new MappingStub(type);
+        return new MappingStub(type, this);
     }
 }
 }

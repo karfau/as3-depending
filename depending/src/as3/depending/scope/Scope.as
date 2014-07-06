@@ -22,7 +22,6 @@ public class Scope implements Resolver {
         var mapping:Mapping = getMapping(type);
         if (mapping == null) {
             mapping = createMapping(type);
-            mapping.resolver = this;
             setMapping(type, mapping);
         }
         return mapping;
@@ -33,7 +32,7 @@ public class Scope implements Resolver {
     }
 
     internal function createMapping(type:Class):Mapping {
-        return new Mapping(type);
+        return new Mapping(type, this);
     }
 
     public function get(type:Class, required:Boolean = true):* {
@@ -41,7 +40,6 @@ public class Scope implements Resolver {
         if (mapping == null) {
             try {
                 mapping = createMapping(type);
-                mapping.resolver = this;
                 var value:Object = mapping.getValue();
                 setMapping(type, mapping);
                 return value;
