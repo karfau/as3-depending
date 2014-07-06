@@ -3,6 +3,15 @@ import as3.depending.Depending;
 import as3.depending.Provider;
 import as3.depending.Resolver;
 
+/**
+ * A Mapping instance is responsible for creating instances of the given type, with fully resolved dependencies using the method getValue().
+ *
+ * To do this it offers a fluid API to configure the correct Provider
+ * and uses the given resolver to resolve additional dependencies.
+ *
+ * If no Provider has been configured a Mapping will try to invoke the constructor for the given type.
+ * If the given type is an interfaces this results in a VerifyError with errorCode 1001.
+ */
 public class Mapping {
 
     private var forType:Class;

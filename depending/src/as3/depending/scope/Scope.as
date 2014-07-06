@@ -4,7 +4,12 @@ import as3.depending.errors.UnresolvedDependencyError;
 
 import flash.utils.getQualifiedClassName;
 
-
+/**
+ * This implemantation of Resolver offers the possibility to configure the decisions about how to resolve dependencies at runtime,
+ * using a fluid API similar to the one from Guice.
+ *
+ * It only contains a list of the decisions that have been made, the Mappings
+ */
 public class Scope implements Resolver {
 
     private var mappings:Object;
