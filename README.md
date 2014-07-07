@@ -55,7 +55,7 @@ Ah, separation of concern for the WIN. Now the class **communicates** its depend
 
 To solve this, there are a lot "dependency injection libraries/ frameworks" out there.
  
-Most of them use metadata tags as a (second but explicit) way to communicate the dependencies (to the framework). By using the (badly performing) utility classes that are available in AS3 to simulate reflection, they look at the information available about a class or instance (at runtime) and try to **create and/or resolve** those dependencies. 
+Most of them use metadata tags as a (second but explicit) way to communicate the dependencies (to the framework). By using the utility classes that are available in AS3 to do smoething like reflection, they look at the information available about a class or instance (at runtime) and try to **create and/or resolve** those dependencies. 
 
 As they don't know anything about the application code, they have some configuration or mapping phase, where the application tells the "framework" its **decisions how to resolve** those dependencies. 
 
