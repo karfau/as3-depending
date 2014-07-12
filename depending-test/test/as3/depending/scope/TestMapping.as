@@ -125,15 +125,34 @@ public class TestMapping {
 
         var value:DependingDefinitionMock = DependingDefinitionMock(mapping.getValue());
 
-        invokes.assertInvokes(value.fetchDependencies,
-                array(strictlyEqualTo(mapping.resolver))
-        );
+        assertSingleInvokeOf_fetchDependencies_on(value);
     }
 
     [Test]
     public function asEagerSingleton_on_getValue_uses_resolver_to_inject_to_provided_Depending_instance():void {
         mapping.toType(DependingDefinitionMock).asEagerSingleton();
+        assert_asEagerSingleton();
+    }
 
+    [Test]
+    public function asSingleton_lazy_on_getValue_uses_resolver_to_inject_to_provided_Depending_instance():void {
+        mapping.toType(DependingDefinitionMock).asSingleton(true);
+
+        assertNull(DependingDefinitionMock.lastInstance);
+
+        var value:DependingDefinitionMock = DependingDefinitionMock(mapping.getValue());
+
+        assertThat(value, strictlyEqualTo(mapping.getValue()));
+        assertSingleInvokeOf_fetchDependencies_on(value);
+    }
+
+    [Test]
+    public function asSingleton_notLazy_on_getValue_uses_resolver_to_inject_to_provided_Depending_instance():void {
+        mapping.toType(DependingDefinitionMock).asSingleton(false);
+        assert_asEagerSingleton();
+    }
+
+    private function assert_asEagerSingleton():void {
         invokes.assertInvokes(DependingDefinitionMock.lastInstance.fetchDependencies,
                 array(strictlyEqualTo(mapping.resolver))
         );
@@ -142,20 +161,11 @@ public class TestMapping {
 
 
         assertThat(value, strictlyEqualTo(mapping.getValue()));
-        invokes.assertInvokes(value.fetchDependencies,
-                array(strictlyEqualTo(mapping.resolver))
-        );
+        assertSingleInvokeOf_fetchDependencies_on(value);
     }
 
-    [Test]
-    public function asSingleton_on_getValue_uses_resolver_to_inject_to_provided_Depending_instance():void {
-        mapping.toType(DependingDefinitionMock).asSingleton(true);
 
-        assertNull(DependingDefinitionMock.lastInstance);
-
-        var value:DependingDefinitionMock = DependingDefinitionMock(mapping.getValue());
-
-        assertThat(value, strictlyEqualTo(mapping.getValue()));
+    private function assertSingleInvokeOf_fetchDependencies_on(value:DependingDefinitionMock):void {
         invokes.assertInvokes(value.fetchDependencies,
                 array(strictlyEqualTo(mapping.resolver))
         );
