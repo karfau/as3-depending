@@ -15,6 +15,9 @@ public interface Provider {
      */
     function provide():Object;
 
+    /**
+     * @returns true when the provided instances already have their dependencies resolved, false otherwise
+     */
     function get providesResolved():Boolean;
 }
 }
