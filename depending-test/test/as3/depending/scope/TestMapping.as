@@ -4,6 +4,7 @@ import as3.depending.examples.tests.*;
 import as3.depending.scope.impl.*;
 
 import org.flexunit.assertThat;
+import org.flexunit.asserts.assertNull;
 import org.hamcrest.collection.*;
 import org.hamcrest.core.*;
 import org.hamcrest.object.*;
@@ -139,6 +140,20 @@ public class TestMapping {
 
         var value:DependingDefinitionMock = DependingDefinitionMock(mapping.getValue());
 
+
+        assertThat(value, strictlyEqualTo(mapping.getValue()));
+        invokes.assertInvokes(value.fetchDependencies,
+                array(strictlyEqualTo(mapping.resolver))
+        );
+    }
+
+    [Test]
+    public function asSingleton_on_getValue_uses_resolver_to_inject_to_provided_Depending_instance():void {
+        mapping.toType(DependingDefinitionMock).asSingleton(true);
+
+        assertNull(DependingDefinitionMock.lastInstance);
+
+        var value:DependingDefinitionMock = DependingDefinitionMock(mapping.getValue());
 
         assertThat(value, strictlyEqualTo(mapping.getValue()));
         invokes.assertInvokes(value.fetchDependencies,
