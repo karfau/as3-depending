@@ -14,7 +14,7 @@ All object oriented application code I know has classes that depend on other cla
 
 Lets look at some code
 
-```javascript
+```ActionScript
     public class TweetService{
         private const urlShorter = UrlShorter.getInstance();
         private const tweetClient = new SMSTweetClient();
@@ -35,7 +35,7 @@ In this case the depending class only **communicates** its dependencies to the c
  
 improving the above concerns:
   
-```javascript
+```ActionScript
     public class TweetService{
         private var urlShorter:UrlShorter;
         private var tweetClient:ITweetClient;
@@ -98,7 +98,7 @@ Instead the most simple way to tell a `Resolver` that creates an instance of a c
 
 Thank God it's code time:
 
-```javascript
+```ActionScript
     public class TweetService implements Depending{
         private var urlShorter:UrlShorter;
         private var tweetClient:ITweetClient;
@@ -116,7 +116,7 @@ Thank God it's code time:
 
 To create an instance you only need to have a properly configured `Resolver`:
 
-```javascript
+```ActionScript
     var tweetService:TweetService = myResolver.get(TweetService);
 ```
 
@@ -127,7 +127,7 @@ Lets assume `UrlShorter` is a really simple class, with no external dependencies
 
 If you don't like classes having to implement an interface to allow DI detection and you love constructor arguments as much as I do? Easy as pie:
 
-```javascript
+```ActionScript
     public class TweetService{
     
         public static function create(resolver:Resolver):TweetService{
@@ -158,7 +158,7 @@ When implementing `Resolver` you have to take care of **creating instances with 
 
 Lets look at what it looks like to use the implementation `Scope`:
 
-```javascript
+```ActionScript
     var scope:Scope = new Scope();
 
     //Scope is an implementation of Resolver that allows configuration at runtime:
@@ -184,7 +184,7 @@ As the `Car` class is implementing `Depending` and has a constructor with no arg
 
 As always there are different ways to do things, so lets look at how cou could at what an implementation of `Resolver` could look like:
 
-```javascript
+```ActionScript
     public class TweetServiceResolver implements Resolver {
     
         public function get(clazz:Class, required:Boolean = true):* {
