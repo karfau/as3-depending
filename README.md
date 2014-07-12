@@ -178,11 +178,11 @@ Lets look at what it looks like to use the implementation `Scope`:
 ```
 
 This should look familiar to everybody that used a modern DI library. 
-Feel free to [navigate through the code](depending-test/src/as3/depending/examples/factory/Main.as).
+Feel free to [navigate through the executable code](depending-test/src/as3/depending/examples/factory/Main.as).
 
 As the `Car` class is implementing `Depending` and has a constructor with no arguments as shown in *Option 1* above, there is no need to tell `Scope` how to create it.
 
-As always there are different ways to do things, so lets look at how cou could at what an implementation of `Resolver` could look like:
+As always there are different ways to do things, so lets look at how cou could at what an implementation of `Resolver` could [look like](depending-test/src/as3/depending/examples/readme/TweetServiceResolver.as):
 
 ```ActionScript
     public class TweetServiceResolver implements Resolver {
@@ -208,5 +208,5 @@ As always there are different ways to do things, so lets look at how cou could a
     }
 ```
 
-Feel free to [navigate through the code](depending-test/src/as3/depending/examples/readme/Main.as).
+Feel free to [navigate through the executable code](depending-test/src/as3/depending/examples/readme/Main.as).
 
