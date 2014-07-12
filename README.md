@@ -14,6 +14,7 @@ All object oriented application code I know has classes that depend on other cla
 
 Lets look at some code
 
+```javascript
     public class TweetService{
         private const urlShorter = UrlShorter.getInstance();
         private const tweetClient = new SMSTweetClient();
@@ -27,12 +28,14 @@ Lets look at some code
             }
         }
     }
+```
 
 In this case the depending class only **communicates** its dependencies to the compiler, it is also responsible for the **decision how to resolve** them and also **resolves** them at **creation** time.
  That is the least flexible way to do it, and each time you use the class, even when only testing if it works, your bill for SMS increases.
  
- improving the above concerns:
+improving the above concerns:
   
+```javascript
     public class TweetService{
         private var urlShorter:UrlShorter;
         private var tweetClient:ITweetClient;
@@ -46,6 +49,7 @@ In this case the depending class only **communicates** its dependencies to the c
             ...
         }
     }
+```
 
 Ah, separation of concern for the WIN. Now the class **communicates** its dependency to everybody trying to create an instance. **How to resolve** those dependencies is up to the creating instance. 
 - This simplifies testing because we could mock those dependencies and just make sure the API of those dependencies gets used in the right way.
@@ -94,6 +98,7 @@ Instead the most simple way to tell a `Resolver` that creates an instance of a c
 
 Thank God it's code time:
 
+```javascript
     public class TweetService implements Depending{
         private var urlShorter:UrlShorter;
         private var tweetClient:ITweetClient;
@@ -107,10 +112,13 @@ Thank God it's code time:
             ...
         }
     }
+```
 
 To create an instance you only need to have a properly configured `Resolver`:
- 
+
+```javascript
     var tweetService:TweetService = myResolver.get(TweetService);
+```
 
 The resolver will create an instance of `TweetService` and call `fetchDependencies` using itself as the argument. 
 Lets assume `UrlShorter` is a really simple class, with no external dependencies, in this case the resolver just creates a new instance of the class. To create an instance of ITweetClient the resolver needs to know how this dependency should be resolved, before it gets asked for an instance of `TweetService`. If that has not happened, it will throw an `UnresolvedDependencyError`.
@@ -119,7 +127,7 @@ Lets assume `UrlShorter` is a really simple class, with no external dependencies
 
 If you don't like classes having to implement an interface to allow DI detection and you love constructor arguments as much as I do? Easy as pie:
 
-
+```javascript
     public class TweetService{
     
         public static function create(resolver:Resolver):TweetService{
@@ -138,6 +146,7 @@ If you don't like classes having to implement an interface to allow DI detection
             ...
         }
     }
+```
 
 Having something like `create` as a static method, puts an example of how to construct such an object using ***any*** `Resolver` directly available for reuse. But to completely get rid of this dependency inside your class, this method could be anywhere and in this case of course it doesn't  need to be static. 
 
@@ -148,7 +157,8 @@ Just make sure the `Resolver` that should be able to create a `TweetService` kno
 When implementing `Resolver` you have to take care of **creating instances with resolved dependencies** and **deciding how two resolve** dependencies. 
 
 Lets look at what it looks like to use the implementation `Scope`:
- 
+
+```javascript
     var scope:Scope = new Scope();
 
     //Scope is an implementation of Resolver that allows configuration at runtime:
@@ -165,7 +175,7 @@ Lets look at what it looks like to use the implementation `Scope`:
 
     familyCar.accelerate();
     trace(familyCar.speed);//50
-
+```
 
 This should look familiar to everybody that used a modern DI library. 
 Feel free to [navigate through the code](depending-test/src/as3/depending/examples/factory/Main.as).
@@ -174,7 +184,7 @@ As the `Car` class is implementing `Depending` and has a constructor with no arg
 
 As always there are different ways to do things, so lets look at how cou could at what an implementation of `Resolver` could look like:
 
-
+```javascript
     public class TweetServiceResolver implements Resolver {
     
         public function get(clazz:Class, required:Boolean = true):* {
@@ -196,6 +206,7 @@ As always there are different ways to do things, so lets look at how cou could a
             return instance;
         }
     }
+```
 
 Feel free to [navigate through the code](depending-test/src/as3/depending/examples/readme/Main.as).
 
