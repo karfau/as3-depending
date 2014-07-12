@@ -9,5 +9,9 @@ public class ProviderMock implements Provider {
         callsTo_provide++;
         return null;
     }
+
+    public function get providesResolved():Boolean {
+        return false;
+    }
 }
 }

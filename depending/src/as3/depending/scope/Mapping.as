@@ -39,9 +39,16 @@ public class Mapping {
     }
 
     public function toInstance(value:Object):Mapping {
-        provider = new InstanceProvider(value);
+        resolveDepending(value);
+        toResolvedInstance(value);
         return this;
     }
+
+    private function toResolvedInstance(resolvedValue:Object):void {
+        provider = new InstanceProvider(resolvedValue);
+    }
+
+
 
     public function toFactory(method:Function, ...params):Mapping {
         if(params.length == 0 && method.length == 1){
@@ -56,10 +63,21 @@ public class Mapping {
             toType(forType);
         }
         var value:Object = provider.provide();
-        if ((value is Depending)/* && !(provider is InstanceProvider)*/) {//TODO: avoid calling injection twice!
-            Depending(value).fetchDependencies(_resolver);
+        if(!provider.providesResolved){
+            resolveDepending(value);
         }
         return value;
+    }
+
+    private function resolveDepending(value:Object):void {
+        if (value is Depending) {
+            Depending(value).fetchDependencies(_resolver);
+        }
+    }
+
+    public function asEagerSingleton():Mapping {
+        toResolvedInstance(getValue());
+        return this;
     }
 }
 }

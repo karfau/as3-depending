@@ -42,20 +42,21 @@ public class Scope implements Resolver {
 
     public function get(type:Class, required:Boolean = true):* {
         var mapping:Mapping = getMapping(type);
-        if (mapping == null) {
-            try {
-                mapping = createMapping(type);
-                var value:Object = mapping.getValue();
-                setMapping(type, mapping);
-                return value;
-            } catch (error:Error) {
-            }
-            if (required)
-                throw new UnresolvedDependencyError("couldn't find a mapping for class <" + getQualifiedClassName(type) + ">");
-            else
-                return undefined;
+        if (mapping != null) {
+            return mapping.getValue();
         }
-        return mapping.getValue();
+        try {
+            mapping = createMapping(type);
+            var value:Object = mapping.getValue();
+            setMapping(type, mapping);
+            return value;
+        } catch (error:Error) {
+            if (required) {
+                throw new UnresolvedDependencyError("couldn't find a mapping for class <" + getQualifiedClassName(type) + ">", error);
+            } else {
+                return undefined;
+            }
+        }
     }
 
 }

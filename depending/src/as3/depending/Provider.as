@@ -14,5 +14,7 @@ public interface Provider {
      * @return an instance
      */
     function provide():Object;
+
+    function get providesResolved():Boolean;
 }
 }

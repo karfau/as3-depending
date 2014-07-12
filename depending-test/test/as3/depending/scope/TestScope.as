@@ -2,6 +2,7 @@ package as3.depending.scope {
 import as3.depending.errors.UnresolvedDependencyError;
 import as3.depending.examples.tests.*;
 import as3.depending.scope.impl.DependingDefinitionMock;
+import as3.depending.scope.impl.Invokes;
 import as3.depending.scope.impl.MappingStub;
 
 import org.flexunit.assertThat;
@@ -13,10 +14,13 @@ import org.hamcrest.object.*;
 public class TestScope {
 
     private var scope:Scope;
+    private var invokes:Invokes;
 
     [Before]
     public function setUp():void {
         scope = new Scope();
+        invokes = new Invokes();
+        DependingDefinitionMock.invokes = invokes;
     }
 
     [Test]
@@ -39,7 +43,10 @@ public class TestScope {
     public function get_throws_when_no_mapping_but_required():void {
         assertThat(function ():void {
             scope.get(IDefinition, true);
-        }, throws(isA(UnresolvedDependencyError)))
+        }, throws(allOf(
+                isA(UnresolvedDependencyError),
+                hasPropertyWithValue('caught',isA(VerifyError))
+        )));
     }
 
     [Test]
@@ -52,7 +59,7 @@ public class TestScope {
     public function get_for_dependingClass_returns_instance_when_no_mapping():void {
         var value:DependingDefinitionMock = scope.get(DependingDefinitionMock, true);
         assertThat(value, notNullValue());
-        assertThat(value.callsTo_fetchDependencies, array(array(scope)));
+        invokes.assertInvokes(value.fetchDependencies, array(scope));
     }
 
     [Test]

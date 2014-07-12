@@ -16,5 +16,9 @@ public class TypeProvider implements Provider {
     public function provide():Object {
         return new Impl();
     }
+
+    public function get providesResolved():Boolean {
+        return false;
+    }
 }
 }

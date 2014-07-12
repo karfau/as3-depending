@@ -5,10 +5,17 @@ import as3.depending.Resolver;
 
 public class DependingDefinitionMock implements IDefinition, Depending {
 
-    public const callsTo_fetchDependencies:Array = [];
+    public static var invokes:Invokes;
+
+    public static var lastInstance:DependingDefinitionMock;
+
+
+    public function DependingDefinitionMock() {
+        lastInstance = this;
+    }
 
     public function fetchDependencies(resolver:Resolver):void {
-        callsTo_fetchDependencies.push([resolver]);
+        invokes.invoke(fetchDependencies, resolver);
     }
 
 }

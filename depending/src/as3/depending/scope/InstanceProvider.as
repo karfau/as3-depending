@@ -14,5 +14,9 @@ public class InstanceProvider implements Provider {
     public function provide():Object {
         return instance;
     }
+
+    public function get providesResolved():Boolean {
+        return true;
+    }
 }
 }

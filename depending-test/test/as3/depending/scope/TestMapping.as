@@ -12,14 +12,16 @@ public class TestMapping {
 
     private var mapping:Mapping;
     private var resolver:Resolver;
+    private var invokes:Invokes;
 
     [Before]
     public function setUp():void {
+        DependingDefinitionMock.lastInstance = null;
         resolver = new ResolverMock();
         mapping = new Mapping(IDefinition, resolver);
-        callsTo_factoryMethod = [];
+        invokes = new Invokes();
+        DependingDefinitionMock.invokes = invokes;
     }
-
 
     [Test]
     public function getValue_returns_new_instance_of_mapped_type():void {
@@ -65,19 +67,18 @@ public class TestMapping {
         assertThat(provider.callsTo_provide, 1);
     }
 
-    private var callsTo_factoryMethod:Array;
     private function factoryMethodNoArgs():*{
-        callsTo_factoryMethod.push([]);
+        invokes.invoke(factoryMethodNoArgs);
         return undefined;
     }
 
     private function factoryMethodOneArgs(obj:Object):*{
-        callsTo_factoryMethod.push([obj]);
+        invokes.invoke(factoryMethodOneArgs, obj);
         return undefined;
     }
 
     private function factoryMethodVarArgs(...args):*{
-        callsTo_factoryMethod.push(args);
+        invokes.invoke(factoryMethodVarArgs, args);
         return undefined;
     }
 
@@ -87,7 +88,9 @@ public class TestMapping {
 
         mapping.getValue();
 
-        assertThat(callsTo_factoryMethod, array(array(mapping.resolver)));
+        invokes.assertInvokes(factoryMethodOneArgs,
+                array(mapping.resolver)
+        );
     }
 
     [Test]
@@ -97,7 +100,9 @@ public class TestMapping {
 
         mapping.getValue();
 
-        assertThat(callsTo_factoryMethod, array(array()));
+        invokes.assertInvokes(factoryMethodNoArgs,
+                array()
+        );
     }
 
     [Test]
@@ -107,7 +112,9 @@ public class TestMapping {
 
         mapping.getValue();
 
-        assertThat(callsTo_factoryMethod, array(array("first",2)));
+        invokes.assertInvokes(factoryMethodVarArgs,
+                array("first",2)
+        );
     }
 
 
@@ -117,9 +124,29 @@ public class TestMapping {
 
         var value:DependingDefinitionMock = DependingDefinitionMock(mapping.getValue());
 
-        assertThat(value.callsTo_fetchDependencies, array(
+        invokes.assertInvokes(value.fetchDependencies,
                 array(strictlyEqualTo(mapping.resolver))
-        ));
+        );
     }
+
+    [Test]
+    public function asEagerSingleton_on_getValue_uses_resolver_to_inject_to_provided_Depending_instance():void {
+        mapping.toType(DependingDefinitionMock).asEagerSingleton();
+
+        invokes.assertInvokes(DependingDefinitionMock.lastInstance.fetchDependencies,
+                array(strictlyEqualTo(mapping.resolver))
+        );
+
+        var value:DependingDefinitionMock = DependingDefinitionMock(mapping.getValue());
+
+
+        assertThat(value, strictlyEqualTo(mapping.getValue()));
+        invokes.assertInvokes(value.fetchDependencies,
+                array(strictlyEqualTo(mapping.resolver))
+        );
+    }
+
+
+
 }
 }

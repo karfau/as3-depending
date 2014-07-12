@@ -14,5 +14,9 @@ public class FactoryProvider implements Provider {
     public function provide():Object {
         return factory.apply(null, params);
     }
+
+    public function get providesResolved():Boolean {
+        return true;
+    }
 }
 }
