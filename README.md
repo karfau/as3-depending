@@ -22,8 +22,8 @@ Lets look at some code
             if(message.length >140){
                 message = urlShorter.shorten(message);
             }
-            if(message.length >140){
-                message = tweetClient.post(message);
+            if(message.length <= 140){
+                tweetClient.post(message);
             }
         }
     }
@@ -79,7 +79,7 @@ As it is an interface, it can be totally up to the implementation how this is do
 
 ### deciding how to resolve dependencies
 
-Implementing the interface could be done in a way that defines the mappings at compile time, or it can be as flexible as you like. As such an interface without an implementation will not help to stay DRY, `Scope` is an implementation which allows to configure those mappings at runtime without the need to implement the interface.
+Implementing the interface could be done in a way that defines the mappings at compile time, or it can be as flexible as you like. As such an interface without an implementation will not help to stay DRY, `Scope` is an implementation which allows to configure those mappings at runtime without the need to implement the **creating instances and resolving dependencies** part.
 
 ## putting it all together
 
@@ -122,8 +122,8 @@ If you don't like classes having to implement an interface to allow DI detection
 
     public class TweetService{
     
-        public static function create(resolver:Resolver):TweetClient{
-           return new TweetClient( resolver.get(UrlShorter), resolver.get(ITweetClient));
+        public static function create(resolver:Resolver):TweetService{
+           return new TweetService( resolver.get(UrlShorter), resolver.get(ITweetClient));
         }
     
         private var urlShorter:UrlShorter;
@@ -141,6 +141,61 @@ If you don't like classes having to implement an interface to allow DI detection
 
 Having something like `create` as a static method, puts an example of how to construct such an object using ***any*** `Resolver` directly available for reuse. But to completely get rid of this dependency inside your class, this method could be anywhere and in this case of course it doesn't  need to be static. 
 
-Just make sure the resolver that should be able to create a `TweetService` knows about it.
+Just make sure the `Resolver` that should be able to create a `TweetService` knows about it.
 
+### using `Scope` and implementing `Resolver`
+
+When implementing `Resolver` you have to take care of **creating instances with resolved dependencies** and **deciding how two resolve** dependencies. 
+
+Lets look at what it looks like to use the implementation `Scope`:
+ 
+    var scope:Scope = new Scope();
+
+    //Scope is an implementation of Resolver that allows configuration at runtime:
+    scope.map(Inspector).toInstance(new Inspector('Tom Barnaby'));
+
+    scope.map(IEngine).toType(SportEngine);
+    var sportCar:Car = scope.get(Car);//finally using the Resolver method to get an instance
+
+    scope.map(IEngine).toType(FamilyEngine);//overwrites the mapping to SportEngine
+    var familyCar:Car = scope.get(Car);
+
+    sportCar.accelerate();
+    trace(sportCar.speed);//120
+
+    familyCar.accelerate();
+    trace(familyCar.speed);//50
+
+
+This should look familiar to everybody that used a modern DI library. 
+Feel free to [navigate through the code](depending-test/src/as3/depending/examples/factory/Main.as).
+
+As the `Car` class is implementing `Depending` and has a constructor with no arguments as shown in *Option 1* above, there is no need to tell `Scope` how to create it.
+
+As always there are different ways to do things, so lets look at how cou could at what an implementation of `Resolver` could look like:
+
+
+    public class TweetServiceResolver implements Resolver {
+    
+        public function get(clazz:Class, required:Boolean = true):* {
+            var instance:*;
+            switch(clazz){
+                case TweetService:
+                    instance = TweetService.create(this);
+                    break;
+                case ITweetClient:
+                    instance = new TraceTweetClient();
+                    break;
+                default:
+                    instance = new clazz();
+            }
+            if(instance is Depending){
+                Depending(instance).fetchDependencies(this);
+            }
+    
+            return instance;
+        }
+    }
+
+Feel free to [navigate through the code](depending-test/src/as3/depending/examples/readme/Main.as).
 
