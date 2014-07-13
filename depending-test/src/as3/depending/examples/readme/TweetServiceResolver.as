@@ -1,10 +1,10 @@
 package as3.depending.examples.readme {
+import as3.depending.BaseResolver;
 import as3.depending.Depending;
-import as3.depending.Resolver;
 
-public class TweetServiceResolver implements Resolver {
+public class TweetServiceResolver extends BaseResolver{
 
-    public function get(clazz:Class, required:Boolean = true):* {
+    override protected function doResolve(clazz:Class):* {
         var instance:*;
         switch(clazz){
             case TweetService:

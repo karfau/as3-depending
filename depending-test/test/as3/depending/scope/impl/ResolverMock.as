@@ -3,7 +3,11 @@ import as3.depending.Resolver;
 
 public class ResolverMock implements Resolver {
 
-    public function get(clazz:Class, required:Boolean = true):* {
+    public function get(clazz:Class):* {
+        return undefined;
+    }
+
+    public function optionally(clazz:Class):* {
         return undefined;
     }
 }

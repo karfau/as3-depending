@@ -40,7 +40,7 @@ public class TestScope {
     [Test]
     public function get_throws_when_no_mapping_but_required():void {
         assertThat(function ():void {
-            scope.get(IDefinition, true);
+            scope.get(IDefinition);
         }, throws(allOf(
                 instanceOf(UnresolvedDependencyError),
                 hasPropertyWithValue('caught',instanceOf(VerifyError))
@@ -49,20 +49,20 @@ public class TestScope {
 
     [Test]
     public function get_for_simpleClass_returns_instance_when_no_mapping():void {
-        var value:Independent = scope.get(Independent, true);
+        var value:Independent = scope.get(Independent);
         assertThat(value, notNullValue());
     }
 
     [Test]
     public function get_for_dependingClass_returns_instance_when_no_mapping():void {
-        var value:DependingDefinitionMock = scope.get(DependingDefinitionMock, true);
+        var value:DependingDefinitionMock = scope.get(DependingDefinitionMock);
         assertThat(value, notNullValue());
         invokes.assertInvokes(value.fetchDependencies, array(scope));
     }
 
     [Test]
     public function get_returns_undefined_when_no_mapping_and_not_required():void {
-        var value:* = scope.get(IDefinition, false);
+        var value:* = scope.optionally(IDefinition);
         assertTrue(value === undefined);
     }
 

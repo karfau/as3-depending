@@ -5,12 +5,12 @@ import as3.depending.errors.UnresolvedDependencyError;
 import flash.utils.getQualifiedClassName;
 
 /**
- * This implemantation of Resolver offers the possibility to configure the decisions about how to resolve dependencies at runtime,
+ * This implementation of Resolver offers the possibility to configure the decisions about how to resolve dependencies at runtime,
  * using a fluid API similar to the one from Guice.
  *
- * It only contains a list of the decisions that have been made, the Mappings
+ * It only contains a list of the decisions that have been made, the Mappings.
  */
-public class Scope implements Resolver {
+public class Scope extends BaseResolver{
 
     private var mappings:Object;
 
@@ -40,24 +40,15 @@ public class Scope implements Resolver {
         return new Mapping(type, this);
     }
 
-    public function get(type:Class, required:Boolean = true):* {
-        var mapping:Mapping = getMapping(type);
+    override protected function doResolve(clazz:Class):* {
+        var mapping:Mapping = getMapping(clazz);
         if (mapping != null) {
             return mapping.getValue();
         }
-        try {
-            mapping = createMapping(type);
-            var value:Object = mapping.getValue();
-            setMapping(type, mapping);
-            return value;
-        } catch (error:Error) {
-            if (required) {
-                throw new UnresolvedDependencyError("couldn't find a mapping for class <" + getQualifiedClassName(type) + ">", error);
-            } else {
-                return undefined;
-            }
-        }
+        mapping = createMapping(clazz);
+        var value:Object = mapping.getValue();
+        setMapping(clazz, mapping);
+        return value;
     }
-
 }
 }
