@@ -1,9 +1,7 @@
 package as3.depending.scope {
 import as3.depending.errors.UnresolvedDependencyError;
 import as3.depending.examples.tests.*;
-import as3.depending.scope.impl.DependingDefinitionMock;
-import as3.depending.scope.impl.Invokes;
-import as3.depending.scope.impl.MappingStub;
+import as3.depending.scope.impl.*;
 
 import org.flexunit.assertThat;
 import org.flexunit.asserts.assertTrue;
@@ -44,8 +42,8 @@ public class TestScope {
         assertThat(function ():void {
             scope.get(IDefinition, true);
         }, throws(allOf(
-                isA(UnresolvedDependencyError),
-                hasPropertyWithValue('caught',isA(VerifyError))
+                instanceOf(UnresolvedDependencyError),
+                hasPropertyWithValue('caught',instanceOf(VerifyError))
         )));
     }
 

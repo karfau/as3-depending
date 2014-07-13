@@ -30,7 +30,7 @@ public class TestMapping {
 
         var first:Object = mapping.getValue();
         assertThat(first, allOf(
-                isA(DefinitionImpl),
+                instanceOf(DefinitionImpl),
                 not(equalTo(mapping.getValue()))
         ));
     }
@@ -41,7 +41,7 @@ public class TestMapping {
 
         var first:Object = mapping.getValue();
         assertThat(first, allOf(
-                isA(DefinitionImpl),
+                instanceOf(DefinitionImpl),
                 not(equalTo(mapping.getValue()))
         ));
     }
