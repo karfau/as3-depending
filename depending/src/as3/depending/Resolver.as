@@ -19,17 +19,5 @@ public interface Resolver {
      */
     function get(clazz:Class):*;
 
-    /**
-     * Resolves an instance of the given Class if defined, return undefined if not.
-     *
-     * Can return null or undefined if defined or implemented that way.
-     *
-     * @param clazz the type of the dependency to resolve.
-     *
-     */
-    function optionally(clazz:Class):*;
-
-
-
 }
 }

@@ -1,9 +1,14 @@
 package as3.depending.spec {
 import as3.depending.Provider;
+import as3.depending.RelaxedResolver;
 import as3.depending.Resolver;
 
 public class ResolverAdapter {
     public var resolver:Resolver;
+
+    public function get relaxedResolver():RelaxedResolver {
+        return RelaxedResolver(resolver);
+    }
 
     public function ResolverAdapter() {
     }

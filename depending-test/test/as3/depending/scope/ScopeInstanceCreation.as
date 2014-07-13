@@ -1,8 +1,8 @@
 package as3.depending.scope {
+import as3.depending.spec.RelaxedResolverInstanceCreation;
 import as3.depending.spec.ResolverAdapter;
-import as3.depending.spec.ResolverInstanceCreation;
 
-public class ScopeInstanceCreation extends ResolverInstanceCreation {
+public class ScopeInstanceCreation extends RelaxedResolverInstanceCreation {
 
 
     override protected function createAdapter():ResolverAdapter {
