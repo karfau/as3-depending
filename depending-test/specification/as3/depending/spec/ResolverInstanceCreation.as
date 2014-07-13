@@ -4,8 +4,11 @@ import as3.depending.examples.tests.DefinitionProvider;
 import as3.depending.examples.tests.IDefinition;
 import as3.depending.examples.tests.Independent;
 import as3.depending.examples.tests.ProviderFunctions;
+import as3.depending.examples.tests.ResolvedDefinition;
 
 import org.flexunit.assertThat;
+import org.hamcrest.core.allOf;
+import org.hamcrest.object.hasPropertyWithValue;
 import org.hamcrest.object.instanceOf;
 import org.hamcrest.object.strictlyEqualTo;
 
@@ -73,6 +76,24 @@ public class ResolverInstanceCreation extends BaseResolverSpec {
     public function resolving_using_a_provider_function_with_no_arguments_optionally():void {
         adapter.defineAProviderFunctionForResolver(IDefinition, ProviderFunctions.DefinitionProvider);
         assertThat(resolver.optionally(IDefinition), instanceOf(DefinitionImpl));
+    }
+
+    [Test]
+    public function resolving_using_a_provider_function_with_resolver_as_argument():void {
+        adapter.defineAProviderFunctionForResolver(IDefinition, ProviderFunctions.ResolvedDefinitionProvider);
+        assertThat(resolver.get(IDefinition), allOf(
+                instanceOf(ResolvedDefinition),
+                hasPropertyWithValue('resolver',strictlyEqualTo(resolver))
+        ));
+    }
+
+    [Test]
+    public function resolving_using_a_provider_function_with_resolver_as_argument_optionally():void {
+        adapter.defineAProviderFunctionForResolver(IDefinition, ProviderFunctions.ResolvedDefinitionProvider);
+        assertThat(resolver.optionally(IDefinition), allOf(
+                instanceOf(ResolvedDefinition),
+                hasPropertyWithValue('resolver',strictlyEqualTo(resolver))
+        ));
     }
 
 
