@@ -59,7 +59,7 @@ Ah, separation of concern for the WIN. Now the class **communicates** its depend
 
 To solve this, there are a lot "dependency injection libraries/ frameworks" out there.
  
-Most of them use metadata tags as a (second but explicit) way to communicate the dependencies (to the framework). By using the utility classes that are available in AS3 to do smoething like reflection, they look at the information available about a class or instance (at runtime) and try to **create and/or resolve** those dependencies. 
+Most of them use metadata tags as a (second but explicit) way to communicate the dependencies (to the framework). By using the utility classes that are available in AS3 to do something like reflection, they look at the information available about a class or instance (at runtime) and try to **create and/or resolve** those dependencies. 
 
 As they don't know anything about the application code, they have some configuration or mapping phase, where the application tells the "framework" its **decisions how to resolve** those dependencies. 
 
@@ -68,8 +68,8 @@ One nice example of how this can look like is here: [DawnInjections](https://git
 ## the goal of this library
 
 The goals of this library are :
-- provide a generic "factory" approach, that is flexible enough to be reused and lets the developer to stay dry (as others do)
-- instead of relying on analysing metadata tags at runtime, allowing you to resolve the dependencies in a flexible and object oriented way  
+- provide a generic "factory" approach, that is flexible enough to be reused and lets the developer to stay DRY (other frameworks also provide this)
+- allowing you to resolve the dependencies in a flexible and object oriented way, not relying on reflection using [describeType](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/utils/package.html#describeType%28%29) [or describeTypeJson](http://jacksondunstan.com/articles/2609) (e.g. to analyze metadata tags at runtime)  
 
 As I really like them, I will try to act after these [design principles](https://github.com/sammyt/dawn/wiki/DesignPrinciples).
 
