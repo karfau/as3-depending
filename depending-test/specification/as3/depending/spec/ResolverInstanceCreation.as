@@ -1,7 +1,9 @@
 package as3.depending.spec {
 import as3.depending.examples.tests.DefinitionImpl;
+import as3.depending.examples.tests.DefinitionProvider;
 import as3.depending.examples.tests.IDefinition;
 import as3.depending.examples.tests.Independent;
+import as3.depending.examples.tests.ProviderFunctions;
 
 import org.flexunit.assertThat;
 import org.hamcrest.object.instanceOf;
@@ -60,6 +62,22 @@ public class ResolverInstanceCreation extends BaseResolverSpec {
         adapter.defineAProviderImplementationForResolver(IDefinition, provider);
         assertThat(resolver.optionally(IDefinition), instanceOf(DefinitionImpl));
     }
+
+    [Test]
+    public function resolving_using_a_provider_function_with_no_arguments():void {
+        adapter.defineAProviderFunctionForResolver(IDefinition, ProviderFunctions.DefinitionProvider);
+        assertThat(resolver.get(IDefinition), instanceOf(DefinitionImpl));
+    }
+
+    [Test]
+    public function resolving_using_a_provider_function_with_no_arguments_optionally():void {
+        adapter.defineAProviderFunctionForResolver(IDefinition, ProviderFunctions.DefinitionProvider);
+        assertThat(resolver.optionally(IDefinition), instanceOf(DefinitionImpl));
+    }
+
+
+
+    //TODO: define things without the need to provide a type for it, they already implement it (Scope has no support for this yet)
 
 
 }

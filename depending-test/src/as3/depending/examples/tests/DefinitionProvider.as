@@ -1,4 +1,4 @@
-package as3.depending.spec {
+package as3.depending.examples.tests {
 import as3.depending.Provider;
 import as3.depending.examples.tests.DefinitionImpl;
 

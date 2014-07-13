@@ -29,5 +29,8 @@ public class ScopeAdapter extends ResolverAdapter {
         scope.map(definingInterface).toProvider(provider);
     }
 
+    override public function defineAProviderFunctionForResolver(definingInterface:Class, provider:Function):void {
+        scope.map(definingInterface).toFactory(provider);
+    }
 }
 }
