@@ -22,5 +22,9 @@ public class BaseResolverSpec {
         adapter = createAdapter();
         assertNotNull(resolver);
     }
+
+    protected final function failNotImplemented(feature:String):void {
+        adapter.failNotImplemented(feature);
+    }
 }
 }

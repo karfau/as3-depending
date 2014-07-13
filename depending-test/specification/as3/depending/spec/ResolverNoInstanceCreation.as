@@ -19,7 +19,7 @@ public class ResolverNoInstanceCreation extends BaseResolverSpec {
                     throws(instanceOf(UnresolvedDependencyError))
             );
         }catch(error:Error){
-            throw new NotImplementedException(resolver,"throwing an UnresolvedDependencyError");
+            failNotImplemented("throwing an UnresolvedDependencyError");
         }
     }
 
@@ -27,7 +27,7 @@ public class ResolverNoInstanceCreation extends BaseResolverSpec {
         try{
             assertThat(resolver.optionally(clazz), nullValue());
         }catch(error:Error){
-            throw new NotImplementedException(resolver,"returning undefined");
+            failNotImplemented("returning undefined");
         }
     }
 
@@ -47,7 +47,7 @@ public class ResolverNoInstanceCreation extends BaseResolverSpec {
         try{
             assertThat( resolver.get(IDefinition), nullValue());
         }catch(error:Error){
-            throw new NotImplementedException(resolver,"should resolve null when defined");
+            failNotImplemented("should resolve null when defined");
         }
     }
 
@@ -57,7 +57,7 @@ public class ResolverNoInstanceCreation extends BaseResolverSpec {
         try{
             assertThat( resolver.optionally(IDefinition), nullValue());
         }catch(error:Error){
-            throw new NotImplementedException(resolver,"should resolve null when defined");
+            failNotImplemented("should resolve null when defined");
         }
     }
 

@@ -9,19 +9,27 @@ public class ResolverAdapter {
     }
 
     public function defineTypeOnResolver(type:Class):void {
-        throw new NotImplementedException(resolver, "defining type as resolvable");
+        failNotImplemented("defining type as resolvable");
     }
 
     public function definedImplementationForResolver(definingInterface:Class, implementingClass:Class):void {
-        throw new NotImplementedException(resolver, "defining an implementation as resolvable");
+        failNotImplemented("defining an implementation as resolvable");
     }
 
     public function defineAnImplementingInstanceForResolver(definingInterface:Class, instance:Object):void {
-        throw new NotImplementedException(resolver, "defining an implementing instance as resolvable");
+        failNotImplemented("defining an implementing instance as resolvable");
     }
 
     public function defineAProviderImplementationForResolver(definingInterface:Class, provider:Provider):void {
-        throw new NotImplementedException(resolver, "defining a Provider implementation to use for resolving a definition");
+        failNotImplemented("defining a Provider implementation to use for resolving a definition");
+    }
+
+    public function defineAProviderFunctionForResolver(definingInterface:Class, provider:Function):void {
+        failNotImplemented( "defining a function as a provider to use for resolving a definition");
+    }
+
+    public final function failNotImplemented(feature:String):void {
+        throw new NotImplementedException(this, feature);
     }
 }
 }
