@@ -1,7 +1,7 @@
 package as3.depending.scope.impl {
-import as3.depending.examples.tests.*;
 import as3.depending.Depending;
 import as3.depending.Resolver;
+import as3.depending.examples.tests.*;
 
 public class DependingDefinitionMock implements IDefinition, Depending {
 

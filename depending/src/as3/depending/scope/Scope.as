@@ -1,8 +1,5 @@
 package as3.depending.scope {
 import as3.depending.*;
-import as3.depending.errors.UnresolvedDependencyError;
-
-import flash.utils.getQualifiedClassName;
 
 /**
  * This implementation of Resolver offers the possibility to configure the decisions about how to resolve dependencies at runtime,

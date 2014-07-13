@@ -129,7 +129,7 @@ public class TestMapping {
     }
 
     [Test]
-    public function asEagerSingleton_on_getValue_uses_resolver_to_inject_to_provided_Depending_instance():void {
+    public function asEagerSingleton_uses_resolver_to_inject_to_provided_Depending_instance():void {
         mapping.toType(DependingDefinitionMock).asEagerSingleton();
         assert_asEagerSingleton();
     }
