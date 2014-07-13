@@ -13,7 +13,7 @@ public class ScopeAdapter extends ResolverAdapter {
         return Scope(resolver);
     }
 
-    override public function defineTypeOnResolver(type:Class):void {
+    override public function defineTypeForResolver(type:Class):void {
         scope.map(type);
     }
 

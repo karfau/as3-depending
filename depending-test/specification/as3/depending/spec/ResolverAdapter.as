@@ -8,7 +8,7 @@ public class ResolverAdapter {
     public function ResolverAdapter() {
     }
 
-    public function defineTypeOnResolver(type:Class):void {
+    public function defineTypeForResolver(type:Class):void {
         failNotImplemented("defining type as resolvable");
     }
 

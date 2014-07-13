@@ -13,13 +13,13 @@ public class ResolverInstanceCreation extends BaseResolverSpec {
 
     [Test]
     public function resolving_a_defined_type():void {
-        adapter.defineTypeOnResolver(Independent);
+        adapter.defineTypeForResolver(Independent);
         assertThat(resolver.get(Independent), instanceOf(Independent));
     }
 
     [Test]
     public function resolving_a_defined_type_optionally():void {
-        adapter.defineTypeOnResolver(Independent);
+        adapter.defineTypeForResolver(Independent);
         assertThat(resolver.optionally(Independent), instanceOf(Independent));
     }
 

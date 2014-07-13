@@ -63,13 +63,13 @@ public class ResolverNoInstanceCreation extends BaseResolverSpec {
 
     [Test]
     public function resolving_a_defined_type_throwing():void {
-        adapter.defineTypeOnResolver(NotConstructable);
+        adapter.defineTypeForResolver(NotConstructable);
         resolver_get_expecting_UnresolvedDependencyError(NotConstructable);
     }
 
     [Test]
     public function resolving_a_defined_type_throwing_optionally():void {
-        adapter.defineTypeOnResolver(NotConstructable);
+        adapter.defineTypeForResolver(NotConstructable);
         resolver_optionally_expecting_undefined(NotConstructable);
     }
 
