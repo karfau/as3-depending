@@ -9,13 +9,13 @@ public class ResolverConstructorInjection extends BaseResolverSpec {
 
     [Test]
     public function resolving_a_defined_type():void {
-        adapter.defineConstructorInjectableTypeForResolver();
+        adapter.defineConstructorInjectableProtocolForResolver();
         assertThat(IResolverSpecProtocol(resolver.get(ConstructorInjectableProtocol)).resolver, strictlyEqualTo(resolver));
     }
 
     [Test]
     public function resolving_an_implementation():void {
-        adapter.defineConstructorInjectableTypeAsImplementationForResolver(IResolverSpecProtocol);
+        adapter.defineConstructorInjectableProtocolAsImplementationForResolver(IResolverSpecProtocol);
         assertThat(IResolverSpecProtocol(resolver.get(IResolverSpecProtocol)).resolver, strictlyEqualTo(resolver));
     }
 

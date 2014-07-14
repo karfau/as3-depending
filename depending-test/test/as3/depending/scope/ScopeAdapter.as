@@ -35,13 +35,13 @@ public class ScopeAdapter extends ResolverAdapter {
         scope.map(definingInterface).toFactory(provider);
     }
 
-    override public function defineConstructorInjectableTypeForResolver():void {
+    override public function defineConstructorInjectableProtocolForResolver():void {
         scope.map(ConstructorInjectableProtocol)
                 .toFactory(ProtocolProviderFunctions.ConstructorInjectableDefinitionProvider);
     }
 
 
-    override public function defineConstructorInjectableTypeAsImplementationForResolver(definingInterface:Class):void {
+    override public function defineConstructorInjectableProtocolAsImplementationForResolver(definingInterface:Class):void {
         scope.map(definingInterface)
                 .toFactory(ProtocolProviderFunctions.ConstructorInjectableDefinitionProvider);
     }
