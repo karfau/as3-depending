@@ -1,6 +1,9 @@
 package as3.depending.scope {
 import as3.depending.Provider;
 
+/**
+ * This provider invokes the given method with the given parameters on each invoke.
+ */
 public class FactoryProvider implements Provider {
 
     private var factory:Function;

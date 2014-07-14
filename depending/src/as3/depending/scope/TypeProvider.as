@@ -9,8 +9,8 @@ public class TypeProvider implements Provider {
 
     private var Impl:Class;
 
-    public function TypeProvider(implementing:Class) {
-        this.Impl = implementing;
+    public function TypeProvider(implementation:Class) {
+        this.Impl = implementation;
     }
 
     public function provide():Object {

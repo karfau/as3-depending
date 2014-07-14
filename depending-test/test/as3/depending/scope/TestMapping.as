@@ -56,16 +56,6 @@ public class TestMapping {
         assertThat(provider.callsTo_provide, 1);
     }
 
-    private function factoryMethodNoArgs():*{
-        invokes.invoke(factoryMethodNoArgs);
-        return undefined;
-    }
-
-    private function factoryMethodOneArgs(obj:Object):*{
-        invokes.invoke(factoryMethodOneArgs, obj);
-        return undefined;
-    }
-
     private function factoryMethodVarArgs(...args):*{
         invokes.invoke(factoryMethodVarArgs, args);
         return undefined;
@@ -101,7 +91,7 @@ public class TestMapping {
 
     [Test]
     public function asSingleton_lazy_on_getValue_uses_resolver_to_inject_to_provided_Depending_instance():void {
-        mapping.toType(DependingDefinitionMock).asSingleton(true);
+        mapping.toType(DependingDefinitionMock).asSingleton();
 
         assertNull(DependingDefinitionMock.lastInstance);
 
@@ -109,13 +99,6 @@ public class TestMapping {
 
         assertThat(value, strictlyEqualTo(mapping.getValue()));
         assertSingleInvokeOf_fetchDependencies_on(value);
-    }
-
-    [Test]
-    public function asSingleton_notLazy_on_getValue_uses_resolver_to_inject_to_provided_Depending_instance():void {
-        mapping.toType(DependingDefinitionMock).asSingleton(false);
-
-        assert_asEagerSingleton();
     }
 
     private function assert_asEagerSingleton():void {

@@ -1,10 +1,10 @@
 package as3.depending.spec {
+import as3.depending.examples.tests.ConstructorInjectableProtocol;
+import as3.depending.examples.tests.IProtocol;
+import as3.depending.examples.tests.Instance;
 import as3.depending.examples.tests.ProtocolImpl;
 import as3.depending.examples.tests.ProtocolProvider;
-import as3.depending.examples.tests.IProtocol;
-import as3.depending.examples.tests.SimpleType;
 import as3.depending.examples.tests.ProtocolProviderFunctions;
-import as3.depending.examples.tests.ConstructorInjectableProtocol;
 
 import org.flexunit.assertThat;
 import org.hamcrest.core.allOf;
@@ -16,8 +16,8 @@ public class ResolverInstanceCreation extends BaseResolverSpec {
 
     [Test]
     public function resolving_a_defined_type():void {
-        adapter.defineTypeForResolver(SimpleType);
-        assertThat(resolver.get(SimpleType), instanceOf(SimpleType));
+        adapter.defineTypeForResolver(Instance);
+        assertThat(resolver.get(Instance), instanceOf(Instance));
     }
 
     [Test]

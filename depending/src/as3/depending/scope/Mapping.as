@@ -44,6 +44,10 @@ public class Mapping {
         return this;
     }
 
+    private function toResolvedInstance(resolvedValue:Object):void {
+        provider = new InstanceProvider(resolvedValue);
+    }
+
     public function toFactory(method:Function, ...params):Mapping {
         if(params.length == 0 && method.length == 1){
             params[0] = _resolver;
@@ -52,19 +56,17 @@ public class Mapping {
         return this;
     }
 
-    private var lazySingelton:Boolean;
-    public function asSingleton(lazy:Boolean = true):Mapping {
-        if(lazy){
-            lazySingelton = true;
-        }else{
-            asEagerSingleton();
+    public function asSingleton():Provider {
+        if(provider is InstanceProvider || provider is SingletonProvider){
+            return provider;
         }
-        return this;
+        provider = new SingletonProvider(provider);
+        return provider;
     }
 
-    public function asEagerSingleton():Mapping {
+    public function asEagerSingleton():Provider {
         toResolvedInstance(getValue());
-        return this;
+        return provider;
     }
 
     public function getValue():Object {
@@ -75,10 +77,6 @@ public class Mapping {
         if(!provider.providesResolved){
             resolveDepending(value);
         }
-        if(lazySingelton){
-            lazySingelton = false;
-            toResolvedInstance(value);
-        }
         return value;
     }
 
@@ -88,8 +86,5 @@ public class Mapping {
         }
     }
 
-    private function toResolvedInstance(resolvedValue:Object):void {
-        provider = new InstanceProvider(resolvedValue);
-    }
 }
 }
