@@ -47,18 +47,6 @@ public class TestMapping {
     }
 
     [Test]
-    public function toInstance_on_getValue_returns_instance():void {
-        const singleton:IDefinition = new DefinitionImpl();
-        mapping.toInstance(singleton);
-
-        var first:Object = mapping.getValue();
-        assertThat(first, allOf(
-                strictlyEqualTo(singleton),
-                strictlyEqualTo(mapping.getValue())
-        ));
-    }
-
-    [Test]
     public function toProvider_on_getValue_uses_provider():void {
         const provider:ProviderMock = new ProviderMock();
         mapping.toProvider(provider);
@@ -81,29 +69,6 @@ public class TestMapping {
     private function factoryMethodVarArgs(...args):*{
         invokes.invoke(factoryMethodVarArgs, args);
         return undefined;
-    }
-
-    [Test]
-    public function toFactory_no_given_argument_but_with_length_1_on_getValue_calls_factory_method_with_resolver():void {
-        mapping.toFactory(factoryMethodOneArgs);
-
-        mapping.getValue();
-
-        invokes.assertInvokes(factoryMethodOneArgs,
-                array(mapping.resolver)
-        );
-    }
-
-    [Test]
-    public function toFactory_withNoArgument_on_getValue_calls_factory_method():void {
-
-        mapping.toFactory(factoryMethodNoArgs);
-
-        mapping.getValue();
-
-        invokes.assertInvokes(factoryMethodNoArgs,
-                array()
-        );
     }
 
     [Test]
@@ -149,6 +114,7 @@ public class TestMapping {
     [Test]
     public function asSingleton_notLazy_on_getValue_uses_resolver_to_inject_to_provided_Depending_instance():void {
         mapping.toType(DependingDefinitionMock).asSingleton(false);
+
         assert_asEagerSingleton();
     }
 
