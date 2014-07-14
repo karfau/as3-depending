@@ -23,8 +23,8 @@ public class TestScope {
 
     [Test]
     public function map_returns_same_Mapping_for_same_type():void {
-        var mapping:Mapping = scope.map(IDefinition);
-        var second:Mapping = scope.map(IDefinition);
+        var mapping:Mapping = scope.map(IProtocol);
+        var second:Mapping = scope.map(IProtocol);
         assertThat(second, allOf(
                 notNullValue(),
                 strictlyEqualTo(mapping)
@@ -33,7 +33,7 @@ public class TestScope {
 
     [Test]
     public function map_returns_Mapping_with_resolver_set_to_scope():void {
-        var mapping:Mapping = scope.map(IDefinition);
+        var mapping:Mapping = scope.map(IProtocol);
         assertThat(mapping.resolver, strictlyEqualTo(scope));
     }
 
@@ -47,10 +47,10 @@ public class TestScope {
     [Test]
     public function get_returns_Mapping_getValue():void {
         scope = new TestableScope();
-        var mapping:MappingStub = MappingStub(scope.map(IDefinition));
-        mapping.testValue = new DefinitionImpl();
+        var mapping:MappingStub = MappingStub(scope.map(IProtocol));
+        mapping.testValue = new ProtocolImpl();
 
-        assertThat(scope.get(IDefinition), strictlyEqualTo(mapping.testValue));
+        assertThat(scope.get(IProtocol), strictlyEqualTo(mapping.testValue));
     }
 
 }

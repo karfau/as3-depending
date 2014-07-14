@@ -1,11 +1,11 @@
 package as3.depending.examples.tests {
 import as3.depending.Provider;
-import as3.depending.examples.tests.DefinitionImpl;
+import as3.depending.examples.tests.ProtocolImpl;
 
-public class DefinitionProvider implements Provider {
+public class ProtocolProvider implements Provider {
 
     public function provide():Object {
-        return new DefinitionImpl();
+        return new ProtocolImpl();
     }
 
     public function get providesResolved():Boolean {

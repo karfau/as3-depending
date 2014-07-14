@@ -36,11 +36,11 @@ public class ResolverAdapter {
     }
 
     public function defineConstructorInjectableTypeForResolver():void {
-        failNotImplemented( "defining ConstructorInjectableDefinition as resolvable");
+        failNotImplemented( "defining ConstructorInjectableProtocol as resolvable");
     }
 
     public function defineConstructorInjectableTypeAsImplementationForResolver(definingInterface:Class):void {
-        failNotImplemented("defining the implementation ConstructorInjectableDefinition as resolvable");
+        failNotImplemented("defining the implementation ConstructorInjectableProtocol as resolvable");
     }
 }
 }

@@ -8,7 +8,7 @@ import as3.depending.Resolver;
  * This is helpful for external configuration cases, as it avoids actually using a resolver implementation,
  * which could be done differently if the actual implementation of the resolver is e.g. functional.
  */
-public interface IResolverSpecDefinition extends IDefinition{
+public interface IResolverSpecProtocol extends IProtocol{
     function get resolver():Resolver;
 }
 }

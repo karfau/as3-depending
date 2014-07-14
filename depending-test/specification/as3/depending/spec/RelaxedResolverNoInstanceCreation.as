@@ -1,6 +1,6 @@
 package as3.depending.spec {
-import as3.depending.examples.tests.IDefinition;
-import as3.depending.examples.tests.NotConstructable;
+import as3.depending.examples.tests.IProtocol;
+import as3.depending.examples.tests.NotConstructableProtocol;
 
 import org.flexunit.assertThat;
 import org.hamcrest.object.nullValue;
@@ -24,14 +24,14 @@ public class RelaxedResolverNoInstanceCreation extends ResolverNoInstanceCreatio
 
     [Test]
     public function resolving_an_undefined_definition_optionally():void {
-        resolver_optionally_expecting_undefined(IDefinition);
+        resolver_optionally_expecting_undefined(IProtocol);
     }
 
     [Test]
     public function resolving_null_optionally():void {
-        adapter.defineAnImplementingInstanceForResolver(IDefinition,null);
+        adapter.defineAnImplementingInstanceForResolver(IProtocol,null);
         try{
-            assertThat( relaxedResolver.optionally(IDefinition), nullValue());
+            assertThat( relaxedResolver.optionally(IProtocol), nullValue());
         }catch(error:Error){
             failNotImplemented("should resolve null when defined");
         }
@@ -39,8 +39,8 @@ public class RelaxedResolverNoInstanceCreation extends ResolverNoInstanceCreatio
 
     [Test]
     public function resolving_a_defined_type_throwing_optionally():void {
-        adapter.defineTypeForResolver(NotConstructable);
-        resolver_optionally_expecting_undefined(NotConstructable);
+        adapter.defineTypeForResolver(NotConstructableProtocol);
+        resolver_optionally_expecting_undefined(NotConstructableProtocol);
     }
 
     //TODO: everything that works in ResolverInstanceCreation can be tested how it behaves when failing while providing

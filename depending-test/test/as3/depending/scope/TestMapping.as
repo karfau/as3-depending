@@ -19,29 +19,29 @@ public class TestMapping {
     public function setUp():void {
         DependingDefinitionMock.lastInstance = null;
         resolver = new ResolverMock();
-        mapping = new Mapping(IDefinition, resolver);
+        mapping = new Mapping(IProtocol, resolver);
         invokes = new Invokes();
         DependingDefinitionMock.invokes = invokes;
     }
 
     [Test]
     public function getValue_returns_new_instance_of_mapped_type():void {
-        mapping = new Mapping(DefinitionImpl, resolver);
+        mapping = new Mapping(ProtocolImpl, resolver);
 
         var first:Object = mapping.getValue();
         assertThat(first, allOf(
-                instanceOf(DefinitionImpl),
+                instanceOf(ProtocolImpl),
                 not(equalTo(mapping.getValue()))
         ));
     }
 
     [Test]
     public function toType_on_getValue_returns_new_instance():void {
-        mapping.toType(DefinitionImpl);
+        mapping.toType(ProtocolImpl);
 
         var first:Object = mapping.getValue();
         assertThat(first, allOf(
-                instanceOf(DefinitionImpl),
+                instanceOf(ProtocolImpl),
                 not(equalTo(mapping.getValue()))
         ));
     }
