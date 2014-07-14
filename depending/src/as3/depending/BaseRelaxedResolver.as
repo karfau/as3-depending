@@ -3,7 +3,7 @@ import as3.depending.errors.UnresolvedDependencyError;
 
 import flash.utils.getQualifiedClassName;
 
-public class BaseResolver implements RelaxedResolver {
+public class BaseRelaxedResolver implements RelaxedResolver {
 
     public function get(clazz:Class):* {
         try {
@@ -14,7 +14,7 @@ public class BaseResolver implements RelaxedResolver {
     }
 
     protected function doResolve(clazz:Class):* {
-        throw new Error(this + " is not implementing BaseResolver.doResolve or calls super.doResolve()");
+        throw new Error(this + " is not implementing BaseRelaxedResolver.doResolve or calls super.doResolve()");
     }
 
     public function optionally(clazz:Class):* {

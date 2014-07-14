@@ -7,7 +7,7 @@ import as3.depending.*;
  *
  * It only contains a list of the decisions that have been made, the Mappings.
  */
-public class Scope extends BaseResolver{
+public class Scope extends BaseRelaxedResolver{
 
     private var mappings:Object;
 
