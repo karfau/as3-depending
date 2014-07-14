@@ -10,8 +10,10 @@ public class ResolverAdapter {
         return RelaxedResolver(resolver);
     }
 
-    public function ResolverAdapter() {
+    public final function failNotImplemented(feature:String):void {
+        throw new NotImplementedException(this, feature);
     }
+
 
     public function defineTypeForResolver(type:Class):void {
         failNotImplemented("defining type as resolvable");
@@ -33,8 +35,12 @@ public class ResolverAdapter {
         failNotImplemented( "defining a function as a provider to use for resolving a definition");
     }
 
-    public final function failNotImplemented(feature:String):void {
-        throw new NotImplementedException(this, feature);
+    public function defineConstructorInjectableTypeForResolver():void {
+        failNotImplemented( "defining ConstructorInjectableDefinition as resolvable");
+    }
+
+    public function defineConstructorInjectableTypeAsImplementationForResolver(definingInterface:Class):void {
+        failNotImplemented("defining the implementation ConstructorInjectableDefinition as resolvable");
     }
 }
 }

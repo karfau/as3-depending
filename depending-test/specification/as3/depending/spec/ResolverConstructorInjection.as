@@ -2,6 +2,7 @@ package as3.depending.spec {
 import as3.depending.examples.tests.DefinitionImpl;
 import as3.depending.examples.tests.DefinitionProvider;
 import as3.depending.examples.tests.IDefinition;
+import as3.depending.examples.tests.IResolverSpecDefinition;
 import as3.depending.examples.tests.Independent;
 import as3.depending.examples.tests.ProviderFunctions;
 import as3.depending.examples.tests.ConstructorInjectableDefinition;
@@ -12,20 +13,21 @@ import org.hamcrest.object.hasPropertyWithValue;
 import org.hamcrest.object.instanceOf;
 import org.hamcrest.object.strictlyEqualTo;
 
-public class ResolverInstanceCreation extends BaseResolverSpec {
+public class ResolverConstructorInjection extends BaseResolverSpec {
 
     [Test]
     public function resolving_a_defined_type():void {
-        adapter.defineTypeForResolver(Independent);
-        assertThat(resolver.get(Independent), instanceOf(Independent));
+        adapter.defineConstructorInjectableTypeForResolver();
+        assertThat(IResolverSpecDefinition(resolver.get(ConstructorInjectableDefinition)).resolver, strictlyEqualTo(resolver));
     }
 
     [Test]
     public function resolving_an_implementation():void {
-        adapter.definedImplementationForResolver(IDefinition, DefinitionImpl);
-        assertThat(resolver.get(IDefinition), instanceOf(DefinitionImpl));
+        adapter.defineConstructorInjectableTypeAsImplementationForResolver(IResolverSpecDefinition);
+        assertThat(IResolverSpecDefinition(resolver.get(IResolverSpecDefinition)).resolver, strictlyEqualTo(resolver));
     }
 
+/*
     [Test]
     public function resolving_an_implementing_instance():void {
         const instance:DefinitionImpl = new DefinitionImpl();
@@ -54,6 +56,7 @@ public class ResolverInstanceCreation extends BaseResolverSpec {
                 hasPropertyWithValue('resolver',strictlyEqualTo(resolver))
         ));
     }
+*/
 
     //TODO: define things without the need to provide a type for it, they already implement it (Scope has no support for this yet)
 

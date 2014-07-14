@@ -2,6 +2,7 @@ package as3.depending.spec {
 import as3.depending.examples.tests.DefinitionImpl;
 import as3.depending.examples.tests.DefinitionProvider;
 import as3.depending.examples.tests.IDefinition;
+import as3.depending.examples.tests.IResolverSpecDefinition;
 import as3.depending.examples.tests.Independent;
 import as3.depending.examples.tests.ProviderFunctions;
 import as3.depending.examples.tests.ConstructorInjectableDefinition;
@@ -12,48 +13,50 @@ import org.hamcrest.object.hasPropertyWithValue;
 import org.hamcrest.object.instanceOf;
 import org.hamcrest.object.strictlyEqualTo;
 
-public class ResolverInstanceCreation extends BaseResolverSpec {
+public class RelaxedResolverConstructorInjection extends ResolverConstructorInjection {
 
     [Test]
-    public function resolving_a_defined_type():void {
-        adapter.defineTypeForResolver(Independent);
-        assertThat(resolver.get(Independent), instanceOf(Independent));
+    public function resolving_a_defined_type_optionally():void {
+        adapter.defineConstructorInjectableTypeForResolver();
+        assertThat(IResolverSpecDefinition(relaxedResolver.optionally(ConstructorInjectableDefinition)).resolver, strictlyEqualTo(resolver));
     }
 
     [Test]
-    public function resolving_an_implementation():void {
-        adapter.definedImplementationForResolver(IDefinition, DefinitionImpl);
-        assertThat(resolver.get(IDefinition), instanceOf(DefinitionImpl));
+    public function resolving_an_implementation_optionally():void {
+        adapter.defineConstructorInjectableTypeAsImplementationForResolver(IResolverSpecDefinition);
+        assertThat(IResolverSpecDefinition(relaxedResolver.optionally(IResolverSpecDefinition)).resolver, strictlyEqualTo(resolver));
     }
 
+/*
     [Test]
-    public function resolving_an_implementing_instance():void {
+    public function resolving_an_implementing_instance_optionally():void {
         const instance:DefinitionImpl = new DefinitionImpl();
         adapter.defineAnImplementingInstanceForResolver(IDefinition, instance);
-        assertThat(resolver.get(IDefinition), strictlyEqualTo(instance));
+        assertThat(relaxedResolver.optionally(IDefinition), strictlyEqualTo(instance));
     }
 
     [Test]
-    public function resolving_using_a_provider_implementation():void {
+    public function resolving_using_a_provider_implementation_optionally():void {
         const provider:DefinitionProvider = new DefinitionProvider();
         adapter.defineAProviderImplementationForResolver(IDefinition, provider);
-        assertThat(resolver.get(IDefinition), instanceOf(DefinitionImpl));
+        assertThat(relaxedResolver.optionally(IDefinition), instanceOf(DefinitionImpl));
     }
 
     [Test]
-    public function resolving_using_a_provider_function_with_no_arguments():void {
+    public function resolving_using_a_provider_function_with_no_arguments_optionally():void {
         adapter.defineAProviderFunctionForResolver(IDefinition, ProviderFunctions.DefinitionProvider);
-        assertThat(resolver.get(IDefinition), instanceOf(DefinitionImpl));
+        assertThat(relaxedResolver.optionally(IDefinition), instanceOf(DefinitionImpl));
     }
 
     [Test]
-    public function resolving_using_a_provider_function_with_resolver_as_argument():void {
+    public function resolving_using_a_provider_function_with_resolver_as_argument_optionally():void {
         adapter.defineAProviderFunctionForResolver(IDefinition, ProviderFunctions.ConstructorInjectableDefinitionProvider);
-        assertThat(resolver.get(IDefinition), allOf(
+        assertThat(relaxedResolver.optionally(IDefinition), allOf(
                 instanceOf(ConstructorInjectableDefinition),
                 hasPropertyWithValue('resolver',strictlyEqualTo(resolver))
         ));
     }
+*/
 
     //TODO: define things without the need to provide a type for it, they already implement it (Scope has no support for this yet)
 

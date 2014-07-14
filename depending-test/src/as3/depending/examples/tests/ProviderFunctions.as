@@ -7,8 +7,8 @@ public class ProviderFunctions {
         return new DefinitionImpl();
     }
 
-    public static function ResolvedDefinitionProvider(resolver:Resolver):IDefinition {
-        return new ResolvedDefinition(resolver);
+    public static function ConstructorInjectableDefinitionProvider(resolver:Resolver):IDefinition {
+        return new ConstructorInjectableDefinition(resolver);
     }
 }
 }

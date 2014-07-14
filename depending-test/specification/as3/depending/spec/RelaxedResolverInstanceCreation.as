@@ -4,7 +4,7 @@ import as3.depending.examples.tests.DefinitionProvider;
 import as3.depending.examples.tests.IDefinition;
 import as3.depending.examples.tests.Independent;
 import as3.depending.examples.tests.ProviderFunctions;
-import as3.depending.examples.tests.ResolvedDefinition;
+import as3.depending.examples.tests.ConstructorInjectableDefinition;
 
 import org.flexunit.assertThat;
 import org.hamcrest.core.allOf;
@@ -55,9 +55,9 @@ public class RelaxedResolverInstanceCreation extends ResolverInstanceCreation {
 
     [Test]
     public function resolving_using_a_provider_function_with_resolver_as_argument_optionally():void {
-        adapter.defineAProviderFunctionForResolver(IDefinition, ProviderFunctions.ResolvedDefinitionProvider);
+        adapter.defineAProviderFunctionForResolver(IDefinition, ProviderFunctions.ConstructorInjectableDefinitionProvider);
         assertThat(relaxedResolver.optionally(IDefinition), allOf(
-                instanceOf(ResolvedDefinition),
+                instanceOf(ConstructorInjectableDefinition),
                 hasPropertyWithValue('resolver',strictlyEqualTo(resolver))
         ));
     }

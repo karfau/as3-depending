@@ -1,14 +1,14 @@
 package as3.depending.examples.tests {
 import as3.depending.Resolver;
 
-public class ResolvedDefinition implements IDefinition {
+public class ConstructorInjectableDefinition implements IResolverSpecDefinition {
     private var _resolver:Resolver;
 
     public function get resolver():Resolver {
         return _resolver;
     }
 
-    public function ResolvedDefinition(resolver:Resolver) {
+    public function ConstructorInjectableDefinition(resolver:Resolver) {
         _resolver = resolver;
     }
 }
