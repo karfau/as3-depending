@@ -2,15 +2,15 @@
 
 ## Definition of DI
 
-The term *dependency injection* is a very general one, so I will define what I mean when talking about this subject:
+The term *dependency injection* is a very general one, so I will define what I mean when talking about it:
 
 1. depending classes **communicate** their dependencies
-2. **deciding how to resolve** dependencies (e.g. what kind of instance to use that implements the required interface)
-3. using those decision(s) to **create** instances with **resolved** dependencies
+2. **defining** how to resolve dependencies (e.g. what kind of instance to use that implements the required interface)
+3. **creating** instances with **resolved** dependencies
 
 All object oriented application code I know has classes that depend on other classes, so I claim that they all use dependency injection, if understood the way described above.
 
-## understanding the different parts
+### understanding the different parts
 
 Lets look at some code
 
@@ -30,8 +30,8 @@ Lets look at some code
     }
 ```
 
-In this case the depending class only **communicates** its dependencies to the compiler, it is also responsible for the **decision how to resolve** them and also **resolves** them at **creation** time.
- That is the least flexible way to do it, and each time you use the class, even when only testing if it works, your bill for SMS increases.
+In this case the depending class only **communicates** its dependencies to the compiler, it also **defines** how to resolve them and also takes care for **resolving** them at **creation** time.
+ That is the least flexible way to do it, and it is difficult to test if it works without increasing your bill for SMS.
  
 improving the above concerns:
   
@@ -51,45 +51,44 @@ improving the above concerns:
     }
 ```
 
-Ah, separation of concern for the WIN. Now the class **communicates** its dependency to everybody trying to create an instance. **How to resolve** those dependencies is up to the creating instance. 
+Ah, separation of concern for the WIN. Now the class **communicates** its dependency to everybody trying to create an instance. It is up to the creator to **resolve** those dependencies. 
 - This simplifies testing because we could mock those dependencies and just make sure the API of those dependencies gets used in the right way.
 - Regarding the third part of my definition of DI, the complexity increased: Every place in your application that needs a `TweetClient` needs a way to resolve those dependencies. Writing factories is one approach to keep DRY. But when it comes to more complex object graphs, it is not easy to write factories and keep DRY at the same time, which makes it error prone and less fun. 
 
-## state of the art
+### state of the art
 
-To solve this, there are a lot "dependency injection libraries/ frameworks" out there.
+To solve this, there exist many "dependency injection libraries / frameworks".
  
-Most of them use metadata tags as a (second but explicit) way to communicate the dependencies (to the framework). By using the utility classes that are available in AS3 to do something like reflection, they look at the information available about a class or instance (at runtime) and try to **create and/or resolve** those dependencies. 
+Most of them use metadata tags as a (second but explicit) way to **communicate** the dependencies (to the framework). By using the utility classes that are available in AS3 to do something like reflection, they detact those *"annotations"* (at runtime) and try to **create** and / or **resolve** those dependencies. 
 
-As they don't know anything about the application code, they have some configuration or mapping phase, where the application tells the "framework" its **decisions how to resolve** those dependencies. 
+As they don't know anything about the application code, they have some configuration or mapping phase, where the application **defines** how to resolve those dependencies. 
 
-One nice example of how this can look like is here: [DawnInjections](https://github.com/sammyt/dawn/wiki/DawnInjections).
+One nice example of how this can look like is [DawnInjections](https://github.com/sammyt/dawn/wiki/DawnInjections).
 
 ## the goal of this library
 
 The goals of this library are :
-- provide a generic "factory" approach, that is flexible enough to be reused and lets the developer to stay DRY (other frameworks also provide this)
-- allowing you to resolve the dependencies in a flexible and object oriented way, not relying on reflection using [describeType](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/utils/package.html#describeType%28%29) [or describeTypeJson](http://jacksondunstan.com/articles/2609) (e.g. to analyze metadata tags at runtime)  
+- provide a "generic factory" approach aka "DI container", that is flexible enough to be reused and lets the developer stay DRY (other frameworks also provide this)
+- allowing you to resolve the dependencies in an object oriented, type safe and flexible way, ***not relying on reflection*** (using [describeType](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/utils/package.html#describeType%28%29) [or describeTypeJson](http://jacksondunstan.com/articles/2609)) 
 
 As I really like them, I will try to act after these [design principles](https://github.com/sammyt/dawn/wiki/DesignPrinciples).
 
 ### creating instances and resolving dependencies
 
-The `Resolver` interface with its `get` method is the generic factory I talked about more early.
+The `Resolver` interface is the "generic factory" I talked about more early.
 
-It returns an instance of the given type, with all its dependencies resolved. 
-
-As it is an interface, it can be totally up to the implementation how this is done: 
+Implementing it **defines** how to resolve things, its `get` method uses those definitions to **create** and / or **resolve** things. 
 
 ### deciding how to resolve dependencies
 
-Implementing the interface could be done in a way that defines the mappings at compile time, or it can be as flexible as you like. As such an interface without an implementation will not help to stay DRY, `Scope` is an implementation which allows to configure those mappings at runtime without the need to implement the **creating instances and resolving dependencies** part.
+Implementing the interface could be done in a way that defines the mappings at compile time, or it can be as flexible as you like. 
+This library provides the implementation `Scope`. Each instance of `Scope` lets the developer write **definitions** as code, and already implements the **creation and resolving** part (an example will follow really soon).
 
 ## putting it all together
 
 There are different approaches to communicate dependencies, and it has a lot to do with how instances can be created. 
 
-In the "metadata world" the need for a lot of boilerplate is been taken away from the developer, which sometimes makes it look like magic. The other argument for such frameworks is, that a class with dependencies doesn't need to depend on the framework that injects them.
+In the "metadata world" the need for a lot of boilerplate is been taken away from the developer. The other argument for such frameworks is, that a class with dependencies doesn't need to depend on the framework that injects them.
 
 ### Option 1: implementing Depending a.k.a. fetching dependencies
 
@@ -120,12 +119,12 @@ To create an instance you only need to have a properly configured `Resolver`:
     var tweetService:TweetService = myResolver.get(TweetService);
 ```
 
-The resolver will create an instance of `TweetService` and call `fetchDependencies` using itself as the argument. 
-Lets assume `UrlShorter` is a really simple class, with no external dependencies, in this case the resolver just creates a new instance of the class. To create an instance of ITweetClient the resolver needs to know how this dependency should be resolved, before it gets asked for an instance of `TweetService`. If that has not happened, it will throw an `UnresolvedDependencyError`.
+The `resolver` will create an instance of `TweetService` and call `fetchDependencies` using itself as the argument. 
+Lets assume `UrlShorter` is a really simple class, with no external dependencies, in this case the `resolver` just creates a new instance of the class. To create an instance of `ITweetClient` the `resolver` has to contain a **definition** for how this dependency should be resolved, before it gets asked for an instance of `TweetService`. If that has not happened, it will throw an `UnresolvedDependencyError`.
 
 ### Option 2: constructor injection a.k.a. factory methods
 
-If you don't like classes having to implement an interface to allow DI detection and you love constructor arguments as much as I do? Easy as pie:
+If you don't like classes having to implement an interface to allow DI detection and you love constructor arguments as much as I do, that's easy as pie:
 
 ```ActionScript
     public class TweetService{
@@ -148,15 +147,15 @@ If you don't like classes having to implement an interface to allow DI detection
     }
 ```
 
-Having something like `create` as a static method, puts an example of how to construct such an object using ***any*** `Resolver` directly available for reuse. But to completely get rid of this dependency inside your class, this method could be anywhere and in this case of course it doesn't  need to be static. 
+Having something like `create` as a static method, puts an example of how to construct such an object using ***any*** `Resolver` directly available for reuse. But to completely get rid of this dependency inside your class, this method could be anywhere and in this case of course it doesn't need to be static. 
 
-Just make sure the `Resolver` that should be able to create a `TweetService` knows about it.
+You just need to *define* that the `Resolver` should use this method to create a `TweetService`.
 
 ### using `Scope` and implementing `Resolver`
 
 When implementing `Resolver` you have to take care of **creating instances with resolved dependencies** and **deciding how two resolve** dependencies. 
 
-Lets look at what it looks like to use the implementation `Scope`:
+Lets look at what it looks like to use `Scope`:
 
 ```ActionScript
     var scope:Scope = new Scope();
@@ -180,9 +179,9 @@ Lets look at what it looks like to use the implementation `Scope`:
 This should look familiar to everybody that used a modern DI library. 
 Feel free to [navigate through the executable code](depending-test/src/as3/depending/examples/factory/Main.as).
 
-As the `Car` class is implementing `Depending` and has a constructor with no arguments as shown in *Option 1* above, there is no need to tell `Scope` how to create it.
+As the `Car` class is implementing `Depending` and has a constructor with no arguments as shown in **Option 1** above, there is no need to tell `Scope` how to create it.
 
-As always there are different ways to do things, so lets look at how cou could at what an implementation of `Resolver` could [look like](depending-test/src/as3/depending/examples/readme/TweetServiceResolver.as):
+As always there are different ways to do things, so lets look at how an implementation of `Resolver` could [look like](depending-test/src/as3/depending/examples/readme/TweetServiceResolver.as):
 
 ```ActionScript
     public class TweetServiceResolver implements Resolver {
