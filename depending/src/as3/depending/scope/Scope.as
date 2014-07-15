@@ -16,6 +16,14 @@ public class Scope extends BaseRelaxedResolver{
         return mapping;
     }
 
+    public function hasMapping(type:Class):Boolean {
+        return getMapping(type)!=null;
+    }
+
+    private function setMapping(type:Class, mapping:Mapping):void {
+        mappings[type] = mapping;
+    }
+
     public function Scope() {
         mappings = {};
     }
@@ -29,11 +37,7 @@ public class Scope extends BaseRelaxedResolver{
         return mapping;
     }
 
-    private function setMapping(type:Class, mapping:Mapping):void {
-        mappings[type] = mapping;
-    }
-
-    internal function createMapping(type:Class):Mapping {
+    protected function createMapping(type:Class):Mapping {
         return new Mapping(type, this);
     }
 

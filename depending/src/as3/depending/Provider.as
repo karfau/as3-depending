@@ -13,11 +13,7 @@ public interface Provider {
     /**
      * @return an instance
      */
-    function provide():Object;
+    function provide(resolver:Resolver = null):Object;
 
-    /**
-     * @returns true when the provided instances already have their dependencies resolved, false otherwise
-     */
-    function get providesResolved():Boolean;
 }
 }

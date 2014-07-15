@@ -2,12 +2,13 @@ package as3.depending.scope {
 import as3.depending.scope.impl.*;
 
 internal class TestableScope extends Scope {
-    public function TestableScope() {
-        super();
-    }
+    private var invokes:Invokes;
 
-    override internal function createMapping(type:Class):Mapping {
-        return new MappingStub(type, this);
+    public function TestableScope(invokes:Invokes) {
+        this.invokes = invokes;
+    }
+    override protected function createMapping(type:Class):Mapping {
+        return new TestableMapping(invokes);
     }
 }
 }

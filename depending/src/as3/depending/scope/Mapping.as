@@ -16,73 +16,74 @@ public class Mapping {
 
     private var forType:Class;
 
-    private var _resolver:Resolver;
-    internal function get resolver():Resolver {
-        return _resolver;
+    private var resolver:Resolver;
+    internal function getResolver():Resolver {
+        return resolver;
     }
 
     public function Mapping(forType:Class, resolver:Resolver) {
         this.forType = forType;
-        _resolver = resolver;
+        this.resolver = resolver;
     }
 
-    private var provider:Provider;
+    private var _provider:Provider;
+
+    public function get provider():Provider {
+        return _provider;
+    }
 
     public function toProvider(provider:Provider):Mapping {
-        this.provider = provider;
+        this._provider = provider;
         return this;
     }
 
     public function toType(implementing:Class):Mapping {
-        provider = new TypeProvider(implementing);
+        _provider = new TypeProvider(implementing);
         return this;
     }
 
-    public function toInstance(value:Object):Mapping {
-        resolveDepending(value);
-        toResolvedInstance(value);
+    public function toInstance(instance:Object):Mapping {
+        resolveDepending(instance);
+        toValue(instance);
         return this;
     }
 
-    private function toResolvedInstance(resolvedValue:Object):void {
-        provider = new InstanceProvider(resolvedValue);
+    public function toValue(value:Object):void {
+        _provider = new ValueProvider(value);
     }
 
     public function toFactory(method:Function, ...params):Mapping {
-        if(params.length == 0 && method.length == 1){
-            params[0] = _resolver;
-        }
-        provider = new FactoryProvider(method, params);
+        _provider = new FactoryProvider(method, params);
         return this;
     }
 
     public function asSingleton():Provider {
-        if(provider is InstanceProvider || provider is SingletonProvider){
-            return provider;
+        if(_provider is ValueProvider){
+            return _provider;
         }
-        provider = new SingletonProvider(provider);
-        return provider;
+        _provider = new LazyValueProvider(_provider);
+        return _provider;
     }
 
     public function asEagerSingleton():Provider {
-        toResolvedInstance(getValue());
-        return provider;
+        if(_provider is ValueProvider){
+            return _provider;
+        }
+        toValue(getValue());
+        return _provider;
     }
 
     public function getValue():Object {
-        if (provider == null) {
+        if (_provider == null) {
             toType(forType);
         }
-        var value:Object = provider.provide();
-        if(!provider.providesResolved){
-            resolveDepending(value);
-        }
+        var value:Object = _provider.provide(resolver);
         return value;
     }
 
     private function resolveDepending(value:Object):void {
         if (value is Depending) {
-            Depending(value).fetchDependencies(_resolver);
+            Depending(value).fetchDependencies(resolver);
         }
     }
 

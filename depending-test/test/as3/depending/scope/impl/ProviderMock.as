@@ -1,19 +1,22 @@
 package as3.depending.scope.impl {
 import as3.depending.Provider;
+import as3.depending.Resolver;
 import as3.depending.examples.tests.Instance;
 
 public class ProviderMock implements Provider {
 
-    public var callsTo_provide:uint = 0;
+    private var invokes:Invokes;
 
-    public function provide():Object {
-        callsTo_provide++;
+    public function ProviderMock(invokes:Invokes = null) {
+        this.invokes = invokes;
+    }
+
+    public function provide(resolver:Resolver = null):Object {
+        if(invokes){
+            invokes.invoke(provide,resolver);
+        }
         return new Instance();
     }
 
-    public var isProvidingResolved:Boolean;
-    public function get providesResolved():Boolean {
-        return isProvidingResolved;
-    }
 }
 }

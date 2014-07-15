@@ -1,11 +1,10 @@
 package as3.depending.scope {
-import as3.depending.errors.UnresolvedDependencyError;
 import as3.depending.examples.tests.*;
 import as3.depending.scope.impl.*;
 
 import org.flexunit.assertThat;
+import org.flexunit.asserts.assertFalse;
 import org.flexunit.asserts.assertTrue;
-import org.hamcrest.collection.array;
 import org.hamcrest.core.*;
 import org.hamcrest.object.*;
 
@@ -34,23 +33,58 @@ public class TestScope {
     [Test]
     public function map_returns_Mapping_with_resolver_set_to_scope():void {
         var mapping:Mapping = scope.map(IProtocol);
-        assertThat(mapping.resolver, strictlyEqualTo(scope));
+        assertThat(mapping.getResolver(), strictlyEqualTo(scope));
     }
 
     [Test]
-    public function get_for_dependingClass_returns_instance_when_no_mapping():void {
-        var value:DependingDefinitionMock = scope.get(DependingDefinitionMock);
-        assertThat(value, notNullValue());
-        invokes.assertInvokes(value.fetchDependencies, array(scope));
+    public function get_creates_Mapping_for_clazz():void {
+        scope.get(DependingDefinitionMock);
+        assertTrue(scope.hasMapping(DependingDefinitionMock));
     }
 
     [Test]
-    public function get_returns_Mapping_getValue():void {
-        scope = new TestableScope();
-        var mapping:MappingStub = MappingStub(scope.map(IProtocol));
-        mapping.testValue = new ProtocolImpl();
+    public function optionally_creates_Mapping_for_clazz():void {
+        scope.optionally(DependingDefinitionMock);
+        assertTrue(scope.hasMapping(DependingDefinitionMock));
+    }
 
-        assertThat(scope.get(IProtocol), strictlyEqualTo(mapping.testValue));
+    [Test]
+    public function get_does_not_create_Mapping_for_interface():void {
+        try{
+            scope.get(IProtocol);
+        }catch(e:Error){}
+        assertFalse(scope.hasMapping(IProtocol));
+    }
+
+    [Test]
+    public function optionally_does_not_create_Mapping_for_interface():void {
+        scope.optionally(IProtocol);
+        assertFalse(scope.hasMapping(IProtocol));
+    }
+
+    [Test]
+    public function get_invokes_Mapping_getValue():void {
+        scope = new TestableScope(invokes);
+        var mapping:Mapping = scope.map(IProtocol);
+
+        invokes.assertNoInvokes(mapping.getValue);
+
+        scope.get(IProtocol);
+
+        invokes.assertInvokes(mapping.getValue, 1);
+    }
+
+    [Test]
+    public function optionally_invokes_Mapping_getValue():void {
+        scope = new TestableScope(invokes);
+        var mapping:Mapping = scope.map(IProtocol);
+        assertThat(mapping, instanceOf(TestableMapping));
+
+        invokes.assertNoInvokes(mapping.getValue);
+
+        scope.optionally(IProtocol);
+
+        invokes.assertInvokes(mapping.getValue, 1);
     }
 
 }

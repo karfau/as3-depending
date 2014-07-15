@@ -25,110 +25,113 @@ public class TestMapping {
     }
 
     [Test]
-    public function getValue_returns_new_instance_of_mapped_type():void {
+    public function getValue_defines_TypeProvider_when_provider_is_not_defined():void {
         mapping = new Mapping(ProtocolImpl, resolver);
 
-        var first:Object = mapping.getValue();
-        assertThat(first, allOf(
-                instanceOf(ProtocolImpl),
-                not(equalTo(mapping.getValue()))
-        ));
+        assertNull(mapping.provider);
+
+        mapping.getValue();
+
+        assertThat(mapping.provider, instanceOf(TypeProvider));
     }
 
     [Test]
-    public function toType_on_getValue_returns_new_instance():void {
+    public function toType_defines_TypeProvider():void {
         mapping.toType(ProtocolImpl);
 
-        var first:Object = mapping.getValue();
-        assertThat(first, allOf(
-                instanceOf(ProtocolImpl),
-                not(equalTo(mapping.getValue()))
-        ));
+        assertThat(mapping.provider, instanceOf(TypeProvider));
     }
 
     [Test]
     public function toProvider_on_getValue_uses_provider():void {
-        const provider:ProviderMock = new ProviderMock();
+        const provider:ProviderMock = new ProviderMock(invokes);
         mapping.toProvider(provider);
 
-        mapping.getValue();
-
-        assertThat(provider.callsTo_provide, 1);
-    }
-
-    private function factoryMethodVarArgs(...args):*{
-        invokes.invoke(factoryMethodVarArgs, args);
-        return undefined;
-    }
-
-    [Test]
-    public function toFactory_withArgument_on_getValue_calls_factory_method():void {
-
-        mapping.toFactory(factoryMethodVarArgs,"first",2);
+        invokes.assertNoInvokes(provider.provide);
 
         mapping.getValue();
 
-        invokes.assertInvokes(factoryMethodVarArgs,
-                array("first",2)
-        );
+        invokes.assertWasInvokedWith(provider.provide, array(resolver));
+    }
+
+    [Test]
+    public function toValue_defines_ValueProvider():void {
+        mapping.toValue(null);
+
+        assertThat(mapping.provider, isA(ValueProvider));
+    }
+
+    [Test]
+    public function toInstance_defines_ValueProvider():void {
+        mapping.toInstance(null);
+
+        assertThat(mapping.provider, isA(ValueProvider));
+    }
+
+    [Test]
+    public function toInstance_injects_into_Depending():void {
+        var depending:DependingDefinitionMock = new DependingDefinitionMock();
+        mapping.toInstance(depending);
+
+        invokes.assertWasInvokedWith(depending.fetchDependencies, array(resolver));
+    }
+
+    [Test]
+    public function toFactory_defines_FactoryProvider():void {
+        mapping.toFactory(null);
+
+        assertThat(mapping.provider, instanceOf(FactoryProvider));
+    }
+
+    [Test]
+    public function asEagerSingleton_defines_ValueProvider():void {
+        var providerMock:ProviderMock = new ProviderMock(invokes);
+
+        mapping.toProvider(providerMock).asEagerSingleton();
+
+        assertThat(mapping.provider, isA(ValueProvider));
+    }
+
+    [Test]
+    public function asEagerSingleton_invokes_current_provider():void {
+        var providerMock:ProviderMock = new ProviderMock(invokes);
+
+        mapping.toProvider(providerMock).asEagerSingleton();
+
+        invokes.assertWasInvokedWith(providerMock.provide, array(resolver));
     }
 
 
     [Test]
-    public function getValue_uses_resolver_to_inject_to_provided_Depending_instance():void {
-        mapping.toType(DependingDefinitionMock);
+    public function asEagerSingleton_keeps_defined_ValueProvider():void {
+        mapping.toInstance(null);
 
-        var value:DependingDefinitionMock = DependingDefinitionMock(mapping.getValue());
+        var valueProvider:ValueProvider = ValueProvider(mapping.provider);
 
-        assertSingleInvokeOf_fetchDependencies_on(value);
+        mapping.asEagerSingleton();
+
+        assertThat(mapping.provider, strictlyEqualTo(valueProvider));
     }
 
     [Test]
-    public function asEagerSingleton_uses_resolver_to_inject_to_provided_Depending_instance():void {
-        mapping.toType(DependingDefinitionMock).asEagerSingleton();
-        assert_asEagerSingleton();
+    public function asSingleton_defines_LazyValueProvider():void {
+        var providerMock:ProviderMock = new ProviderMock(invokes);
+
+        mapping.toProvider(providerMock).asSingleton();
+
+        assertThat(mapping.provider, isA(LazyValueProvider));
     }
 
     [Test]
-    public function asSingleton_on_getValue_uses_resolver_to_inject_to_provided_Depending_instance():void {
-        mapping.toType(DependingDefinitionMock).asSingleton();
+    public function asSingleton_keeps_defined_ValueProvider():void {
+        mapping.toInstance(null);
 
-        assertNull(DependingDefinitionMock.lastInstance);
+        var valueProvider:ValueProvider = ValueProvider(mapping.provider);
 
-        var value:DependingDefinitionMock = DependingDefinitionMock(mapping.getValue());
+        mapping.asSingleton();
 
-        assertThat(value, strictlyEqualTo(mapping.getValue()));
+        assertThat(mapping.provider, strictlyEqualTo(valueProvider));
     }
-
-    [Test][Ignore("currently fails because it invokes fetchDependencies twice on the singleton, will be fixed soon by better approach to Provider.provide")]
-    public function asSingleton_on_getValue_only_invokes_fetchDependencies_once():void {
-        mapping.toType(DependingDefinitionMock).asSingleton();
-
-        var value:DependingDefinitionMock = DependingDefinitionMock(mapping.getValue());
-
-        assertSingleInvokeOf_fetchDependencies_on(value);
-    }
-
-    private function assert_asEagerSingleton():void {
-        invokes.assertInvokes(DependingDefinitionMock.lastInstance.fetchDependencies,
-                array(strictlyEqualTo(mapping.resolver))
-        );
-
-        var value:DependingDefinitionMock = DependingDefinitionMock(mapping.getValue());
-
-
-        assertThat(value, strictlyEqualTo(mapping.getValue()));
-        assertSingleInvokeOf_fetchDependencies_on(value);
-    }
-
-
-    private function assertSingleInvokeOf_fetchDependencies_on(value:DependingDefinitionMock):void {
-        invokes.assertInvokes(value.fetchDependencies,
-                array(strictlyEqualTo(mapping.resolver))
-        );
-    }
-
-
 
 }
 }

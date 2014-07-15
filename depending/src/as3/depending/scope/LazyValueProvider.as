@@ -1,5 +1,6 @@
 package as3.depending.scope {
 import as3.depending.Provider;
+import as3.depending.Resolver;
 
 /**
  * This implements the (lazy) singleton pattern.
@@ -9,24 +10,21 @@ import as3.depending.Provider;
  * It will only invoke its provider the first time it gets invoked.
  *
  */
-public class SingletonProvider implements Provider {
+public class LazyValueProvider extends ValueProvider {
 
     private var provider:Provider;
-    private var value:Object;
 
-    public function SingletonProvider(provider:Provider) {
+    public function LazyValueProvider(provider:Provider) {
         this.provider = provider;
+        super(null);
     }
 
-    public function provide():Object {
+    override public function provide(resolver:Resolver = null):Object {
         if(value == null){
-            value = provider.provide();
+            value = provider.provide(resolver);
         }
         return value;
     }
 
-    public function get providesResolved():Boolean {
-        return provider.providesResolved;
-    }
 }
 }

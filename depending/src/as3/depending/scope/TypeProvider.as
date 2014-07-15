@@ -1,5 +1,7 @@
 package as3.depending.scope {
+import as3.depending.Depending;
 import as3.depending.Provider;
+import as3.depending.Resolver;
 
 /**
  * Each instance of this provider creates a new instance of the given Class,
@@ -13,12 +15,13 @@ public class TypeProvider implements Provider {
         this.Impl = implementation;
     }
 
-    public function provide():Object {
-        return new Impl();
+    public function provide(resolver:Resolver = null):Object {
+        const value:* = new Impl();
+        if(value is Depending){
+            Depending(value).fetchDependencies(resolver);
+        }
+        return value;
     }
 
-    public function get providesResolved():Boolean {
-        return false;
-    }
 }
 }
