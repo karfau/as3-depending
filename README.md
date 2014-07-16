@@ -5,7 +5,7 @@
 The term *dependency injection* is a very general one, so I will define what I mean when talking about it:
 
 1. depending classes **communicate** their dependencies
-2. **defining** how to resolve dependencies (e.g. what kind of instance to use that implements the required interface)
+2. **specifying** how to resolve dependencies (e.g. what kind of instance to use that implements the required interface)
 3. **creating** instances with **resolved** dependencies
 
 All object oriented application code I know has classes that depend on other classes, so I claim that they all use dependency injection, if understood the way described above.
@@ -30,7 +30,7 @@ Lets look at some code
     }
 ```
 
-In this case the depending class only **communicates** its dependencies to the compiler, it also **defines** how to resolve them and also takes care for **resolving** them at **creation** time.
+In this case the depending class only **communicates** its dependencies to the compiler, it also **specifies** how to resolve them and also takes care for **resolving** them at **creation** time.
  That is the least flexible way to do it, and it is difficult to test if it works without increasing your bill for SMS.
  
 improving the above concerns:
@@ -59,9 +59,9 @@ Ah, separation of concern for the WIN. Now the class **communicates** its depend
 
 To solve this, there exist many "dependency injection libraries / frameworks".
  
-Most of them use metadata tags as a (second but explicit) way to **communicate** the dependencies (to the framework). By using the utility classes that are available in AS3 to do something like reflection, they detact those *"annotations"* (at runtime) and try to **create** and / or **resolve** those dependencies. 
+Most of them use metadata tags as a (second but explicit) way to **communicate** the dependencies (to the framework). By using the utility classes that are available in AS3 to do something like reflection, they detect those *"annotations"* (at runtime) and try to **create** and / or **resolve** those dependencies. 
 
-As they don't know anything about the application code, they have some configuration or mapping phase, where the application **defines** how to resolve those dependencies. 
+As they don't know anything about the application code, they have some configuration or mapping phase, where the application **specifies** how to resolve those dependencies. 
 
 One nice example of how this can look like is [DawnInjections](https://github.com/sammyt/dawn/wiki/DawnInjections).
 
@@ -77,12 +77,12 @@ As I really like them, I will try to act after these [design principles](https:/
 
 The `Resolver` interface is the "generic factory" I talked about more early.
 
-Implementing it **defines** how to resolve things, its `get` method uses those definitions to **create** and / or **resolve** things. 
+Implementing it **specifies** how to resolve things, its `get` method uses those specifications to **create** and / or **resolve** things. 
 
 ### deciding how to resolve dependencies
 
-Implementing the interface could be done in a way that defines the mappings at compile time, or it can be as flexible as you like. 
-This library provides the implementation `Scope`. Each instance of `Scope` lets the developer write **definitions** as code, and already implements the **creation and resolving** part (an example will follow really soon).
+Implementing the interface could be done in a way that specifies the mappings at compile time, or it can be as flexible as you like. 
+This library provides the implementation `Scope`. Each instance of `Scope` lets the developer write **specifications** as code, and already implements the **creation and resolving** part (an example will follow really soon).
 
 ## putting it all together
 
@@ -120,7 +120,7 @@ To create an instance you only need to have a properly configured `Resolver`:
 ```
 
 The `resolver` will create an instance of `TweetService` and call `fetchDependencies` using itself as the argument. 
-Lets assume `UrlShorter` is a really simple class, with no external dependencies, in this case the `resolver` just creates a new instance of the class. To create an instance of `ITweetClient` the `resolver` has to contain a **definition** for how this dependency should be resolved, before it gets asked for an instance of `TweetService`. If that has not happened, it will throw an `UnresolvedDependencyError`.
+Lets assume `UrlShorter` is a really simple class, with no external dependencies, in this case the `resolver` just creates a new instance of the class. To create an instance of `ITweetClient` the `resolver` has to contain a **specification** for how this dependency should be resolved, before it gets asked for an instance of `TweetService`. If that has not happened, it will throw an `UnresolvedDependencyError`.
 
 ### Option 2: constructor injection a.k.a. factory methods
 
@@ -149,7 +149,7 @@ If you don't like classes having to implement an interface to allow DI detection
 
 Having something like `create` as a static method, puts an example of how to construct such an object using ***any*** `Resolver` directly available for reuse. But to completely get rid of this dependency inside your class, this method could be anywhere and in this case of course it doesn't need to be static. 
 
-You just need to *define* that the `Resolver` should use this method to create a `TweetService`.
+You just need to **specify** that the `Resolver` should use this method to create a `TweetService`.
 
 ### using `Scope` and implementing `Resolver`
 
