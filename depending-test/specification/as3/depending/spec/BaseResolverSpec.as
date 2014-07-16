@@ -10,10 +10,8 @@ import org.hamcrest.object.notNullValue;
 import org.hamcrest.object.strictlyEqualTo;
 
 public class BaseResolverSpec {
-    protected var adapter:ResolverAdapter;
 
-    public function BaseResolverSpec() {
-    }
+    protected var adapter:ResolverAdapter;
 
     protected function get resolver():Resolver {
         return adapter.resolver;
@@ -23,13 +21,13 @@ public class BaseResolverSpec {
     }
 
     protected function createAdapter():ResolverAdapter {
-        return new ResolverAdapter();
+        return null;
     }
 
     [Before]
     public function setUpResolver():void {
         adapter = createAdapter();
-        assertNotNull(resolver);
+        assertNotNull("has to implement createAdapter()", resolver);
     }
 
     protected function assertRelaxedResolver():void{
