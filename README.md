@@ -161,6 +161,7 @@ Lets look at what it looks like to use `Scope`:
     var scope:Scope = new Scope();
 
     //Scope is an implementation of Resolver that allows configuration at runtime:
+    scope.map(Car);
     scope.map(Inspector).toInstance(new Inspector('Tom Barnaby'));
 
     scope.map(IEngine).toType(SportEngine);
@@ -179,7 +180,7 @@ Lets look at what it looks like to use `Scope`:
 This should look familiar to everybody that used a modern DI library. 
 Feel free to [navigate through the executable code](depending-test/src/as3/depending/examples/factory/Main.as).
 
-As the `Car` class is implementing `Depending` and has a constructor with no arguments as shown in **Option 1** above, there is no need to tell `Scope` how to create it.
+As the `Car` class is implementing `Depending` and has a constructor with no arguments as shown in **Option 1** above, you only need to specify the type to `Scope`.
 
 As always there are different ways to do things, so lets look at how an implementation of `Resolver` could [look like](depending-test/src/as3/depending/examples/readme/TweetServiceResolver.as):
 

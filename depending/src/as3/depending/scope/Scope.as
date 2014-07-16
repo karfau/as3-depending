@@ -43,13 +43,14 @@ public class Scope extends BaseRelaxedResolver{
 
     override protected function doResolve(clazz:Class):* {
         var mapping:Mapping = getMapping(clazz);
-        if (mapping != null) {
-            return mapping.getValue();
+        if (mapping == null) {
+            throw new Error("Scope can not resolve "+clazz);
         }
-        mapping = createMapping(clazz);
-        var value:Object = mapping.getValue();
-        setMapping(clazz, mapping);
-        return value;
+        return mapping.getValue();
+//        mapping = createMapping(clazz);
+//        var value:Object = mapping.getValue();
+//        setMapping(clazz, mapping);
+//        return value;
     }
 }
 }

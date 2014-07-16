@@ -12,6 +12,7 @@ public class Main extends Sprite{
         var scope:Scope = new Scope();
 
         //Scope is an implementation of Resolver that allows configuration at runtime:
+        scope.map(Car);
         scope.map(Inspector).toInstance(new Inspector('Tom Barnaby'));
 
         scope.map(IEngine).toType(SportEngine);

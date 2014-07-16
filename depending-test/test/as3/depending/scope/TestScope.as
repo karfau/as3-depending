@@ -36,13 +36,13 @@ public class TestScope {
         assertThat(mapping.getResolver(), strictlyEqualTo(scope));
     }
 
-    [Test]
+    [Test][Ignore("this implicit behaviour will be moved somewhere else")]
     public function get_creates_Mapping_for_clazz():void {
         scope.get(DependingDefinitionMock);
         assertTrue(scope.hasMapping(DependingDefinitionMock));
     }
 
-    [Test]
+    [Test][Ignore("this implicit behaviour will be moved somewhere else")]
     public function optionally_creates_Mapping_for_clazz():void {
         scope.optionally(DependingDefinitionMock);
         assertTrue(scope.hasMapping(DependingDefinitionMock));
