@@ -9,7 +9,7 @@ public class BaseRelaxedResolver implements RelaxedResolver {
         try {
             return doResolve(clazz);
         } catch (error:Error) {
-            throw new UnresolvedDependencyError("couldn't a value for class <" + getQualifiedClassName(clazz) + ">, an error was thrown: ", error);
+            throw new UnresolvedDependencyError("couldn't resolve a value for class <" + getQualifiedClassName(clazz) + ">, an error was thrown: ", error);
         }
     }
 
