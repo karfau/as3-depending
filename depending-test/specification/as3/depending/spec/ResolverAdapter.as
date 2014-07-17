@@ -15,32 +15,32 @@ public class ResolverAdapter {
     }
 
 
-    public function defineTypeForResolver(type:Class):void {
-        failNotImplemented("defining type as resolvable");
+    public function specifyTypeForResolver(type:Class):void {
+        failNotImplemented("specify a type as resolvable");
     }
 
-    public function definedImplementationForResolver(definingInterface:Class, implementingClass:Class):void {
-        failNotImplemented("defining an implementation as resolvable");
+    public function specifydImplementationForResolver(definingInterface:Class, implementingClass:Class):void {
+        failNotImplemented("specify an implementation as resolvable");
     }
 
-    public function defineAnImplementingInstanceForResolver(definingInterface:Class, instance:Object):void {
-        failNotImplemented("defining an implementing instance as resolvable");
+    public function specifyAnImplementingInstanceForResolver(definingInterface:Class, instance:Object):void {
+        failNotImplemented("specify an implementing instance as resolvable");
     }
 
-    public function defineAProviderImplementationForResolver(definingInterface:Class, provider:Provider):void {
-        failNotImplemented("defining a Provider implementation to use for resolving a definition");
+    public function specifyAProviderImplementationForResolver(definingInterface:Class, provider:Provider):void {
+        failNotImplemented("specify a Provider implementation to use for resolving a definition");
     }
 
-    public function defineAProviderFunctionForResolver(definingInterface:Class, provider:Function):void {
-        failNotImplemented( "defining a function as a provider to use for resolving a definition");
+    public function specifyAProviderFunctionForResolver(definingInterface:Class, provider:Function):void {
+        failNotImplemented( "specify a function as a provider to use for resolving a definition");
     }
 
-    public function defineConstructorInjectableProtocolForResolver():void {
-        failNotImplemented( "defining ConstructorInjectableProtocol as resolvable");
+    public function specifyConstructorInjectableProtocolForResolver():void {
+        failNotImplemented( "specify ConstructorInjectableProtocol as resolvable");
     }
 
-    public function defineConstructorInjectableProtocolAsImplementationForResolver(definingInterface:Class):void {
-        failNotImplemented("defining the implementation ConstructorInjectableProtocol as resolvable");
+    public function specifyConstructorInjectableProtocolAsImplementationForResolver(definingInterface:Class):void {
+        failNotImplemented("specify the implementation ConstructorInjectableProtocol as resolvable");
     }
 }
 }

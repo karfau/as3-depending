@@ -15,33 +15,33 @@ public class ScopeAdapter extends ResolverAdapter {
         return Scope(resolver);
     }
 
-    override public function defineTypeForResolver(type:Class):void {
+    override public function specifyTypeForResolver(type:Class):void {
         scope.map(type);
     }
 
-    override public function definedImplementationForResolver(definingInterface:Class, implementingClass:Class):void {
+    override public function specifydImplementationForResolver(definingInterface:Class, implementingClass:Class):void {
         scope.map(definingInterface).toType(implementingClass);
     }
 
-    override public function defineAnImplementingInstanceForResolver(definingInterface:Class, instance:Object):void {
+    override public function specifyAnImplementingInstanceForResolver(definingInterface:Class, instance:Object):void {
         scope.map(definingInterface).toInstance(instance);
     }
 
-    override public function defineAProviderImplementationForResolver(definingInterface:Class, provider:Provider):void {
+    override public function specifyAProviderImplementationForResolver(definingInterface:Class, provider:Provider):void {
         scope.map(definingInterface).toProvider(provider);
     }
 
-    override public function defineAProviderFunctionForResolver(definingInterface:Class, provider:Function):void {
+    override public function specifyAProviderFunctionForResolver(definingInterface:Class, provider:Function):void {
         scope.map(definingInterface).toFactory(provider);
     }
 
-    override public function defineConstructorInjectableProtocolForResolver():void {
+    override public function specifyConstructorInjectableProtocolForResolver():void {
         scope.map(ConstructorInjectableProtocol)
                 .toFactory(ProtocolProviderFunctions.ConstructorInjectableDefinitionProvider);
     }
 
 
-    override public function defineConstructorInjectableProtocolAsImplementationForResolver(definingInterface:Class):void {
+    override public function specifyConstructorInjectableProtocolAsImplementationForResolver(definingInterface:Class):void {
         scope.map(definingInterface)
                 .toFactory(ProtocolProviderFunctions.ConstructorInjectableDefinitionProvider);
     }

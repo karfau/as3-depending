@@ -30,7 +30,7 @@ public class ResolverNoInstanceCreation extends BaseResolverSpec {
 
     [Test]
     public function resolving_null():void {
-        adapter.defineAnImplementingInstanceForResolver(IProtocol,null);
+        adapter.specifyAnImplementingInstanceForResolver(IProtocol,null);
         try{
             assertThat( resolver.get(IProtocol), nullValue());
         }catch(error:Error){
@@ -40,7 +40,7 @@ public class ResolverNoInstanceCreation extends BaseResolverSpec {
 
     [Test]
     public function resolving_a_defined_type_throwing():void {
-        adapter.defineTypeForResolver(NotConstructableProtocol);
+        adapter.specifyTypeForResolver(NotConstructableProtocol);
         resolver_get_expecting_UnresolvedDependencyError(NotConstructableProtocol);
     }
 

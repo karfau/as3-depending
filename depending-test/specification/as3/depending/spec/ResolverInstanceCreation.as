@@ -16,39 +16,39 @@ public class ResolverInstanceCreation extends BaseResolverSpec {
 
     [Test]
     public function resolving_a_defined_type():void {
-        adapter.defineTypeForResolver(Instance);
+        adapter.specifyTypeForResolver(Instance);
         assertThat(resolver.get(Instance), instanceOf(Instance));
     }
 
     [Test]
     public function resolving_an_implementation():void {
-        adapter.definedImplementationForResolver(IProtocol, ProtocolImpl);
+        adapter.specifydImplementationForResolver(IProtocol, ProtocolImpl);
         assertThat(resolver.get(IProtocol), instanceOf(ProtocolImpl));
     }
 
     [Test]
     public function resolving_an_implementing_instance():void {
         const instance:ProtocolImpl = new ProtocolImpl();
-        adapter.defineAnImplementingInstanceForResolver(IProtocol, instance);
+        adapter.specifyAnImplementingInstanceForResolver(IProtocol, instance);
         assertThat(resolver.get(IProtocol), strictlyEqualTo(instance));
     }
 
     [Test]
     public function resolving_using_a_provider_implementation():void {
         const provider:ProtocolProvider = new ProtocolProvider();
-        adapter.defineAProviderImplementationForResolver(IProtocol, provider);
+        adapter.specifyAProviderImplementationForResolver(IProtocol, provider);
         assertThat(resolver.get(IProtocol), instanceOf(ProtocolImpl));
     }
 
     [Test]
     public function resolving_using_a_provider_function_with_no_arguments():void {
-        adapter.defineAProviderFunctionForResolver(IProtocol, ProtocolProviderFunctions.DefinitionProvider);
+        adapter.specifyAProviderFunctionForResolver(IProtocol, ProtocolProviderFunctions.DefinitionProvider);
         assertThat(resolver.get(IProtocol), instanceOf(ProtocolImpl));
     }
 
     [Test]
     public function resolving_using_a_provider_function_with_resolver_as_argument():void {
-        adapter.defineAProviderFunctionForResolver(IProtocol, ProtocolProviderFunctions.ConstructorInjectableDefinitionProvider);
+        adapter.specifyAProviderFunctionForResolver(IProtocol, ProtocolProviderFunctions.ConstructorInjectableDefinitionProvider);
         assertThat(resolver.get(IProtocol), allOf(
                 instanceOf(ConstructorInjectableProtocol),
                 hasPropertyWithValue('resolver',strictlyEqualTo(resolver))

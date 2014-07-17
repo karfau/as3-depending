@@ -29,7 +29,7 @@ public class RelaxedResolverNoInstanceCreation extends ResolverNoInstanceCreatio
 
     [Test]
     public function resolving_null_optionally():void {
-        adapter.defineAnImplementingInstanceForResolver(IProtocol,null);
+        adapter.specifyAnImplementingInstanceForResolver(IProtocol,null);
         try{
             assertThat( relaxedResolver.optionally(IProtocol), nullValue());
         }catch(error:Error){
@@ -39,7 +39,7 @@ public class RelaxedResolverNoInstanceCreation extends ResolverNoInstanceCreatio
 
     [Test]
     public function resolving_a_defined_type_throwing_optionally():void {
-        adapter.defineTypeForResolver(NotConstructableProtocol);
+        adapter.specifyTypeForResolver(NotConstructableProtocol);
         resolver_optionally_expecting_undefined(NotConstructableProtocol);
     }
 

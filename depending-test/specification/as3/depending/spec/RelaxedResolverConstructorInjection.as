@@ -9,13 +9,13 @@ public class RelaxedResolverConstructorInjection extends ResolverConstructorInje
 
     [Test]
     public function resolving_a_defined_type_optionally():void {
-        adapter.defineConstructorInjectableProtocolForResolver();
+        adapter.specifyConstructorInjectableProtocolForResolver();
         assertThat(IResolverSpecProtocol(relaxedResolver.optionally(ConstructorInjectableProtocol)).resolver, strictlyEqualTo(resolver));
     }
 
     [Test]
     public function resolving_an_implementation_optionally():void {
-        adapter.defineConstructorInjectableProtocolAsImplementationForResolver(IResolverSpecProtocol);
+        adapter.specifyConstructorInjectableProtocolAsImplementationForResolver(IResolverSpecProtocol);
         assertThat(IResolverSpecProtocol(relaxedResolver.optionally(IResolverSpecProtocol)).resolver, strictlyEqualTo(resolver));
     }
 
