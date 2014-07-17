@@ -1,4 +1,4 @@
-package as3.depending.scope {
+package as3.depending.provider {
 import as3.depending.Provider;
 import as3.depending.examples.tests.*;
 import as3.depending.scope.impl.*;
@@ -6,13 +6,13 @@ import as3.depending.scope.impl.*;
 import org.flexunit.assertThat;
 import org.hamcrest.object.*;
 
-public class TestMappingStrategy {
+public class TestDefaultProviderStrategy {
 
-    private var strategy:MappingStrategy;
+    private var strategy:DefaultProviderStrategy;
 
     [Before]
     public function setUp():void {
-        strategy = new MappingStrategy();
+        strategy = new DefaultProviderStrategy();
     }
 
     [Test]

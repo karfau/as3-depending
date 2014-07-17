@@ -1,6 +1,7 @@
 package as3.depending.scope {
 import as3.depending.*;
 import as3.depending.Provider;
+import as3.depending.provider.DefaultProviderStrategy;
 
 /**
  * This implementation of Resolver offers the possibility to configure the decisions about how to resolve dependencies at runtime,
@@ -44,13 +45,13 @@ public class Scope extends BaseRelaxedResolver {
         return mapping;
     }
 
-    private var strategy:MappingStrategy;
+    private var strategy:DefaultProviderStrategy;
     //noinspection SpellCheckingInspection
     private const specifies:Object = {};
 
     public function specify(identity:Object, ...specification):void {
         if(strategy == null){
-            strategy = new MappingStrategy();
+            strategy = new DefaultProviderStrategy();
         }
 
         var value:Object = specification.length == 1 ? specification[0] : identity;

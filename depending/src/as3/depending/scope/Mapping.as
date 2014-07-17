@@ -1,7 +1,6 @@
 package as3.depending.scope {
-import as3.depending.Depending;
-import as3.depending.Provider;
-import as3.depending.Resolver;
+import as3.depending.*;
+import as3.depending.provider.*;
 
 /**
  * A Mapping instance is responsible for creating instances of the given type, with fully resolved dependencies using the method getValue().

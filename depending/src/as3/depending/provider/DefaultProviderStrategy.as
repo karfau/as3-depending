@@ -1,7 +1,7 @@
-package as3.depending.scope {
+package as3.depending.provider {
 import as3.depending.Provider;
 
-public class MappingStrategy implements ProviderStrategy {
+public class DefaultProviderStrategy implements ProviderStrategy {
 
     public function createProviderFor(value:*):Provider {
         if (value is Class) {

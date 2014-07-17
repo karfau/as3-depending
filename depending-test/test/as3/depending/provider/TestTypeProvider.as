@@ -1,4 +1,4 @@
-package as3.depending.scope {
+package as3.depending.provider {
 import as3.depending.examples.tests.Instance;
 import as3.depending.scope.impl.DependingDefinitionMock;
 import as3.depending.scope.impl.Invokes;

@@ -1,6 +1,7 @@
 package as3.depending.scope {
 import as3.depending.Resolver;
 import as3.depending.examples.tests.*;
+import as3.depending.provider.*;
 import as3.depending.scope.impl.*;
 
 import org.flexunit.assertThat;

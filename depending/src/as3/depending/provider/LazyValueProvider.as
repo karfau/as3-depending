@@ -1,4 +1,4 @@
-package as3.depending.scope {
+package as3.depending.provider {
 import as3.depending.Provider;
 import as3.depending.Resolver;
 

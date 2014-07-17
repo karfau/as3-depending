@@ -1,6 +1,5 @@
-package as3.depending.scope {
+package as3.depending.provider {
 import as3.depending.scope.impl.Invokes;
-import as3.depending.scope.impl.ProviderMock;
 import as3.depending.scope.impl.ResolverMock;
 
 import org.flexunit.assertThat;
