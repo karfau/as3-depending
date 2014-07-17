@@ -13,6 +13,11 @@ public class TestMapping {
 
     private var mapping:Mapping;
     private var resolver:Resolver;
+
+    private function get scope():Scope {
+        return Scope(resolver);
+    }
+
     private var invokes:Invokes;
 
     [Before]
@@ -133,5 +138,17 @@ public class TestMapping {
         assertThat(mapping.provider, strictlyEqualTo(valueProvider));
     }
 
+
+    [Test]
+    public function toProvider_specifies_when_resolver_is_Scope():void {
+        resolver = new TestableScope(invokes);
+        mapping = new Mapping(ProtocolImpl, scope);
+        invokes.assertNoInvokes(scope.specify);
+
+        const provider:ProviderMock = new ProviderMock();
+        mapping.toProvider(provider);
+
+        invokes.assertWasInvokedWith(scope.specify, array(ProtocolImpl, provider))
+    }
 }
 }
