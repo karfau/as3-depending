@@ -1,5 +1,7 @@
 package as3.depending.scope {
 import as3.depending.Provider;
+import as3.depending.examples.tests.ConstructorInjectableProtocol;
+import as3.depending.examples.tests.ProtocolProviderFunctions;
 import as3.depending.spec.ResolverAdapter;
 
 public class ScopeSpecifyAdapter extends ResolverAdapter {
@@ -33,16 +35,12 @@ public class ScopeSpecifyAdapter extends ResolverAdapter {
         scope.specify(definingInterface, provider);
     }
 
-/*
     override public function defineConstructorInjectableProtocolForResolver():void {
-        scope.map(ConstructorInjectableProtocol)
-                .toFactory(ProtocolProviderFunctions.ConstructorInjectableDefinitionProvider);
+        scope.specify(ConstructorInjectableProtocol, ProtocolProviderFunctions.ConstructorInjectableDefinitionProvider);
     }
 
-
     override public function defineConstructorInjectableProtocolAsImplementationForResolver(definingInterface:Class):void {
-        scope.map(definingInterface)
-                .toFactory(ProtocolProviderFunctions.ConstructorInjectableDefinitionProvider);
-    }*/
+        scope.specify(definingInterface, ProtocolProviderFunctions.ConstructorInjectableDefinitionProvider);
+    }
 }
 }
