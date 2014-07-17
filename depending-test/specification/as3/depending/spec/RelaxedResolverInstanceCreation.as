@@ -33,13 +33,6 @@ public class RelaxedResolverInstanceCreation extends ResolverInstanceCreation {
         assertThat(relaxedResolver.optionally(IProtocol), instanceOf(ProtocolImpl));
     }
 
-    [Test]//TODO: this should be moved to NoInstanceCreation, as the Resolver is not creating the instance
-    public function resolving_an_implementing_instance_optionally():void {
-        const instance:ProtocolImpl = new ProtocolImpl();
-        adapter.specifyAnImplementingInstanceForResolver(IProtocol, instance);
-        assertThat(relaxedResolver.optionally(IProtocol), strictlyEqualTo(instance));
-    }
-
     [Test]
     public function resolving_using_a_provider_implementation_optionally():void {
         const provider:ProtocolProvider = new ProtocolProvider();
