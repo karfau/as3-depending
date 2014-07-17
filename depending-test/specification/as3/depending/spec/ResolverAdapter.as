@@ -19,7 +19,7 @@ public class ResolverAdapter {
         failNotImplemented("specify a type as resolvable");
     }
 
-    public function specifydImplementationForResolver(definingInterface:Class, implementingClass:Class):void {
+    public function specifyImplementationForResolver(definingInterface:Class, implementingClass:Class):void {
         failNotImplemented("specify an implementation as resolvable");
     }
 
@@ -41,6 +41,10 @@ public class ResolverAdapter {
 
     public function specifyConstructorInjectableProtocolAsImplementationForResolver(definingInterface:Class):void {
         failNotImplemented("specify the implementation ConstructorInjectableProtocol as resolvable");
+    }
+
+    public function specifyAValueForResolver(value:Object):void {
+        failNotImplemented("specify a value as resolvable");
     }
 }
 }

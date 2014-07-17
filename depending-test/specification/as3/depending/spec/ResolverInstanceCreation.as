@@ -22,11 +22,11 @@ public class ResolverInstanceCreation extends BaseResolverSpec {
 
     [Test]
     public function resolving_an_implementation():void {
-        adapter.specifydImplementationForResolver(IProtocol, ProtocolImpl);
+        adapter.specifyImplementationForResolver(IProtocol, ProtocolImpl);
         assertThat(resolver.get(IProtocol), instanceOf(ProtocolImpl));
     }
 
-    [Test]
+    [Test]//TODO: this should be moved to NoInstanceCreation, as the Resolver is not creating the instance
     public function resolving_an_implementing_instance():void {
         const instance:ProtocolImpl = new ProtocolImpl();
         adapter.specifyAnImplementingInstanceForResolver(IProtocol, instance);

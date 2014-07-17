@@ -40,18 +40,21 @@ public class Scope extends BaseRelaxedResolver {
         return mapping;
     }
 
-    public function specify(...specification):void {
-        var mapping:Mapping = map(specification[0]);
-        if (specification.length == 2) {
-            if (specification[1] is Class) {
-                mapping.toType(specification[1]);
-            } else if (specification[1] is Provider) {
-                mapping.toProvider(specification[1]);
-            } else  if (specification[1] is Function) {
-                mapping.toFactory(specification[1]);
-            } else {
-                mapping.toInstance(specification[1]);
-            }
+
+
+    public function specify(identity:Object, ...specification):void {
+        var value:Object = specification.length == 1 ? specification[0] : identity;
+
+        var mapping:Mapping = map(Class(identity));
+        if (value is Class) {
+            mapping.toType(Class(value));
+        } else if (value is Provider) {
+            mapping.toProvider(Provider(value));
+        } else  if (value is Function) {
+            var f:Function = value as Function;//hard cast to Function is not allowed, throws runtime error
+            mapping.toFactory(f);
+        } else {
+            mapping.toInstance(value);
         }
     }
 

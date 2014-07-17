@@ -19,7 +19,7 @@ public class ScopeSpecifyAdapter extends ResolverAdapter {
         scope.specify(type);
     }
 
-    override public function specifydImplementationForResolver(definingInterface:Class, implementingClass:Class):void {
+    override public function specifyImplementationForResolver(definingInterface:Class, implementingClass:Class):void {
         scope.specify(definingInterface, implementingClass);
     }
 
@@ -41,6 +41,10 @@ public class ScopeSpecifyAdapter extends ResolverAdapter {
 
     override public function specifyConstructorInjectableProtocolAsImplementationForResolver(definingInterface:Class):void {
         scope.specify(definingInterface, ProtocolProviderFunctions.ConstructorInjectableDefinitionProvider);
+    }
+
+    override public function specifyAValueForResolver(value:Object):void {
+        scope.specify(value);
     }
 }
 }

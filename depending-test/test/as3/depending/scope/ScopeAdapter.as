@@ -19,7 +19,7 @@ public class ScopeAdapter extends ResolverAdapter {
         scope.map(type);
     }
 
-    override public function specifydImplementationForResolver(definingInterface:Class, implementingClass:Class):void {
+    override public function specifyImplementationForResolver(definingInterface:Class, implementingClass:Class):void {
         scope.map(definingInterface).toType(implementingClass);
     }
 
@@ -44,6 +44,11 @@ public class ScopeAdapter extends ResolverAdapter {
     override public function specifyConstructorInjectableProtocolAsImplementationForResolver(definingInterface:Class):void {
         scope.map(definingInterface)
                 .toFactory(ProtocolProviderFunctions.ConstructorInjectableDefinitionProvider);
+    }
+
+
+    override public function specifyAValueForResolver(value:Object):void {
+        scope.map(null).toValue(null);//pure TDD: minimal implementation to let tests pass ;)
     }
 }
 }

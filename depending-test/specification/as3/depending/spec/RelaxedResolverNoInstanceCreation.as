@@ -18,7 +18,7 @@ public class RelaxedResolverNoInstanceCreation extends ResolverNoInstanceCreatio
         try{
             assertThat(relaxedResolver.optionally(clazz), nullValue());
         }catch(error:Error){
-            failNotImplemented("returning undefined");
+            failNotImplemented("expected undefined, but error was thrown: " + error.getStackTrace());
         }
     }
 
@@ -28,21 +28,24 @@ public class RelaxedResolverNoInstanceCreation extends ResolverNoInstanceCreatio
     }
 
     [Test]
-    public function resolving_null_optionally():void {
-        adapter.specifyAnImplementingInstanceForResolver(IProtocol,null);
-        try{
-            assertThat( relaxedResolver.optionally(IProtocol), nullValue());
-        }catch(error:Error){
-            failNotImplemented("should resolve null when defined");
-        }
-    }
-
-    [Test]
     public function resolving_a_defined_type_throwing_optionally():void {
         adapter.specifyTypeForResolver(NotConstructableProtocol);
         resolver_optionally_expecting_undefined(NotConstructableProtocol);
     }
-
     //TODO: everything that works in ResolverInstanceCreation can be tested how it behaves when failing while providing
+
+    [Test]
+    public function resolving_null_optionally():void {
+        adapter.specifyAValueForResolver(null);
+        assertThat( relaxedResolver.optionally(null), nullValue());
+    }
+
+
+    [Test]
+    public function resolving_null_for_a_definition_optionally():void {
+        adapter.specifyAnImplementingInstanceForResolver(IProtocol,null);
+        assertThat( relaxedResolver.optionally(IProtocol), nullValue());
+    }
+
 }
 }
