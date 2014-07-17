@@ -1,5 +1,6 @@
 package as3.depending.scope {
 import as3.depending.*;
+import as3.depending.Provider;
 
 /**
  * This implementation of Resolver offers the possibility to configure the decisions about how to resolve dependencies at runtime,
@@ -16,6 +17,9 @@ public class Scope extends BaseRelaxedResolver {
     private var mappings:Object;
 
     override protected function doResolve(clazz:Class):* {
+        if (specifies[clazz] is Provider) {
+            return Provider(specifies[clazz]).provide(this);
+        }
         var mapping:Mapping = getMapping(clazz);
         if (mapping == null) {
             throw new Error("Scope can not resolve " + clazz);
@@ -40,22 +44,17 @@ public class Scope extends BaseRelaxedResolver {
         return mapping;
     }
 
-
+    private var strategy:MappingStrategy;
+    //noinspection SpellCheckingInspection
+    private const specifies:Object = {};
 
     public function specify(identity:Object, ...specification):void {
-        var value:Object = specification.length == 1 ? specification[0] : identity;
-
-        var mapping:Mapping = map(Class(identity));
-        if (value is Class) {
-            mapping.toType(Class(value));
-        } else if (value is Provider) {
-            mapping.toProvider(Provider(value));
-        } else  if (value is Function) {
-            var f:Function = value as Function;//hard cast to Function is not allowed, throws runtime error
-            mapping.toFactory(f);
-        } else {
-            mapping.toInstance(value);
+        if(strategy == null){
+            strategy = new MappingStrategy();
         }
+
+        var value:Object = specification.length == 1 ? specification[0] : identity;
+        specifies[identity] = value is Provider ? value : strategy.createProviderFor(value);
     }
 
     protected function createMapping(type:Class):Mapping {
