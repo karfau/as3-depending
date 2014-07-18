@@ -19,6 +19,13 @@ public class ResolverNoInstanceCreation extends BaseResolverSpec {
     }
 
     [Test]
+    public function resolving_an_instance_using_its_type():void {
+        const instance:ProtocolImpl = new ProtocolImpl();
+        adapter.specifyAValueForResolver(instance);
+        assertThat(resolver.get(ProtocolImpl), strictlyEqualTo(instance));
+    }
+
+    [Test]
     public function resolving_null():void {
         adapter.specifyAValueForResolver(null);
         assertThat( resolver.get(null), nullValue());

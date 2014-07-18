@@ -1,6 +1,5 @@
 package as3.depending.scope {
 import as3.depending.*;
-import as3.depending.Provider;
 import as3.depending.provider.DefaultProviderStrategy;
 
 /**
@@ -55,7 +54,11 @@ public class Scope extends BaseRelaxedResolver {
         }
 
         var value:Object = specification.length == 1 ? specification[0] : identity;
-        specifies[identity] = value is Provider ? value : strategy.providerFor(value);
+        const provider:Provider = strategy.providerFor(value);
+        specifies[identity] = provider;
+        if (value != null && identity === value){
+            specifies[value.constructor] = provider
+        }
     }
 
     protected function createMapping(type:Class):Mapping {

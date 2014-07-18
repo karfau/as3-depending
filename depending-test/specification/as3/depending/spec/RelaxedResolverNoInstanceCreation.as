@@ -24,6 +24,13 @@ public class RelaxedResolverNoInstanceCreation extends ResolverNoInstanceCreatio
     }
 
     [Test]
+    public function resolving_an_instance_using_its_type_optionally():void {
+        const instance:ProtocolImpl = new ProtocolImpl();
+        adapter.specifyAValueForResolver(instance);
+        assertThat(relaxedResolver.optionally(ProtocolImpl), strictlyEqualTo(instance));
+    }
+
+    [Test]
     public function resolving_null_for_a_definition_optionally():void {
         adapter.specifyAnImplementingInstanceForResolver(IProtocol, null);
         assertThat(relaxedResolver.optionally(IProtocol), nullValue());
