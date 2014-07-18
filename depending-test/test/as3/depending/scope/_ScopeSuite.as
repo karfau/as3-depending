@@ -3,9 +3,9 @@ package as3.depending.scope {
 [RunWith("org.flexunit.runners.Suite")]
 public class _ScopeSuite {
 
-    public var _ScopeConstructorInjection:ScopeConstructorInjection;
-    public var _ScopeInstanceCreation:ScopeInstanceCreation;
-    public var _ScopeNoInstanceCreation:ScopeNoInstanceCreation;
+    public var _ScopeConstructorInjection:ScopeMapConstructorInjection;
+    public var _ScopeInstanceCreation:ScopeMapInstanceCreation;
+    public var _ScopeNoInstanceCreation:ScopeMapNoInstanceCreation;
     public var _ScopeSpecifyConstructorInjection:ScopeSpecifyConstructorInjection;
     public var _ScopeSpecifyInstanceCreation:ScopeSpecifyInstanceCreation;
     public var _ScopeSpecifyNoInstanceCreation:ScopeSpecifyNoInstanceCreation;

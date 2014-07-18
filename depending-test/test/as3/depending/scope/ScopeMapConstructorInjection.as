@@ -2,11 +2,11 @@ package as3.depending.scope {
 import as3.depending.spec.RelaxedResolverConstructorInjection;
 import as3.depending.spec.ResolverAdapter;
 
-public class ScopeConstructorInjection extends RelaxedResolverConstructorInjection {
+public class ScopeMapConstructorInjection extends RelaxedResolverConstructorInjection {
 
 
     override protected function createAdapter():ResolverAdapter {
-        return new ScopeAdapter();
+        return new ScopeMapAdapter();
     }
 
     [Test]

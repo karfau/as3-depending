@@ -4,10 +4,10 @@ import as3.depending.examples.tests.ConstructorInjectableProtocol;
 import as3.depending.examples.tests.ProtocolProviderFunctions;
 import as3.depending.spec.ResolverAdapter;
 
-public class ScopeAdapter extends ResolverAdapter {
+public class ScopeMapAdapter extends ResolverAdapter {
 
 
-    public function ScopeAdapter() {
+    public function ScopeMapAdapter() {
         resolver = new Scope();
     }
 
@@ -48,7 +48,12 @@ public class ScopeAdapter extends ResolverAdapter {
 
 
     override public function specifyAValueForResolver(value:Object):void {
-        scope.map(null).toValue(null);//pure TDD: minimal implementation to let tests pass ;)
+        //pure TDD: minimal implementation to let tests pass ;)
+        if (value == null) {
+            scope.map(null).toValue(null);
+        } else {
+            scope.map(value.constructor).toInstance(value);
+        }
     }
 }
 }
