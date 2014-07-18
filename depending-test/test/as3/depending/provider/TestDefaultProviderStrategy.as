@@ -18,7 +18,7 @@ public class TestDefaultProviderStrategy {
     [Test]
     public function creates_ValueProvider_for_null():void {
         const value:Object = null;
-        const provider:Provider = strategy.createProviderFor(value);
+        const provider:Provider = strategy.providerFor(value);
         assertThat(provider, instanceOf(ValueProvider));
         assertThat(provider.provide(), strictlyEqualTo(value));
     }
@@ -26,14 +26,14 @@ public class TestDefaultProviderStrategy {
     [Test]
     public function creates_ValueProvider_for_instance():void {
         const value:Instance = new Instance();
-        const provider:Provider = strategy.createProviderFor(value);
+        const provider:Provider = strategy.providerFor(value);
         assertThat(provider, instanceOf(ValueProvider));
         assertThat(provider.provide(), strictlyEqualTo(value));
     }
 
     [Test]
     public function creates_TypeProvider_for_Class_value():void {
-        const provider:Provider = strategy.createProviderFor(Instance);
+        const provider:Provider = strategy.providerFor(Instance);
         assertThat(provider, instanceOf(TypeProvider));
         assertThat(provider.provide(), instanceOf(Instance));
     }
@@ -41,11 +41,18 @@ public class TestDefaultProviderStrategy {
     [Test]
     public function creates_FactoryProvider_for_Function_value():void {
         var invoke:Invokes = new Invokes();
-        const provider:Provider = strategy.createProviderFor(invoke.noParameters);
+        const provider:Provider = strategy.providerFor(invoke.noParameters);
         assertThat(provider, instanceOf(FactoryProvider));
         invoke.assertNoInvokes(invoke.noParameters);
         provider.provide();
         invoke.assertInvokes(invoke.noParameters, 1)
+    }
+
+    [Test]
+    public function returns_given_provider():void {
+        const input:Provider = new ProviderMock(null);
+        const result:Provider = strategy.providerFor(input);
+        assertThat(result, strictlyEqualTo(input));
     }
 
 }

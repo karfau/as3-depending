@@ -9,6 +9,6 @@ import as3.depending.Provider;
  * The DefaultProviderStrategy is an implementation that always returns a Provider.
  */
 public interface ProviderStrategy {
-    function createProviderFor(value:*):Provider;
+    function providerFor(value:*):Provider;
 }
 }

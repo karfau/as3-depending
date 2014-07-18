@@ -55,7 +55,7 @@ public class Scope extends BaseRelaxedResolver {
         }
 
         var value:Object = specification.length == 1 ? specification[0] : identity;
-        specifies[identity] = value is Provider ? value : strategy.createProviderFor(value);
+        specifies[identity] = value is Provider ? value : strategy.providerFor(value);
     }
 
     protected function createMapping(type:Class):Mapping {
