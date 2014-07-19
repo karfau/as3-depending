@@ -2,7 +2,10 @@ package as3.depending.provider {
 import as3.depending.Provider;
 
 public class DefaultProviderStrategy implements ProviderStrategy {
+
     public var strategies:Vector.<ProviderStrategy>;
+
+    public var staticTypeFactoryConvention:String = "create";
 
     public function providerFor(value:*):Provider {
         if (value is Provider) {
@@ -18,6 +21,12 @@ public class DefaultProviderStrategy implements ProviderStrategy {
             }
         }
         if (value is Class) {
+            if(value.hasOwnProperty(staticTypeFactoryConvention)){
+                var factory:Function = value[staticTypeFactoryConvention] as Function;
+                if(factory != null){
+                    return forFactory(factory);
+                }
+            }
             return forClass(value);
         }
         if (value is Function) {

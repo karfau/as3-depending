@@ -1,6 +1,8 @@
 package as3.depending.scope {
 import as3.depending.Provider;
 import as3.depending.examples.tests.ConstructorInjectableProtocol;
+import as3.depending.examples.tests.IResolverSpecProtocol;
+import as3.depending.examples.tests.InlineConstructorInjectableProtocol;
 import as3.depending.examples.tests.ProtocolProviderFunctions;
 import as3.depending.spec.ResolverAdapter;
 
@@ -54,6 +56,15 @@ public class ScopeSpecifyAdapter extends ResolverAdapter {
     override public function specifyConstructorInjectableProtocolAsImplementationForResolver(definingInterface:Class):void {
         scope.specify(definingInterface, ProtocolProviderFunctions.ConstructorInjectableDefinitionProvider);
     }
+
+    override public function specifyInlineConstructorInjectableProtocolForResolver():void {
+        // this is based on the convention that when there is a static method named "create" which works like a provider function
+        scope.providerStrategy.staticTypeFactoryConvention = 'create';
+        //we can create an instance
+        scope.specify(IResolverSpecProtocol, InlineConstructorInjectableProtocol);
+        //if you need multiple conventions in one scope, you can add own ProviderStrategy implementations via scope.providerStrategy.add()
+    }
+
 
     override public function specifyAValueForResolver(value:Object):void {
         scope.specify(value);

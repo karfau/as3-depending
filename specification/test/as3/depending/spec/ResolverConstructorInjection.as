@@ -10,16 +10,24 @@ public class ResolverConstructorInjection extends BaseResolverSpec {
     [Test]
     public function resolving_a_specified_type():void {
         adapter.specifyConstructorInjectableProtocolForResolver();
-        assertThat(IResolverSpecProtocol(resolver.get(ConstructorInjectableProtocol)).resolver, strictlyEqualTo(resolver));
+        assertResolverWasInjected(ConstructorInjectableProtocol);
     }
 
     [Test]
     public function resolving_an_implementation():void {
         adapter.specifyConstructorInjectableProtocolAsImplementationForResolver(IResolverSpecProtocol);
-        assertThat(IResolverSpecProtocol(resolver.get(IResolverSpecProtocol)).resolver, strictlyEqualTo(resolver));
+        assertResolverWasInjected(IResolverSpecProtocol);
     }
 
-    //TODO: 'inline configuration' for constructor injection
+    [Test]
+    public function resolving_a_type_with_inline_constructor_injection():void{
+        adapter.specifyInlineConstructorInjectableProtocolForResolver();
+        assertResolverWasInjected(IResolverSpecProtocol);
+    }
+
+    private function assertResolverWasInjected(definition:Class):void {
+        assertThat(IResolverSpecProtocol(resolver.get(definition)).resolver, strictlyEqualTo(resolver));
+    }
 
 }
 }

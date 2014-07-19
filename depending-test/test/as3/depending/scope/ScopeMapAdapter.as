@@ -1,6 +1,8 @@
 package as3.depending.scope {
 import as3.depending.Provider;
 import as3.depending.examples.tests.ConstructorInjectableProtocol;
+import as3.depending.examples.tests.IResolverSpecProtocol;
+import as3.depending.examples.tests.InlineConstructorInjectableProtocol;
 import as3.depending.examples.tests.ProtocolProviderFunctions;
 import as3.depending.spec.ResolverAdapter;
 
@@ -58,6 +60,10 @@ public class ScopeMapAdapter extends ResolverAdapter {
                 .toFactory(ProtocolProviderFunctions.ConstructorInjectableDefinitionProvider);
     }
 
+
+    override public function specifyInlineConstructorInjectableProtocolForResolver():void {
+        scope.map(IResolverSpecProtocol).toFactory(InlineConstructorInjectableProtocol.create);//not really inline, but explicit and type safe and works ;)
+    }
 
     override public function specifyAValueForResolver(value:Object):void {
         //pure TDD: minimal implementation to let tests pass ;)

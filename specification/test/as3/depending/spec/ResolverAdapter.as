@@ -43,6 +43,10 @@ public class ResolverAdapter {
         failNotImplemented("specify the implementation ConstructorInjectableProtocol as resolvable");
     }
 
+    public function specifyInlineConstructorInjectableProtocolForResolver():void {
+        failNotImplemented("specify an implementation of IResolverSpecProtocol as resolvable that contains a way to inject the resolver");
+    }
+
     public function specifyAValueForResolver(value:Object):void {
         failNotImplemented("specify a value as resolvable");
     }
