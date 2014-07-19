@@ -55,7 +55,7 @@ public class Scope extends BaseRelaxedResolver {
     //noinspection SpellCheckingInspection
     private const specifies:Object = {};
 
-    public function specify(identity:Object, ...specification):void {
+    public function specify(identity:Object, ...specification):Specified {
         if(strategy == null){
             strategy = new DefaultProviderStrategy();
         }
@@ -66,6 +66,7 @@ public class Scope extends BaseRelaxedResolver {
         if (value != null && identity === value){
             specifies[value.constructor] = provider
         }
+        return new Specified(this);
     }
 
     protected function createMapping(type:Class):Mapping {

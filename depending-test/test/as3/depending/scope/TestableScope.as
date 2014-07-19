@@ -11,9 +11,10 @@ internal class TestableScope extends Scope {
         return new TestableMapping(invokes);
     }
 
-    override public function specify(identity:Object, ...specification):void {
+    override public function specify(identity:Object, ...specification):Specified {
         var args:Array = [identity].concat(specification);
         invokes.invoke(specify, args);
+        return null;
     }
 }
 }

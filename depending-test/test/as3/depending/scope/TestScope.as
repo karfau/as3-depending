@@ -32,6 +32,12 @@ public class TestScope {
     }
 
     [Test]
+    public function specify_returns_a_Specified_related_to_scope():void {
+        var it:Specified = scope.specify(IProtocol);
+        assertThat(it.scope, strictlyEqualTo(scope));
+    }
+
+    [Test]
     public function map_returns_Mapping_with_resolver_set_to_scope():void {
         var mapping:Mapping = scope.map(IProtocol);
         assertThat(mapping.getResolver(), strictlyEqualTo(scope));
