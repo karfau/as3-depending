@@ -58,6 +58,7 @@ public class Mapping {
     }
 
     public function asSingleton():Provider {
+        ensureProvider();
         if(_provider is ValueProvider){
             return _provider;
         }
@@ -74,11 +75,15 @@ public class Mapping {
     }
 
     public function getValue():Object {
+        ensureProvider();
+        var value:Object = _provider.provide(resolver);
+        return value;
+    }
+
+    private function ensureProvider():void {
         if (_provider == null) {
             toType(forType);
         }
-        var value:Object = _provider.provide(resolver);
-        return value;
     }
 
     private function resolveDepending(value:Object):void {

@@ -99,6 +99,22 @@ public class TestMapping {
     }
 
     [Test]
+    public function asSingleton_defines_TypeProvider_when_provider_is_not_defined():void {
+        mapping = new Mapping(ProtocolImpl,resolver);
+        mapping.asSingleton();
+
+        assertThat(mapping.getValue(), instanceOf(ProtocolImpl));
+    }
+
+    [Test]
+    public function asEagerSingleton_defines_TypeProvider_when_provider_is_not_defined():void {
+        mapping = new Mapping(ProtocolImpl,resolver);
+        mapping.asEagerSingleton();
+
+        assertThat(mapping.getValue(), instanceOf(ProtocolImpl));
+    }
+
+    [Test]
     public function asEagerSingleton_invokes_current_provider():void {
         var providerMock:ProviderMock = new ProviderMock(invokes);
 
@@ -151,5 +167,7 @@ public class TestMapping {
 
         invokes.assertWasInvokedWith(scope.specify, array(ProtocolImpl, provider))
     }
+
+
 }
 }
