@@ -15,12 +15,24 @@ public class ScopeSpecifyAdapter extends ResolverAdapter {
         return Scope(resolver);
     }
 
+    public var useEagerSingleton:Boolean;
+
+    private function handleInstanceCaching(specified:Specified):void {
+        if (expectingCachedInstance) {
+            if (useEagerSingleton) {
+                specified.asEagerSingleton();
+            } else {
+                specified.asSingleton();
+            }
+        }
+    }
+
     override public function specifyTypeForResolver(type:Class):void {
-        scope.specify(type);
+        handleInstanceCaching(scope.specify(type));
     }
 
     override public function specifyImplementationForResolver(definingInterface:Class, implementingClass:Class):void {
-        scope.specify(definingInterface, implementingClass);
+        handleInstanceCaching(scope.specify(definingInterface, implementingClass));
     }
 
     override public function specifyAnImplementingInstanceForResolver(definingInterface:Class, instance:Object):void {
@@ -28,11 +40,11 @@ public class ScopeSpecifyAdapter extends ResolverAdapter {
     }
 
     override public function specifyAProviderForResolver(definingInterface:Class, provider:Provider):void {
-        scope.specify(definingInterface, provider);
+        handleInstanceCaching(scope.specify(definingInterface, provider));
     }
 
     override public function specifyAProviderFunctionForResolver(definingInterface:Class, provider:Function):void {
-        scope.specify(definingInterface, provider);
+        handleInstanceCaching(scope.specify(definingInterface, provider));
     }
 
     override public function specifyConstructorInjectableProtocolForResolver():void {

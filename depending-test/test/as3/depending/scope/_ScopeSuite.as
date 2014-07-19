@@ -19,6 +19,10 @@ public class _ScopeSuite {
     //noinspection JSUnusedGlobalSymbols
     public var _ScopeSpecifyInstanceCreation:ScopeSpecifyInstanceCreation;
     //noinspection JSUnusedGlobalSymbols
+    public var _ScopeSpecifyInstanceCreationAsEagerSingleton:ScopeSpecifyInstanceCreationAsEagerSingleton;
+    //noinspection JSUnusedGlobalSymbols
+    public var _ScopeSpecifyInstanceCreationAsSingleton:ScopeSpecifyInstanceCreationAsSingleton;
+    //noinspection JSUnusedGlobalSymbols
     public var _ScopeSpecifyNoInstanceCreation:ScopeSpecifyNoInstanceCreation;
 
     //noinspection JSUnusedGlobalSymbols
