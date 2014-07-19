@@ -18,12 +18,14 @@ public class ResolverInstanceCreation extends BaseResolverSpec {
     public function resolving_a_specified_type():void {
         adapter.specifyTypeForResolver(Instance);
         assertThat(resolver.get(Instance), instanceOf(Instance));
+        extendedAsserts(Instance);
     }
 
     [Test]
     public function resolving_an_implementation():void {
         adapter.specifyImplementationForResolver(IProtocol, ProtocolImpl);
         assertThat(resolver.get(IProtocol), instanceOf(ProtocolImpl));
+        extendedAsserts(IProtocol);
     }
 
     [Test]
@@ -31,12 +33,14 @@ public class ResolverInstanceCreation extends BaseResolverSpec {
         const provider:ProtocolProvider = new ProtocolProvider();
         adapter.specifyAProviderForResolver(IProtocol, provider);
         assertThat(resolver.get(IProtocol), instanceOf(ProtocolImpl));
+        extendedAsserts(IProtocol);
     }
 
     [Test]
     public function resolving_using_a_provider_function_with_no_arguments():void {
         adapter.specifyAProviderFunctionForResolver(IProtocol, ProtocolProviderFunctions.DefinitionProvider);
         assertThat(resolver.get(IProtocol), instanceOf(ProtocolImpl));
+        extendedAsserts(IProtocol);
     }
 
     [Test]
@@ -46,9 +50,11 @@ public class ResolverInstanceCreation extends BaseResolverSpec {
                 instanceOf(ConstructorInjectableProtocol),
                 hasPropertyWithValue('resolver',strictlyEqualTo(resolver))
         ));
+        extendedAsserts(IProtocol);
     }
 
-    //TODO: specify things without the need to provide a type for it, they already implement it (Scope has no support for this yet)
+    protected function extendedAsserts(identifier:Class):void {
 
+    }
 }
 }

@@ -9,13 +9,6 @@ import org.hamcrest.object.strictlyEqualTo;
 
 public class RelaxedResolverNoInstanceCreation extends ResolverNoInstanceCreation {
 
-
-    [Before]
-    override public function setUpResolver():void {
-        super.setUpResolver();
-        assertRelaxedResolver();
-    }
-
     [Test]
     public function resolving_an_implementing_instance_optionally():void {
         const instance:ProtocolImpl = new ProtocolImpl();

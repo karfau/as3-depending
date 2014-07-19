@@ -1,36 +1,24 @@
 package as3.depending.spec {
-import as3.depending.examples.tests.ConstructorInjectableProtocol;
-import as3.depending.examples.tests.IProtocol;
-import as3.depending.examples.tests.Instance;
-import as3.depending.examples.tests.ProtocolImpl;
-import as3.depending.examples.tests.ProtocolProvider;
-import as3.depending.examples.tests.ProtocolProviderFunctions;
+import as3.depending.examples.tests.*;
 
 import org.flexunit.assertThat;
 import org.hamcrest.core.allOf;
-import org.hamcrest.object.hasPropertyWithValue;
-import org.hamcrest.object.instanceOf;
-import org.hamcrest.object.strictlyEqualTo;
+import org.hamcrest.object.*;
 
 public class RelaxedResolverInstanceCreation extends ResolverInstanceCreation {
-
-
-    [Before]
-    override public function setUpResolver():void {
-        super.setUpResolver();
-        assertRelaxedResolver();
-    }
 
     [Test]
     public function resolving_a_specified_type_optionally():void {
         adapter.specifyTypeForResolver(Instance);
         assertThat(relaxedResolver.optionally(Instance), instanceOf(Instance));
+        extendedAsserts(Instance)
     }
 
     [Test]
     public function resolving_an_implementation_optionally():void {
         adapter.specifyImplementationForResolver(IProtocol, ProtocolImpl);
         assertThat(relaxedResolver.optionally(IProtocol), instanceOf(ProtocolImpl));
+        extendedAsserts(IProtocol);
     }
 
     [Test]
@@ -38,12 +26,14 @@ public class RelaxedResolverInstanceCreation extends ResolverInstanceCreation {
         const provider:ProtocolProvider = new ProtocolProvider();
         adapter.specifyAProviderForResolver(IProtocol, provider);
         assertThat(relaxedResolver.optionally(IProtocol), instanceOf(ProtocolImpl));
+        extendedAsserts(IProtocol);
     }
 
     [Test]
     public function resolving_using_a_provider_function_with_no_arguments_optionally():void {
         adapter.specifyAProviderFunctionForResolver(IProtocol, ProtocolProviderFunctions.DefinitionProvider);
         assertThat(relaxedResolver.optionally(IProtocol), instanceOf(ProtocolImpl));
+        extendedAsserts(IProtocol);
     }
 
     [Test]
@@ -53,9 +43,8 @@ public class RelaxedResolverInstanceCreation extends ResolverInstanceCreation {
                 instanceOf(ConstructorInjectableProtocol),
                 hasPropertyWithValue('resolver',strictlyEqualTo(resolver))
         ));
+        extendedAsserts(IProtocol);
     }
-
-    //TODO: specify things without the need to provide a type for it, they already implement it (Scope has no support for this yet)
 
 }
 }

@@ -11,19 +11,28 @@ public class ScopeMapAdapter extends ResolverAdapter {
         resolver = new Scope();
     }
 
-    protected function get scope():Scope{
+    protected function get scope():Scope {
         return Scope(resolver);
     }
 
-    override public function specifyTypeForResolver(type:Class):void {
-        scope.map(type);
-        if(expectingCachedInstance){
-            scope.map(type).asSingleton();
+    public var useEagerSingleton:Boolean;
+
+    private function handleInstanceCaching(mapping:Mapping):void {
+        if (expectingCachedInstance) {
+            if(useEagerSingleton){
+                mapping.asEagerSingleton();
+            }else{
+                mapping.asSingleton();
+            }
         }
     }
 
+    override public function specifyTypeForResolver(type:Class):void {
+        handleInstanceCaching(scope.map(type));
+    }
+
     override public function specifyImplementationForResolver(definingInterface:Class, implementingClass:Class):void {
-        scope.map(definingInterface).toType(implementingClass);
+        handleInstanceCaching(scope.map(definingInterface).toType(implementingClass));
     }
 
     override public function specifyAnImplementingInstanceForResolver(definingInterface:Class, instance:Object):void {
@@ -31,11 +40,11 @@ public class ScopeMapAdapter extends ResolverAdapter {
     }
 
     override public function specifyAProviderForResolver(definingInterface:Class, provider:Provider):void {
-        scope.map(definingInterface).toProvider(provider);
+        handleInstanceCaching(scope.map(definingInterface).toProvider(provider));
     }
 
     override public function specifyAProviderFunctionForResolver(definingInterface:Class, provider:Function):void {
-        scope.map(definingInterface).toFactory(provider);
+        handleInstanceCaching(scope.map(definingInterface).toFactory(provider));
     }
 
     override public function specifyConstructorInjectableProtocolForResolver():void {

@@ -6,9 +6,11 @@ public class _ScopeSuite {
     //noinspection JSUnusedGlobalSymbols
     public var _ScopeMapConstructorInjection:ScopeMapConstructorInjection;
     //noinspection JSUnusedGlobalSymbols
-    public var _ScopeMapInstanceCachingStrategies:ScopeMapInstanceCachingStrategies;
-    //noinspection JSUnusedGlobalSymbols
     public var _ScopeMapInstanceCreation:ScopeMapInstanceCreation;
+    //noinspection JSUnusedGlobalSymbols
+    public var _ScopeMapInstanceCreationAsSingleton:ScopeMapInstanceCreationAsSingleton;
+    //noinspection JSUnusedGlobalSymbols
+    public var _ScopeMapInstanceCreationAsEagerSingleton:ScopeMapInstanceCreationAsEagerSingleton;
     //noinspection JSUnusedGlobalSymbols
     public var _ScopeMapNoInstanceCreation:ScopeMapNoInstanceCreation;
 
