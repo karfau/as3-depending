@@ -26,6 +26,11 @@ public class TestLazyValueProvider {
         invokes.assertNoInvokes(contained.provide);
     }
 
+    [Test(expects="ArgumentError")]
+    public function creation_fails_without_provider():void {
+        provider = new LazyValueProvider(null);
+    }
+
     [Test]
     public function provide_delegates_to_contained_provider():void {
         provider.provide(resolver);

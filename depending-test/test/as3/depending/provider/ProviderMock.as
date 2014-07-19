@@ -19,5 +19,7 @@ public class ProviderMock implements Provider {
         return new Instance();
     }
 
+    public static const Null:ValueProvider= new ValueProvider(null);
+
 }
 }
