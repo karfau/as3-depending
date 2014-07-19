@@ -25,5 +25,7 @@ public class _ScopeSuite {
     public var _TestMapping:TestMapping;
     //noinspection JSUnusedGlobalSymbols
     public var _TestScope:TestScope;
+    //noinspection JSUnusedGlobalSymbols
+    public var _TestSpecified:TestSpecified;
 }
 }

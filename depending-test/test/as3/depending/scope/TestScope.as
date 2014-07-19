@@ -1,5 +1,6 @@
 package as3.depending.scope {
 import as3.depending.examples.tests.*;
+import as3.depending.provider.ProviderMock;
 import as3.depending.scope.impl.*;
 
 import org.flexunit.assertThat;
@@ -35,6 +36,13 @@ public class TestScope {
     public function specify_returns_a_Specified_related_to_scope():void {
         var it:Specified = scope.specify(IProtocol);
         assertThat(it.scope, strictlyEqualTo(scope));
+    }
+
+    [Test]
+    public function specify_allows_access_to_provider():void {
+        const provider:ProviderMock = new ProviderMock(invokes);
+        var it:Specified = scope.specify(provider);
+        assertThat(it.provider, strictlyEqualTo(provider));
     }
 
     [Test]
