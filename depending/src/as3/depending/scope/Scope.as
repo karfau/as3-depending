@@ -24,6 +24,9 @@ public class Scope extends BaseRelaxedResolver {
         if (specifies[clazz] is Provider) {
             return Provider(specifies[clazz]).provide(this);
         }
+        if (specifies[clazz] is Specified) {
+            return Specified(specifies[clazz]).provide();
+        }
         var mapping:Mapping = getMapping(clazz);
         if (mapping == null) {
             if(implicitResolving){
@@ -62,9 +65,12 @@ public class Scope extends BaseRelaxedResolver {
 
         var value:Object = specification.length == 1 ? specification[0] : identity;
         const provider:Provider = strategy.providerFor(value);
-        const specified:Specified = new Specified(this);
+        var specified:Specified = specifies[identity] as Specified;
+        if(specified == null){
+            specified = new Specified(this);
+            specifies[identity] = specified;
+        }
         specified.setProvider(provider);
-        specifies[identity] = provider;
         if (value != null && identity === value){
             specifies[value.constructor] = provider
         }

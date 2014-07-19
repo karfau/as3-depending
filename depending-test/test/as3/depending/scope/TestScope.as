@@ -33,9 +33,10 @@ public class TestScope {
     }
 
     [Test]
-    public function specify_returns_a_Specified_related_to_scope():void {
+    public function specify_returns_the_related_Specified():void {
         var it:Specified = scope.specify(IProtocol);
         assertThat(it.scope, strictlyEqualTo(scope));
+        assertThat(scope.specify(IProtocol), strictlyEqualTo(it));
     }
 
     [Test]
