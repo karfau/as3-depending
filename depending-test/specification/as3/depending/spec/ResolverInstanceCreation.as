@@ -17,40 +17,40 @@ public class ResolverInstanceCreation extends BaseResolverSpec {
     [Test]
     public function resolving_a_specified_type():void {
         adapter.specifyTypeForResolver(Instance);
-        assertThat(resolver.get(Instance), instanceOf(Instance));
         extendedAsserts(Instance);
+        assertThat(resolver.get(Instance), instanceOf(Instance));
     }
 
     [Test]
     public function resolving_an_implementation():void {
         adapter.specifyImplementationForResolver(IProtocol, ProtocolImpl);
-        assertThat(resolver.get(IProtocol), instanceOf(ProtocolImpl));
         extendedAsserts(IProtocol);
+        assertThat(resolver.get(IProtocol), instanceOf(ProtocolImpl));
     }
 
     [Test]
     public function resolving_using_a_provider_implementation():void {
         const provider:ProtocolProvider = new ProtocolProvider();
         adapter.specifyAProviderForResolver(IProtocol, provider);
-        assertThat(resolver.get(IProtocol), instanceOf(ProtocolImpl));
         extendedAsserts(IProtocol);
+        assertThat(resolver.get(IProtocol), instanceOf(ProtocolImpl));
     }
 
     [Test]
     public function resolving_using_a_provider_function_with_no_arguments():void {
         adapter.specifyAProviderFunctionForResolver(IProtocol, ProtocolProviderFunctions.DefinitionProvider);
-        assertThat(resolver.get(IProtocol), instanceOf(ProtocolImpl));
         extendedAsserts(IProtocol);
+        assertThat(resolver.get(IProtocol), instanceOf(ProtocolImpl));
     }
 
     [Test]
     public function resolving_using_a_provider_function_with_resolver_as_argument():void {
         adapter.specifyAProviderFunctionForResolver(IProtocol, ProtocolProviderFunctions.ConstructorInjectableDefinitionProvider);
+        extendedAsserts(IProtocol);
         assertThat(resolver.get(IProtocol), allOf(
                 instanceOf(ConstructorInjectableProtocol),
                 hasPropertyWithValue('resolver',strictlyEqualTo(resolver))
         ));
-        extendedAsserts(IProtocol);
     }
 
     protected function extendedAsserts(identifier:Class):void {
