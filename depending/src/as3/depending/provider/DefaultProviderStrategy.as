@@ -2,17 +2,28 @@ package as3.depending.provider {
 import as3.depending.Provider;
 
 public class DefaultProviderStrategy implements ProviderStrategy {
+    public var strategies:Vector.<ProviderStrategy>;
 
     public function providerFor(value:*):Provider {
         if (value is Provider) {
             return value;
-        } else if (value is Class) {
-            return forClass(value);
-        } else if (value is Function) {
-            return forFactory(value);
-        } else {
-            return forValue(value);
         }
+        var result:Provider;
+        for each (var strategy:ProviderStrategy in strategies) {
+            if(strategy){
+                result = strategy.providerFor(value);
+                if(result){
+                    return result;
+                }
+            }
+        }
+        if (value is Class) {
+            return forClass(value);
+        }
+        if (value is Function) {
+            return forFactory(value);
+        }
+        return forValue(value);
     }
 
     protected function forValue(value:*):ValueProvider {
@@ -25,6 +36,13 @@ public class DefaultProviderStrategy implements ProviderStrategy {
 
     protected function forClass(value:Class):TypeProvider {
         return new TypeProvider(value);
+    }
+
+    public function add(addition:ProviderStrategy):void {
+        if(strategies == null){
+            strategies = new Vector.<ProviderStrategy>();
+        }
+        strategies.push(addition);
     }
 }
 }

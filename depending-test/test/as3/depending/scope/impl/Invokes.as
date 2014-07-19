@@ -8,7 +8,7 @@ import org.hamcrest.object.nullValue;
 
 public class Invokes {
 
-    private const list:Dictionary = new Dictionary(true);
+    private const list:Dictionary = new Dictionary(false);
 
     public function invoke(method:Function, ...parameters):void {
         if (list[method] === undefined) {

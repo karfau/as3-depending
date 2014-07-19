@@ -54,17 +54,21 @@ public class Scope extends BaseRelaxedResolver {
         return mapping;
     }
 
-    private var strategy:DefaultProviderStrategy;
-    //noinspection SpellCheckingInspection
+    private var _providerStrategy:DefaultProviderStrategy;
+    public function get providerStrategy():DefaultProviderStrategy {
+        if(_providerStrategy == null){
+            _providerStrategy = new DefaultProviderStrategy();
+        }
+        return _providerStrategy;
+    }
+
+//noinspection SpellCheckingInspection
     private const specifies:Object = {};
 
     public function specify(identity:Object, ...specification):Specified {
-        if(strategy == null){
-            strategy = new DefaultProviderStrategy();
-        }
 
         var value:Object = specification.length == 1 ? specification[0] : identity;
-        const provider:Provider = strategy.providerFor(value);
+        const provider:Provider = providerStrategy.providerFor(value);
         var specified:Specified = specifies[identity] as Specified;
         if(specified == null){
             specified = new Specified(this);
