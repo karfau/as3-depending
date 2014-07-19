@@ -10,7 +10,7 @@ import org.flexunit.AssertionError;
  * that a resolver provided by a ResolverAdapter doesn't implement some features,
  * which lets the test fail with a clear message.
  *
- * Note: not implementing all <code>define...</code> methods in a ResolverAdapter will also lead to this error,
+ * Note: not implementing all <code>specify...</code> methods in a ResolverAdapter will also lead to this error,
  * as the test suite can not know how to use your implementation.
  */
 public class NotImplementedException extends AssertionError {

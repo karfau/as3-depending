@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="Flex" version="4">
-  <component name="FlexBuildConfigurationManager" active="depending-test">
+  <component name="FlexBuildConfigurationManager" active="specification">
     <configurations>
-      <configuration name="depending-test" output-type="Library" output-file="depending-test.swc" output-folder="$MODULE_DIR$/../out/production/depending-test">
+      <configuration name="specification" output-type="Library" output-file="specification.swc" output-folder="$MODULE_DIR$/../out/production/specification">
         <dependencies target-player="10.2">
           <entries>
             <entry module-name="depending" build-configuration-name="depending">
-              <dependency linkage="Merged" />
-            </entry>
-            <entry module-name="specification" build-configuration-name="specification">
-              <dependency linkage="Test" />
+              <dependency linkage="External" />
             </entry>
             <entry library-name="flexunit+hamcrest" library-level="project">
-              <dependency linkage="Test" />
+              <dependency linkage="External" />
             </entry>
           </entries>
           <sdk name="4.5.1.21328A" />
@@ -29,13 +26,11 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/specification" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="false" />
     </content>
     <orderEntry type="jdk" jdkName="4.5.1.21328A" jdkType="Flex SDK Type (new)" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="depending" exported="" />
-    <orderEntry type="module" module-name="specification" exported="" />
     <orderEntry type="library" exported="" name="flexunit+hamcrest" level="project" />
   </component>
 </module>
