@@ -32,5 +32,12 @@ public class Specified {
         }
         setProvider(new LazyValueProvider(provider));
     }
+
+    public function asEagerSingleton():void {
+        if (provider is ValueProvider) {
+            return;
+        }
+        setProvider(new ValueProvider(provide()));
+    }
 }
 }

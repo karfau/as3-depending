@@ -3,6 +3,7 @@ import as3.depending.Provider;
 import as3.depending.examples.tests.Instance;
 import as3.depending.provider.LazyValueProvider;
 import as3.depending.provider.ProviderMock;
+import as3.depending.provider.ValueProvider;
 import as3.depending.scope.impl.Invokes;
 
 import org.flexunit.assertThat;
@@ -19,7 +20,7 @@ public class TestSpecified {
     private var invokes:Invokes;
     private var scope:TestableScope;
     private var it:Specified;
-    private var provider:Provider;
+    private var provider:ProviderMock;
 
     [Before]
     public function setUp():void {
@@ -51,7 +52,7 @@ public class TestSpecified {
         assertThat(it.provider, instanceOf(LazyValueProvider));
 
         it.provide();
-        invokes.assertWasInvokedWith(provider.provide, array(strictlyEqualTo(scope)))
+        invokes.assertWasInvokedWith(provider.provide, array(strictlyEqualTo(scope)));
     }
 
     [Test]
@@ -59,6 +60,25 @@ public class TestSpecified {
         it.setProvider(ProviderMock.Null);
 
         it.asSingleton();
+        assertThat(it.provider, strictlyEqualTo(ProviderMock.Null));
+    }
+
+    [Test]
+    public function asEagerSingleton_invokes_provider_and_specifies_ValueProvider_for_result():void {
+        it.setProvider(provider);
+
+        it.asEagerSingleton();
+        invokes.assertWasInvokedWith(provider.provide, array(strictlyEqualTo(scope)));
+        assertThat(it.provider, instanceOf(ValueProvider));
+        assertThat(it.provide(), strictlyEqualTo(provider.lastProvided));
+
+    }
+
+    [Test]
+    public function asEagerSingleton_keeps_specified_ValueProvider():void {
+        it.setProvider(ProviderMock.Null);
+
+        it.asEagerSingleton();
         assertThat(it.provider, strictlyEqualTo(ProviderMock.Null));
     }
 

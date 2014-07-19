@@ -7,6 +7,10 @@ import as3.depending.examples.tests.Instance;
 public class ProviderMock implements Provider {
 
     private var invokes:Invokes;
+    private var _last:Object;
+    public function get lastProvided():Object {
+        return _last;
+    }
 
     public function ProviderMock(invokes:Invokes = null) {
         this.invokes = invokes;
@@ -16,7 +20,8 @@ public class ProviderMock implements Provider {
         if(invokes){
             invokes.invoke(provide,resolver);
         }
-        return new Instance();
+        _last = new Instance();
+        return  _last;
     }
 
     public static const Null:ValueProvider= new ValueProvider(null);
