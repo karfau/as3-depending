@@ -5,6 +5,7 @@ import as3.depending.scope.impl.*;
 import org.flexunit.assertThat;
 import org.flexunit.asserts.assertFalse;
 import org.flexunit.asserts.assertTrue;
+import org.hamcrest.collection.array;
 import org.hamcrest.core.*;
 import org.hamcrest.object.*;
 
@@ -36,16 +37,32 @@ public class TestScope {
         assertThat(mapping.getResolver(), strictlyEqualTo(scope));
     }
 
-    [Test][Ignore("this implicit behaviour will be moved somewhere else")]
-    public function get_creates_Mapping_for_clazz():void {
-        scope.get(DependingDefinitionMock);
-        assertTrue(scope.hasMapping(DependingDefinitionMock));
+    [Test]
+    public function implicitResolving_allows_get_to_resolve_clazz():void {
+        scope.implicitResolving = new ImplicitResolvingStrategy();
+        var value:DependingDefinitionMock = scope.get(DependingDefinitionMock);
+        invokes.assertWasInvokedWith(value.fetchDependencies, array(scope));
     }
 
-    [Test][Ignore("this implicit behaviour will be moved somewhere else")]
-    public function optionally_creates_Mapping_for_clazz():void {
+    [Test]
+    public function implicitResolving_allows_optionally_to_resolve_clazz():void {
+        scope.implicitResolving = new ImplicitResolvingStrategy();
+        var value:DependingDefinitionMock = scope.optionally(DependingDefinitionMock);
+        invokes.assertWasInvokedWith(value.fetchDependencies, array(scope));
+    }
+
+    [Test]
+    public function implicitResolving_with_get_does_not_specify_clazz():void {
+        scope.implicitResolving = new ImplicitResolvingStrategy();
+        scope.get(DependingDefinitionMock);
+        assertFalse(scope.isSpecified(DependingDefinitionMock));
+    }
+
+    [Test]
+    public function implicitResolving_with_optionally_does_not_specify_clazz():void {
+        scope.implicitResolving = new ImplicitResolvingStrategy();
         scope.optionally(DependingDefinitionMock);
-        assertTrue(scope.hasMapping(DependingDefinitionMock));
+        assertFalse(scope.isSpecified(DependingDefinitionMock));
     }
 
     [Test]
@@ -53,13 +70,13 @@ public class TestScope {
         try{
             scope.get(IProtocol);
         }catch(e:Error){}
-        assertFalse(scope.hasMapping(IProtocol));
+        assertFalse(scope.isSpecified(IProtocol));
     }
 
     [Test]
     public function optionally_does_not_create_Mapping_for_interface():void {
         scope.optionally(IProtocol);
-        assertFalse(scope.hasMapping(IProtocol));
+        assertFalse(scope.isSpecified(IProtocol));
     }
 
     [Test]
@@ -85,6 +102,26 @@ public class TestScope {
         scope.optionally(IProtocol);
 
         invokes.assertInvokes(mapping.getValue, 1);
+    }
+
+    [Test]
+    public function after_map_identity_isSpecified():void {
+        scope.map(null);
+        assertTrue('for null',scope.isSpecified(null));
+        scope.map(IProtocol);
+        assertTrue('for IProtocol',scope.isSpecified(IProtocol));
+        scope.map(ProtocolImpl);
+        assertTrue('for IProtocol',scope.isSpecified(IProtocol));
+    }
+
+    [Test]
+    public function after_specify_identity_isSpecified():void {
+        scope.specify(null);
+        assertTrue('for null',scope.isSpecified(null));
+        scope.specify(IProtocol);
+        assertTrue('for IProtocol',scope.isSpecified(IProtocol));
+        scope.specify(ProtocolImpl);
+        assertTrue('for IProtocol',scope.isSpecified(IProtocol));
     }
 
 }

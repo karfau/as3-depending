@@ -1,6 +1,7 @@
 package as3.depending.scope {
 import as3.depending.*;
 import as3.depending.provider.DefaultProviderStrategy;
+import as3.depending.provider.ProviderStrategy;
 
 /**
  * This implementation of Resolver offers the possibility to configure the decisions about how to resolve dependencies at runtime,
@@ -10,7 +11,10 @@ import as3.depending.provider.DefaultProviderStrategy;
  */
 public class Scope extends BaseRelaxedResolver {
 
-    public function Scope() {
+    public var implicitResolving:ProviderStrategy;
+
+    public function Scope(implicitResolving:ProviderStrategy = null) {
+        this.implicitResolving = implicitResolving;
         mappings = {};
     }
 
@@ -22,17 +26,20 @@ public class Scope extends BaseRelaxedResolver {
         }
         var mapping:Mapping = getMapping(clazz);
         if (mapping == null) {
+            if(implicitResolving){
+                var provider:Provider = implicitResolving.providerFor(clazz);
+                if(provider){
+                    var value:Object = provider.provide(this);
+                }
+                return value;
+            }
             throw new Error("Scope can not resolve " + clazz);
         }
         return mapping.getValue();
-//        mapping = createMapping(clazz);
-//        var value:Object = mapping.getValue();
-//        setMapping(clazz, mapping);
-//        return value;
     }
 
-    public function hasMapping(type:Class):Boolean {
-        return getMapping(type) != null;
+    public function isSpecified(type:*):Boolean {
+        return specifies[type] || getMapping(type) != null;
     }
 
     public function map(type:Class):Mapping {
