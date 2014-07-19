@@ -1,5 +1,9 @@
 # as3-depending
 
+>If you have any questions, problems or even suggestions while reading the following, or using the library<br/>
+>feel free to contact me via [an issue](https://github.com/karfau/as3-depending/issues/new) or [directly](https://github.com/karfau).<br/>
+>You are of course welcome to [fork](https://github.com/karfau/as3-depending/fork) and [do whatever you want with it](https://github.com/karfau/as3-depending/blob/master/UNLICENSE).
+
 ## Definition of DI
 
 The term *dependency injection* is a very general one, so I will define what I mean when talking about it:
@@ -210,3 +214,6 @@ As always there are different ways to do things, so lets look at how an implemen
 
 Feel free to [navigate through the executable code](depending-test/src/as3/depending/examples/readme/Main.as).
 
+>If you have any questions, problems or even suggestions while reading the following, or using the library<br/>
+>feel free to contact me via [an issue](https://github.com/karfau/as3-depending/issues/new) or [directly](https://github.com/karfau).<br/>
+>You are of course welcome to [fork](https://github.com/karfau/as3-depending/fork) and [do whatever you want with it](https://github.com/karfau/as3-depending/blob/master/UNLICENSE).
