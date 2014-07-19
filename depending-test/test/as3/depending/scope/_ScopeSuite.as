@@ -3,13 +3,25 @@ package as3.depending.scope {
 [RunWith("org.flexunit.runners.Suite")]
 public class _ScopeSuite {
 
-    public var _ScopeConstructorInjection:ScopeMapConstructorInjection;
-    public var _ScopeInstanceCreation:ScopeMapInstanceCreation;
-    public var _ScopeNoInstanceCreation:ScopeMapNoInstanceCreation;
+    //noinspection JSUnusedGlobalSymbols
+    public var _ScopeMapConstructorInjection:ScopeMapConstructorInjection;
+    //noinspection JSUnusedGlobalSymbols
+    public var _ScopeMapInstanceCachingStrategies:ScopeMapInstanceCachingStrategies;
+    //noinspection JSUnusedGlobalSymbols
+    public var _ScopeMapInstanceCreation:ScopeMapInstanceCreation;
+    //noinspection JSUnusedGlobalSymbols
+    public var _ScopeMapNoInstanceCreation:ScopeMapNoInstanceCreation;
+
+    //noinspection JSUnusedGlobalSymbols
     public var _ScopeSpecifyConstructorInjection:ScopeSpecifyConstructorInjection;
+    //noinspection JSUnusedGlobalSymbols
     public var _ScopeSpecifyInstanceCreation:ScopeSpecifyInstanceCreation;
+    //noinspection JSUnusedGlobalSymbols
     public var _ScopeSpecifyNoInstanceCreation:ScopeSpecifyNoInstanceCreation;
+
+    //noinspection JSUnusedGlobalSymbols
     public var _TestMapping:TestMapping;
+    //noinspection JSUnusedGlobalSymbols
     public var _TestScope:TestScope;
 }
 }

@@ -17,6 +17,9 @@ public class ScopeMapAdapter extends ResolverAdapter {
 
     override public function specifyTypeForResolver(type:Class):void {
         scope.map(type);
+        if(expectingCachedInstance){
+            scope.map(type).asSingleton();
+        }
     }
 
     override public function specifyImplementationForResolver(definingInterface:Class, implementingClass:Class):void {
