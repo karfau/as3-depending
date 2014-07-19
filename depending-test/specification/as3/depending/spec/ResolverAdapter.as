@@ -27,8 +27,8 @@ public class ResolverAdapter {
         failNotImplemented("specify an implementing instance as resolvable");
     }
 
-    public function specifyAProviderImplementationForResolver(definingInterface:Class, provider:Provider):void {
-        failNotImplemented("specify a Provider implementation to use for resolving a definition");
+    public function specifyAProviderForResolver(definingInterface:Class, provider:Provider):void {
+        failNotImplemented("specify a Provider instance to use for resolving a definition");
     }
 
     public function specifyAProviderFunctionForResolver(definingInterface:Class, provider:Function):void {

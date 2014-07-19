@@ -30,7 +30,7 @@ public class ScopeMapAdapter extends ResolverAdapter {
         scope.map(definingInterface).toInstance(instance);
     }
 
-    override public function specifyAProviderImplementationForResolver(definingInterface:Class, provider:Provider):void {
+    override public function specifyAProviderForResolver(definingInterface:Class, provider:Provider):void {
         scope.map(definingInterface).toProvider(provider);
     }
 

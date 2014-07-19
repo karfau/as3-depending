@@ -22,7 +22,7 @@ public class RelaxedResolverInstanceCreation extends ResolverInstanceCreation {
     }
 
     [Test]
-    public function resolving_a_defined_type_optionally():void {
+    public function resolving_a_specified_type_optionally():void {
         adapter.specifyTypeForResolver(Instance);
         assertThat(relaxedResolver.optionally(Instance), instanceOf(Instance));
     }
@@ -36,7 +36,7 @@ public class RelaxedResolverInstanceCreation extends ResolverInstanceCreation {
     [Test]
     public function resolving_using_a_provider_implementation_optionally():void {
         const provider:ProtocolProvider = new ProtocolProvider();
-        adapter.specifyAProviderImplementationForResolver(IProtocol, provider);
+        adapter.specifyAProviderForResolver(IProtocol, provider);
         assertThat(relaxedResolver.optionally(IProtocol), instanceOf(ProtocolImpl));
     }
 
@@ -55,7 +55,7 @@ public class RelaxedResolverInstanceCreation extends ResolverInstanceCreation {
         ));
     }
 
-    //TODO: define things without the need to provide a type for it, they already implement it (Scope has no support for this yet)
+    //TODO: specify things without the need to provide a type for it, they already implement it (Scope has no support for this yet)
 
 }
 }

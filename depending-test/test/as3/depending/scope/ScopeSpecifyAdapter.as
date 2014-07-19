@@ -27,7 +27,7 @@ public class ScopeSpecifyAdapter extends ResolverAdapter {
         scope.specify(definingInterface, instance);
     }
 
-    override public function specifyAProviderImplementationForResolver(definingInterface:Class, provider:Provider):void {
+    override public function specifyAProviderForResolver(definingInterface:Class, provider:Provider):void {
         scope.specify(definingInterface, provider);
     }
 

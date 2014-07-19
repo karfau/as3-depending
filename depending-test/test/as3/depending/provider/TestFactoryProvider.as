@@ -52,7 +52,7 @@ public class TestFactoryProvider {
     }
 
     [Test]
-    public function provide_with_factory_with_one_defined_parameter():void {
+    public function provide_with_factory_with_one_specified_parameter():void {
         const factory:Function = invokes.oneParameter;
         const parameter:Instance = new Instance();
         provider = new FactoryProvider(factory,[parameter]);
@@ -67,7 +67,7 @@ public class TestFactoryProvider {
     }
 
     [Test]
-    public function provide_with_variable_factory_with_two_defined_parameters_is_not_adding_resolver():void {
+    public function provide_with_variable_factory_with_two_specified_parameters_is_not_adding_resolver():void {
         const factory:Function = invokes.variableParameters;
         const parameters:Array = [new Instance(),"first",2];
         provider = new FactoryProvider(factory, parameters);

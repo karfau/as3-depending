@@ -1,17 +1,17 @@
 package as3.depending {
 
 /**
- * Resolver instances contain the definitions of how to resolve instances of a certain type.
+ * Resolver instances contain the information that specifies how to resolve instances for certain types.
  *
- * To make this work a Resolver instance defines or allows to define the concrete implementation(s) and/or instances that are available in its scope,
+ * To make this work a Resolver instance specifies or allows to specify the concrete implementation(s) and/or instances that are available in its scope,
  * and can then be used to resolve those.
  */
 public interface Resolver {
 
     /**
-     * Resolves an instance of the given Class if defined, throws UnresolvedDependencyError if not.
+     * Resolves an instance of the given Class if specified, throws UnresolvedDependencyError if not.
      *
-     * Can return null or undefined if defined or implemented that way.
+     * Can return null or undefined if specified or implemented that way.
      *
      * @param clazz the type of the dependency to resolve.
      *

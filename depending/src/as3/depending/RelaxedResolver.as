@@ -1,9 +1,9 @@
 package as3.depending {
 public interface RelaxedResolver extends Resolver{
     /**
-     * Resolves an instance of the given Class if defined, return undefined if not.
+     * Resolves an instance of the given Class if specified, return undefined if not.
      *
-     * Can return null or undefined if defined or implemented that way.
+     * Can return null or undefined if specified or implemented that way.
      *
      * @param clazz the type of the dependency to resolve.
      *

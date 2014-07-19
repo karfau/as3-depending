@@ -8,7 +8,7 @@ import org.hamcrest.object.strictlyEqualTo;
 public class ResolverConstructorInjection extends BaseResolverSpec {
 
     [Test]
-    public function resolving_a_defined_type():void {
+    public function resolving_a_specified_type():void {
         adapter.specifyConstructorInjectableProtocolForResolver();
         assertThat(IResolverSpecProtocol(resolver.get(ConstructorInjectableProtocol)).resolver, strictlyEqualTo(resolver));
     }

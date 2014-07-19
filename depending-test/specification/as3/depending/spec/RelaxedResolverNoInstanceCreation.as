@@ -48,7 +48,7 @@ public class RelaxedResolverNoInstanceCreation extends ResolverNoInstanceCreatio
     }
 
     [Test]
-    public function resolving_a_defined_type_throwing_optionally():void {
+    public function resolving_a_specified_type_throwing_optionally():void {
         adapter.specifyTypeForResolver(NotConstructableProtocol);
         resolver_optionally_expecting_undefined(NotConstructableProtocol);
     }

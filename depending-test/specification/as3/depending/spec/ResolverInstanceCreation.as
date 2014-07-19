@@ -15,7 +15,7 @@ import org.hamcrest.object.strictlyEqualTo;
 public class ResolverInstanceCreation extends BaseResolverSpec {
 
     [Test]
-    public function resolving_a_defined_type():void {
+    public function resolving_a_specified_type():void {
         adapter.specifyTypeForResolver(Instance);
         assertThat(resolver.get(Instance), instanceOf(Instance));
     }
@@ -29,7 +29,7 @@ public class ResolverInstanceCreation extends BaseResolverSpec {
     [Test]
     public function resolving_using_a_provider_implementation():void {
         const provider:ProtocolProvider = new ProtocolProvider();
-        adapter.specifyAProviderImplementationForResolver(IProtocol, provider);
+        adapter.specifyAProviderForResolver(IProtocol, provider);
         assertThat(resolver.get(IProtocol), instanceOf(ProtocolImpl));
     }
 
@@ -48,7 +48,7 @@ public class ResolverInstanceCreation extends BaseResolverSpec {
         ));
     }
 
-    //TODO: define things without the need to provide a type for it, they already implement it (Scope has no support for this yet)
+    //TODO: specify things without the need to provide a type for it, they already implement it (Scope has no support for this yet)
 
 }
 }

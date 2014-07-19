@@ -11,13 +11,13 @@ import org.hamcrest.object.strictlyEqualTo;
 public class ResolverInstanceCachingStrategies extends BaseResolverSpec {
 
     [Test]
-    public function resolving_a_cached_instance_of_a_defined_type():void {
+    public function resolving_a_cached_instance_of_a_specified_type():void {
         adapter.usingInstanceCaching(true).specifyTypeForResolver(Instance);
         assertThat(resolver.get(Instance), strictlyEqualTo(resolver.get(Instance)));
     }
 
     [Test]
-    public function resolving_different_instances_of_a_defined_type():void {
+    public function resolving_different_instances_of_a_specified_type():void {
         adapter.usingInstanceCaching(false).specifyTypeForResolver(Instance);
         assertThat(resolver.get(Instance), not(equalTo(resolver.get(Instance))));
     }

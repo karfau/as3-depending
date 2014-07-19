@@ -37,7 +37,7 @@ public class ResolverNoInstanceCreation extends BaseResolverSpec {
         try{
             assertThat( resolver.get(IProtocol), nullValue());
         }catch(error:Error){
-            failNotImplemented("should resolve null when defined");
+            failNotImplemented("should resolve null when specified");
         }
     }
 
@@ -47,7 +47,7 @@ public class ResolverNoInstanceCreation extends BaseResolverSpec {
     }
 
     [Test]
-    public function resolving_a_defined_type_throwing():void {
+    public function resolving_a_specified_type_throwing():void {
         adapter.specifyTypeForResolver(NotConstructableProtocol);
         resolver_get_expecting_UnresolvedDependencyError(NotConstructableProtocol);
     }

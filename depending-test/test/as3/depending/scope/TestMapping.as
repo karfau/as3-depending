@@ -31,7 +31,7 @@ public class TestMapping {
     }
 
     [Test]
-    public function getValue_defines_TypeProvider_when_provider_is_not_defined():void {
+    public function getValue_specifies_TypeProvider_when_provider_is_not_specified():void {
         mapping = new Mapping(ProtocolImpl, resolver);
 
         assertNull(mapping.provider);
@@ -42,7 +42,7 @@ public class TestMapping {
     }
 
     [Test]
-    public function toType_defines_TypeProvider():void {
+    public function toType_specifies_TypeProvider():void {
         mapping.toType(ProtocolImpl);
 
         assertThat(mapping.provider, instanceOf(TypeProvider));
@@ -61,14 +61,14 @@ public class TestMapping {
     }
 
     [Test]
-    public function toValue_defines_ValueProvider():void {
+    public function toValue_specifies_ValueProvider():void {
         mapping.toValue(null);
 
         assertThat(mapping.provider, isA(ValueProvider));
     }
 
     [Test]
-    public function toInstance_defines_ValueProvider():void {
+    public function toInstance_specifies_ValueProvider():void {
         mapping.toInstance(null);
 
         assertThat(mapping.provider, isA(ValueProvider));
@@ -83,14 +83,14 @@ public class TestMapping {
     }
 
     [Test]
-    public function toFactory_defines_FactoryProvider():void {
+    public function toFactory_specifies_FactoryProvider():void {
         mapping.toFactory(null);
 
         assertThat(mapping.provider, instanceOf(FactoryProvider));
     }
 
     [Test]
-    public function asEagerSingleton_defines_ValueProvider():void {
+    public function asEagerSingleton_specifies_ValueProvider():void {
         var providerMock:ProviderMock = new ProviderMock(invokes);
 
         mapping.toProvider(providerMock).asEagerSingleton();
@@ -99,7 +99,7 @@ public class TestMapping {
     }
 
     [Test]
-    public function asSingleton_defines_TypeProvider_when_provider_is_not_defined():void {
+    public function asSingleton_specifies_TypeProvider_when_provider_is_not_specified():void {
         mapping = new Mapping(ProtocolImpl,resolver);
         mapping.asSingleton();
 
@@ -107,7 +107,7 @@ public class TestMapping {
     }
 
     [Test]
-    public function asEagerSingleton_defines_TypeProvider_when_provider_is_not_defined():void {
+    public function asEagerSingleton_specifies_TypeProvider_when_provider_is_not_specified():void {
         mapping = new Mapping(ProtocolImpl,resolver);
         mapping.asEagerSingleton();
 
@@ -125,7 +125,7 @@ public class TestMapping {
 
 
     [Test]
-    public function asEagerSingleton_keeps_defined_ValueProvider():void {
+    public function asEagerSingleton_keeps_specified_ValueProvider():void {
         mapping.toInstance(null);
 
         var valueProvider:ValueProvider = ValueProvider(mapping.provider);
@@ -136,7 +136,7 @@ public class TestMapping {
     }
 
     [Test]
-    public function asSingleton_defines_LazyValueProvider():void {
+    public function asSingleton_specifies_LazyValueProvider():void {
         var providerMock:ProviderMock = new ProviderMock(invokes);
 
         mapping.toProvider(providerMock).asSingleton();
@@ -145,7 +145,7 @@ public class TestMapping {
     }
 
     [Test]
-    public function asSingleton_keeps_defined_ValueProvider():void {
+    public function asSingleton_keeps_specified_ValueProvider():void {
         mapping.toInstance(null);
 
         var valueProvider:ValueProvider = ValueProvider(mapping.provider);
