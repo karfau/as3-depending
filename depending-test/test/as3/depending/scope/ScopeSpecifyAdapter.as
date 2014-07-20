@@ -65,9 +65,14 @@ public class ScopeSpecifyAdapter extends ResolverAdapter {
         //if you need multiple conventions in one scope, you can add own ProviderStrategy implementations via scope.providerStrategy.add()
     }
 
-
     override public function specifyAValueForResolver(value:Object):void {
         scope.specify(value);
     }
+
+    override public function specifyAValueByIdentifier(identifier:Object, value:Object):void {
+        scope.specify(identifier, value);
+    }
+
+
 }
 }

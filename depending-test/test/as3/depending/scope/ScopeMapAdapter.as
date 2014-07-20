@@ -1,23 +1,13 @@
 package as3.depending.scope {
 import as3.depending.Provider;
-import as3.depending.examples.tests.ConstructorInjectableProtocol;
-import as3.depending.examples.tests.IResolverSpecProtocol;
-import as3.depending.examples.tests.InlineConstructorInjectableProtocol;
-import as3.depending.examples.tests.ProtocolProviderFunctions;
-import as3.depending.spec.ResolverAdapter;
+import as3.depending.examples.tests.*;
 
-public class ScopeMapAdapter extends ResolverAdapter {
+public class ScopeMapAdapter extends ScopeSpecifyAdapter {
 
 
     public function ScopeMapAdapter() {
         resolver = new Scope();
     }
-
-    protected function get scope():Scope {
-        return Scope(resolver);
-    }
-
-    public var useEagerSingleton:Boolean;
 
     private function handleInstanceCaching(mapping:Mapping):void {
         if (expectingCachedInstance) {

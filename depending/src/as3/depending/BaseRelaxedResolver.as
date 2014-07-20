@@ -5,21 +5,21 @@ import flash.utils.getQualifiedClassName;
 
 public class BaseRelaxedResolver implements RelaxedResolver {
 
-    public function get(clazz:Class):* {
+    public function get(identifier:Object):* {
         try {
-            return doResolve(clazz);
+            return doResolve(identifier);
         } catch (error:Error) {
-            throw new UnresolvedDependencyError("couldn't resolve a value for class <" + getQualifiedClassName(clazz) + ">, an error was thrown: ", error);
+            throw new UnresolvedDependencyError("couldn't resolve a value for class <" + getQualifiedClassName(identifier) + ">, an error was thrown: ", error);
         }
     }
 
-    protected function doResolve(clazz:Class):* {
+    protected function doResolve(identifier:Object):* {
         throw new Error(this + " is not implementing BaseRelaxedResolver.doResolve or calls super.doResolve()");
     }
 
-    public function optionally(clazz:Class):* {
+    public function optionally(identifier:Object):* {
         try {
-            return doResolve(clazz);
+            return doResolve(identifier);
         } catch (error:Error) {
             return undefined;
         }

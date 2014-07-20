@@ -4,9 +4,9 @@ import as3.depending.Resolver;
 
 public class TweetServiceResolver implements Resolver{
 
-    public function get(clazz:Class):* {
+    public function get(identifier:Object):* {
         var instance:*;
-        switch(clazz){
+        switch(identifier){
             case TweetService:
                 instance = TweetService.create(this);
                 break;
@@ -14,7 +14,9 @@ public class TweetServiceResolver implements Resolver{
                 instance = new TraceTweetClient();
                 break;
             default:
-                instance = new clazz();
+                if(identifier is Class){
+                    instance = new identifier();
+                }
         }
         if(instance is Depending){
             Depending(instance).fetchDependencies(this);

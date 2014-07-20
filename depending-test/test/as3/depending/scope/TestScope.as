@@ -120,23 +120,23 @@ public class TestScope {
     }
 
     [Test]
-    public function after_map_identity_isSpecified():void {
+    public function after_map_identifier_isSpecified():void {
         scope.map(null);
         assertTrue('for null',scope.isSpecified(null));
         scope.map(IProtocol);
-        assertTrue('for IProtocol',scope.isSpecified(IProtocol));
+        assertTrue('for IProtocol',scope.isSpecified(IProtocol));//not constructable
         scope.map(ProtocolImpl);
-        assertTrue('for IProtocol',scope.isSpecified(IProtocol));
+        assertTrue('for ProtocolImpl',scope.isSpecified(ProtocolImpl));
     }
 
     [Test]
-    public function after_specify_identity_isSpecified():void {
+    public function after_specify_identifier_isSpecified():void {
         scope.specify(null);
         assertTrue('for null',scope.isSpecified(null));
         scope.specify(IProtocol);
-        assertTrue('for IProtocol',scope.isSpecified(IProtocol));
+        assertTrue('for IProtocol',scope.isSpecified(IProtocol));//not constructable
         scope.specify(ProtocolImpl);
-        assertTrue('for IProtocol',scope.isSpecified(IProtocol));
+        assertTrue('for ProtocolImpl',scope.isSpecified(ProtocolImpl));
     }
 
 }

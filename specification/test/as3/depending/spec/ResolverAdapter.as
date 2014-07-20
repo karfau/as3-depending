@@ -51,6 +51,10 @@ public class ResolverAdapter {
         failNotImplemented("specify a value as resolvable");
     }
 
+    public function specifyAValueByIdentifier(identifier:Object, value:Object):void {
+        failNotImplemented("specify a value as resolvable by an identifier");
+    }
+
     protected var expectingCachedInstance:Boolean;
     public final function usingInstanceCaching(active:Boolean):ResolverAdapter {
         expectingCachedInstance = active;

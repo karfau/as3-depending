@@ -56,8 +56,8 @@ class TestableRelaxedResolver extends BaseRelaxedResolver{
     public function get doResolve$():Function {
         return doResolve;
     }
-    override protected function doResolve(clazz:Class):* {
-        _invokes.invoke(doResolve,clazz);
+    override protected function doResolve(identifier:Object):* {
+        _invokes.invoke(doResolve,identifier);
         return undefined;
     }
 

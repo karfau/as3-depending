@@ -4,10 +4,19 @@ import as3.depending.provider.DefaultProviderStrategy;
 import as3.depending.provider.ProviderStrategy;
 
 /**
- * This implementation of Resolver offers the possibility to configure the decisions about how to resolve dependencies at runtime,
- * using a fluid API similar to the one from Guice.
+ * This implementation of Resolver offers the possibility to specify the decisions about how to resolve dependencies at runtime.
  *
- * It only contains a list of the decisions that have been made, the Mappings.
+ * At the moment there are two ways to specify things:
+ * - map() is the fluid one that is all about being explicit and type safe
+ * - specify() which has the goal to offer as much flexibility as possible
+ *
+ * It is no problem to use both methods on one instance,
+ * when used with the same identifier the one that is executed last wins.
+ *
+ * For an example of how to use them:
+ * @see https://github.com/karfau/as3-depending/blob/master/depending-test/test/as3/depending/scope/ScopeMapAdapter.as
+ * @see https://github.com/karfau/as3-depending/blob/master/depending-test/test/as3/depending/scope/ScopeSpecifyAdapter.as
+ *
  */
 public class Scope extends BaseRelaxedResolver {
 
@@ -20,23 +29,23 @@ public class Scope extends BaseRelaxedResolver {
 
     private var mappings:Object;
 
-    override protected function doResolve(clazz:Class):* {
-        if (specifies[clazz] is Provider) {
-            return Provider(specifies[clazz]).provide(this);
+    override protected function doResolve(identifier:Object):* {
+        if (specifies[identifier] is Provider) {
+            return Provider(specifies[identifier]).provide(this);
         }
-        if (specifies[clazz] is Specified) {
-            return Specified(specifies[clazz]).provide();
+        if (specifies[identifier] is Specified) {
+            return Specified(specifies[identifier]).provide();
         }
-        var mapping:Mapping = getMapping(clazz);
+        var mapping:Mapping = identifier is Class ? getMapping(Class(identifier)) : null;
         if (mapping == null) {
             if(implicitResolving){
-                var provider:Provider = implicitResolving.providerFor(clazz);
+                var provider:Provider = implicitResolving.providerFor(identifier);
                 if(provider){
                     var value:Object = provider.provide(this);
                 }
                 return value;
             }
-            throw new Error("Scope can not resolve " + clazz);
+            throw new Error("Scope can not resolve " + identifier);
         }
         return mapping.getValue();
     }
@@ -49,7 +58,7 @@ public class Scope extends BaseRelaxedResolver {
         var mapping:Mapping = getMapping(type);
         if (mapping == null) {
             mapping = createMapping(type);
-            setMapping(type, mapping);
+            mappings[type] = mapping;
         }
         return mapping;
     }
@@ -65,17 +74,16 @@ public class Scope extends BaseRelaxedResolver {
 //noinspection SpellCheckingInspection
     private const specifies:Object = {};
 
-    public function specify(identity:Object, ...specification):Specified {
-
-        var value:Object = specification.length == 1 ? specification[0] : identity;
+    public function specify(identifier:Object, ...specification):Specified {
+        var value:Object = specification.length == 1 ? specification[0] : identifier;
         const provider:Provider = providerStrategy.providerFor(value);
-        var specified:Specified = specifies[identity] as Specified;
+        var specified:Specified = specifies[identifier] as Specified;
         if(specified == null){
             specified = new Specified(this);
-            specifies[identity] = specified;
+            specifies[identifier] = specified;
         }
         specified.setProvider(provider);
-        if (value != null && identity === value){
+        if (value != null && identifier === value){
             specifies[value.constructor] = provider
         }
         return specified;
@@ -90,8 +98,5 @@ public class Scope extends BaseRelaxedResolver {
         return mapping;
     }
 
-    private function setMapping(type:Class, mapping:Mapping):void {
-        mappings[type] = mapping;
-    }
 }
 }

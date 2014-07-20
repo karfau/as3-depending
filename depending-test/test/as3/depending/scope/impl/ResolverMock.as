@@ -3,11 +3,11 @@ import as3.depending.RelaxedResolver;
 
 public class ResolverMock implements RelaxedResolver {
 
-    public function get(clazz:Class):* {
+    public function get(identifier:Object):* {
         return undefined;
     }
 
-    public function optionally(clazz:Class):* {
+    public function optionally(identifier:Object):* {
         return undefined;
     }
 }

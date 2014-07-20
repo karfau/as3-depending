@@ -9,15 +9,15 @@ package as3.depending {
 public interface Resolver {
 
     /**
-     * Resolves an instance of the given Class if specified, throws UnresolvedDependencyError if not.
+     * Resolves a value for a given identifier if specified, throws UnresolvedDependencyError if not.
      *
      * Can return null or undefined if specified or implemented that way.
      *
-     * @param clazz the type of the dependency to resolve.
+     * @param identifier the identifier of the dependency to resolve.
      *
      * @throws UnresolvedDependencyError when the resolver can not resolve it.
      */
-    function get(clazz:Class):*;
+    function get(identifier:Object):*;
 
 }
 }
