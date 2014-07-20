@@ -2,11 +2,19 @@
 
 An attempt to define an open standard for dependency injection containers for ActionScript.
 
+## Legend
+
+- A **term** is defined in this sentence is bold.
+- A ***term*** that was defined in the same section sentence is bold and italic.
+- A *term* that was defined in this document but not in this section is italic.
+- Terms that are language keywords or identifiers are marked as `inline code`.
+
+
 ## Terminology
 
-I. A *definition* is the code that creates a *type* (a `class` or `interface`) that an *instance* can have.
-II. A *value* is anything that a variable of a certain type can contain. (Any legal value or reference other then `undefined`).
-III. A *dependency* is a *value*, that is referenced by the *definition* of another *type*.
+I. A **definition** is the code that creates a **type** (a `class` or `interface`) that an **instance** can have.
+II. A **value** is anything that a variable of a certain type can contain. (Any legal value or reference other then `undefined`).
+III. A **dependency** is a ***value***, that is referenced by the ***definition*** of another ***type***.
 
 1. A **depending** is an *instance* that has ***dependencies***.
 2. An **identifier** is a *value* that is used to distinct ***dependencies***.
@@ -14,3 +22,17 @@ III. A *dependency* is a *value*, that is referenced by the *definition* of anot
 4. A **provider** is a `function`, that on each invoke either returns a *value* of the same *type* or throws an `Error`.
 5. A **scope** is an instance that specifies a mapping of ***identifiers*** to ***dependencies*** to be used by a ***resolver***.
 
+## Requirements
+
+### 1. Depending
+
+> 1. A **depending** is an *instance* that has ***dependencies***.
+
+By default ***depending***s communicate their dependencies by code using at least one of the following ways:
+- declaring constructor arguments
+- providing public properties (or setters)
+- providing public methods with arguments
+A  ***depending*** requires that some subset of this will be used to be correctly initialized.
+These mechanisms can be referred to as **inline specifying**.
+ 
+A DI container can provide conventions to allow a **depending** to make it explicit to the container what this subset is.
