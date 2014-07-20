@@ -38,6 +38,7 @@ By default ***depending***s communicate their dependencies by code using at leas
  - declaring constructor arguments
  - providing public properties (or setters)
  - providing public methods with arguments
+ 
 A  ***depending*** requires that some subset of this will be used to be correctly initialized.
  
 A DI container should provide conventions to allow a ***depending*** to make it explicit to the container what this subset is.
