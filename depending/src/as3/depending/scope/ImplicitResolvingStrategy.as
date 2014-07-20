@@ -1,12 +1,14 @@
 package as3.depending.scope {
 import as3.depending.Provider;
-import as3.depending.provider.ProviderStrategy;
-import as3.depending.provider.TypeProvider;
+import as3.depending.provider.DefaultProviderStrategy;
 
-public class ImplicitResolvingStrategy implements ProviderStrategy {
+public class ImplicitResolvingStrategy extends DefaultProviderStrategy {
 
-    public function providerFor(value:*):Provider {
-        return new TypeProvider(value);
+    override public function providerFor(value:*):Provider {
+        if(value is Class){
+            return super.providerFor(value);
+        }
+        return null;
     }
 }
 }
