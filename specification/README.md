@@ -24,7 +24,7 @@ An attempt to define an open standard for dependency injection containers for Ac
  2. An **identifier** is a *value* that is used to distinct *dependencies*.
  3. A **resolver** is a `function`, that takes at least one ***identifier*** as argument and tries to return the related *dependency*.
  4. A **provider** is a `function`, that on each invoke either returns a *value* of the same *type* or throws an `Error`.
- 5. A **scope** is an instance that **specifies** a mapping of ***identifiers*** to *dependencies* to be used by a ***resolver***.
+ 5. A **scope** is an *instance* that **specifies** a mapping of ***identifiers*** to *dependencies* to be used by a ***resolver***.
 
 
 ## Requirements
@@ -34,7 +34,7 @@ An attempt to define an open standard for dependency injection containers for Ac
 
 > 1. A **depending** is an *instance* that has *dependencies*.
 
-By default a ***depending*** communicate their dependencies by code using at least one of the following ways:
+By default each ***depending*** communicates its *dependencies* by code using at least one of the following ways:
  - declaring constructor arguments
  - providing public properties (or setters)
  - providing public methods with arguments
@@ -71,7 +71,7 @@ Examples of the value an identifier can have that a DI container must support:
 1. A ***resolver*** can **fail** to resolve a *dependency* for one of two reasons: 
     1. nothing has been *specified* for the given *identifier(s)*
     1. an Error occurs while resolving.
-    1. When a ***resolver*** ***fails*** each invoke has to **behave** in the same way:
+1. When a ***resolver*** ***fails*** each invoke has to **behave** in the same way:
         1. a **strict** ***resolver*** throws an `Error` 
         1. a **lax** ***resolver*** returns `undefined`
 1. By default a ***resolver*** can only resolve a *dependency* by using the specified *identifier*.
@@ -92,8 +92,10 @@ Examples of the value an identifier can have that a DI container must support:
     1. when it succeeds it always returns an instance of the same type
         1. the returned instance can be the same on each invoke
     1. when an `Error` is thrown while invoke it may not be caught
+    1. declaring a ***provider*** must `throw` an `Error`, when it is possible to know that invoking it will always `throw` an `Error`.
 1. a ***provider*** can accept zero arguments
 1. a ***provider*** can expect a *resolver* as first argument
     1. when a ***provider*** expects a *resolver* as first argument it has to be invoked with a *resolver*
     1. when a ***provider*** creates an instance, it should inject the given *resolver* according to the *inline specifying* conventions
+
 
