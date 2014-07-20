@@ -88,12 +88,12 @@ Examples of the value an identifier can have that a DI container must support:
         
 > 4. A **provider** is a `function`, that on each invoke either returns a *value* of the same *type* or throws an `Error`.
 
-1. a ***provider*** should be immutable in a way that each time it is invoked (with the same argument) it **behaves** the same way
+1. a ***provider*** should be immutable in a way that each time it is invoked it **behaves** the same way
     1. when it succeeds it always returns an instance of the same type
         1. the returned instance can be the same on each invoke
     1. when an `Error` is thrown while invoke it may not be caught
 1. a ***provider*** can accept zero arguments
 1. a ***provider*** can expect a *resolver* as first argument
-    1. when a ***provider*** expects a *resolver* as first argument it should always be invoked with a *resolver*
-    1. when a ***provider*** creates an instance it injects the given *resolver* according to the *inline specifying* conventions
+    1. when a ***provider*** expects a *resolver* as first argument it has to be invoked with a *resolver*
+    1. when a ***provider*** creates an instance, it should inject the given *resolver* according to the *inline specifying* conventions
 
