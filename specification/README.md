@@ -68,15 +68,18 @@ Examples of the value an identifier can have that a DI container must support:
 
 > 3. A **resolver** is a `function`, that takes at least one ***identifier*** as argument and tries to return the related *dependency*.
 
-1. When a ***resolver*** instance can not resolve a *dependency* each invoke has to **behave** in the same way:
-    1. a **strict** ***resolver*** throws an `Error` 
-    1. a **lax** ***resolver*** returns `undefined`
+1. A ***resolver*** can **fail** to resolve a *dependency* for one of two reasons: 
+    1. nothing has been *specified* for the given *identifier(s)*
+    1. an Error occurs while resolving.
+    1. When a ***resolver*** ***fails*** each invoke has to **behave** in the same way:
+        1. a **strict** ***resolver*** throws an `Error` 
+        1. a **lax** ***resolver*** returns `undefined`
 1. By default a ***resolver*** can only resolve a *dependency* by using the specified *identifier*.
     1. When a DI container allows **implicit resolving**, where the *identifier* is a type and the container is able to construct an instance,
         1. it has to be activated explicitly by the code that controls the [*scope*](5-scope).
         1. when activated it may not affect the ***behaviour*** of a resolver.
-        1. when deactivated resolvers that succeeded while it was active, should fail again 
+        1. when deactivated resolvers that succeeded while it was active, should ***fail*** again 
 1. When a resolver supports more then one *identifier* as arguments
     1. each additional identifier works as a constraint to the earlier one
-        1. the ***resolver*** can only succeed when it can fulfil all constraints, when it fails it should ***behave*** as expected.
-        
+        1. the ***resolver*** can only succeed when it can fulfil all constraints, when it ***fails*** it should ***behave*** as expected.
+
