@@ -34,15 +34,22 @@ An attempt to define an open standard for dependency injection containers for Ac
 
 > 1. A **depending** is an *instance* that has *dependencies*.
 
-By default ***depending***s communicate their dependencies by code using at least one of the following ways:
+By default a ***depending*** communicate their dependencies by code using at least one of the following ways:
  - declaring constructor arguments
  - providing public properties (or setters)
  - providing public methods with arguments
  
 A  ***depending*** requires that some subset of this will be used to be correctly initialized.
  
-A DI container should provide conventions to allow a ***depending*** to make it explicit to the container what this subset is.
+**1.1.:** A DI container <u>should</u> provide conventions to allow a definition of a ***depending*** to make it explicit to the container, what subset is of its communicated dependencies the container should take care of.
+
 These mechanisms can be referred to as **inline specifying**.
+
+About the conventions a DI container provides:
+
+**1.2.:** It may not enforce direct or indirect, global or static dependencies to the definition of a ***depending***,  that would bind ***depending*** to the concrete implementation of the container.
+
+**1.3.:** When it requires ***depending*** to execute code of the DI container, it has to be done via an interface or a *resolver*.
 
 
 ### 2. Identifiers
