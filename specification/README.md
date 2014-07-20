@@ -19,17 +19,17 @@ II. A **value** is anything that a variable of a certain type can contain. (Any 
 III. A **dependency** is a ***value***, that is referenced by the ***definition*** of another ***type***.<br/>
 
 ### For this document
-1. A **depending** is an *instance* that has ***dependencies***.
-2. An **identifier** is a *value* that is used to distinct ***dependencies***.
-3. A **resolver** is a `function`, that takes an ***identifier*** as argument and tries to return the related ***dependency***.
+1. A **depending** is an *instance* that has *dependencies*.
+2. An **identifier** is a *value* that is used to distinct *dependencies*.
+3. A **resolver** is a `function`, that takes an ***identifier*** as argument and tries to return the related *dependency*.
 4. A **provider** is a `function`, that on each invoke either returns a *value* of the same *type* or throws an `Error`.
-5. A **scope** is an instance that specifies a mapping of ***identifiers*** to ***dependencies*** to be used by a ***resolver***.
+5. A **scope** is an instance that specifies a mapping of ***identifiers*** to *dependencies* to be used by a ***resolver***.
 
 ## Requirements
 
 ### 1. Depending
 
-> 1. A **depending** is an *instance* that has ***dependencies***.
+> 1. A **depending** is an *instance* that has *dependencies*.
 
 By default ***depending***s communicate their dependencies by code using at least one of the following ways:
 - declaring constructor arguments
@@ -38,5 +38,5 @@ By default ***depending***s communicate their dependencies by code using at leas
 A  ***depending*** requires that some subset of this will be used to be correctly initialized.
 These mechanisms can be referred to as **inline specifying**.
  
-A DI container can provide conventions to allow a **depending** to make it explicit to the container what this subset is.
+A DI container should provide conventions to allow a ***depending*** to make it explicit to the container what this subset is.
 
