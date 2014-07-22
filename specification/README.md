@@ -99,7 +99,7 @@ Examples of the value an identifier can have that a DI container must support:
     1. when a ***provider*** expects a *resolver* as first argument it has to be invoked with a *resolver*
     1. when a ***provider*** creates an instance, it should inject the given *resolver* according to the *inline specifying* conventions
 1. A ***provider*** should be immutable in a way that each time it is invoked it **behaves** the same way:
-    1. a ***provider*** gets invoked it must not catch any `Error`
+    1. a ***provider*** must not catch any `Error`, so it fails with the unmodified cause
     1. when it succeeds it always returns an instance of the same type
         1. a provider can return the same instance on each invoke
     1. declaring a ***provider*** must `throw` an `Error`, when it is known that invoking it will always `throw` an `Error`.
