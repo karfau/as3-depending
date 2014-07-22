@@ -178,10 +178,52 @@ public class Test_invokeProvider {
         );
         invokes.assertInvokes(providerZero.provide, 1);
     }
+    private var providerExpecting:ProviderExpectingMock;
+
+
+    [Test]
+    public function provider_can_be_a_Providing_that_expects_a_resolver():void {
+        providerExpecting = new ProviderExpectingMock(invokes);
+        invokeProvider(providerExpecting, resolver);
+        invokes.assertWasInvokedWith(providerExpecting.provide, [resolver]);
+    }
+
+    [Test]
+    public function for_a_Providing_that_expects_a_resolver_resolver_is_a_required_argument():void {
+        providerExpecting = new ProviderExpectingMock(invokes);
+        assertThat(
+                function ():void {
+                    invokeProvider(providerExpecting, null);
+                },
+                throws(instanceOf(ArgumentError))
+        );
+        invokes.assertNoInvokes(providerExpecting.provide);
+    }
+
+    [Test]
+    public function a_Providing_that_expects_a_resolver_returns_a_value():void {
+        providerExpecting = new ProviderExpectingMock(invokes);
+        shouldProvide = new Instance();
+        assertThat(invokeProvider(providerExpecting, resolver), strictlyEqualTo(shouldProvide));
+    }
+
+    [Test]
+    public function a_Providing_that_expects_a_resolver_must_not_catch_errors():void {
+        providerExpecting = new ProviderExpectingMockThrowing(invokes);
+        assertThat(
+                function ():void {
+                    invokeProvider(providerExpecting, resolver);
+                },
+                throws(instanceOf(CustomError))
+        );
+        invokes.assertInvokes(providerExpecting.provide, 1);
+    }
 }
 }
 
+import as3.depending.Resolver;
 import as3.depending.provider.CustomError;
+import as3.depending.provider.ProviderExpecting;
 import as3.depending.provider.ProviderZero;
 import as3.depending.provider.Test_invokeProvider;
 import as3.depending.scope.impl.Invokes;
@@ -205,6 +247,30 @@ class ProviderZeroMockThrowing extends ProviderZeroMock{
 
     override public function provide():Object {
         super.provide();
+        throw new CustomError();
+    }
+}
+
+class ProviderExpectingMock implements ProviderExpecting{
+    private var _invokes:Invokes;
+
+    public function ProviderExpectingMock(invokes:Invokes) {
+        _invokes = invokes;
+    }
+
+    public function provide(resolver:Resolver):Object {
+        _invokes.invoke(provide, resolver);
+        return Test_invokeProvider.shouldProvide;
+    }
+}
+class ProviderExpectingMockThrowing extends ProviderExpectingMock{
+
+    function ProviderExpectingMockThrowing(invokes:Invokes) {
+        super(invokes);
+    }
+
+    override public function provide(resolver:Resolver):Object {
+        super.provide(resolver);
         throw new CustomError();
     }
 }

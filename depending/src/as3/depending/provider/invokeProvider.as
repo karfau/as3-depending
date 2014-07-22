@@ -4,7 +4,7 @@ import as3.depending.Resolver;
 
 public function invokeProvider(provider:Object, resolver:Resolver):Object {
     var method:Function = provider as Function;
-    var providing:Object = provider as ProviderZero;
+    var providing:Object = provider as Providing;
     if (method == null) {
         if (providing == null) {
             throw new ArgumentError('expected a Function or a Providing but was ' + provider);
