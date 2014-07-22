@@ -6,6 +6,7 @@ import as3.depending.scope.impl.ResolverDummy;
 
 import org.flexunit.assertThat;
 import org.flexunit.asserts.assertTrue;
+import org.flexunit.asserts.fail;
 import org.hamcrest.core.throws;
 import org.hamcrest.object.instanceOf;
 import org.hamcrest.object.strictlyEqualTo;
@@ -13,7 +14,6 @@ import org.hamcrest.object.strictlyEqualTo;
 public class Test_invokeProvider {
 
     public static var shouldProvide:*;
-    public static var wasProvided:*;
 
     private var invokes:Invokes;
     private var resolver:Resolver;
@@ -22,17 +22,28 @@ public class Test_invokeProvider {
     public function setUp():void {
         invokes = new Invokes();
         resolver = new ResolverDummy();
-        shouldProvide = new Instance();
-        wasProvided = undefined;
+        shouldProvide = undefined;
+    }
+
+    [Test]
+    public function invokeProvider_returns_a_typed_value():void {
+        function providerThatReturnsUndefined():* {
+            //this is not conform to the spec, but we can not enforce it on functions without any interface contract
+            return undefined;
+        }
+        //so we make sure that at least the result we get from invokeProvider conforms with the standard
+        //by converting the undefined to null, because the provider didn't throw and ActionScript would also convert
+        var result:* = invokeProvider(providerThatReturnsUndefined, null);
+        if(result === undefined){
+            //when this fails the return type of invokeProvider has been changed to * change it back to Object
+            //read the above comments for why this test exists
+            fail("invokeProvider needs to return a typed value");
+        }
     }
 
     private function expectingProviderFunction(expected:Resolver):Object {
         invokes.invoke(expectingProviderFunction, expected);
-        if (shouldProvide is Error) {
-            throw shouldProvide;
-        }
-        wasProvided = shouldProvide;
-        return wasProvided;
+        return shouldProvide;
     }
 
     [Test]
@@ -53,22 +64,63 @@ public class Test_invokeProvider {
     }
 
     [Test]
-    public function a_provider_that_expects_a_resolver_returns_a_value_not_undefined():void {
-        shouldProvide = undefined;
-        var result:* = invokeProvider(expectingProviderFunction, resolver);
-        assertTrue("invokeProvider did return <" + result + "> instead of the provided value <" + wasProvided + ">", result === null);
+    public function a_provider_that_expects_a_resolver_returns_a_value():void {
+        shouldProvide = new Instance();
+        assertThat(invokeProvider(expectingProviderFunction, resolver), strictlyEqualTo(shouldProvide));
+    }
+
+    private function expectingProviderFunctionThrowing(expected:Resolver):Object {
+        invokes.invoke(expectingProviderFunctionThrowing, expected);
+        throw new CustomError();
+    }
+    [Test]
+    public function a_provider_that_expects_a_resolver_must_not_catch_errors():void {
+        assertThat(
+                function ():void {
+                    invokeProvider(expectingProviderFunctionThrowing, resolver);
+                },
+                throws(instanceOf(CustomError))
+        );
+        invokes.assertInvokes(expectingProviderFunctionThrowing, 1);
+    }
+
+    private function providerZeroFunction():Object {
+        invokes.invoke(providerZeroFunction);
+        return shouldProvide;
+    }
+
+
+    [Test]
+    public function a_provider_is_a_function_that_expects_zero_arguments():void {
+        invokeProvider(providerZeroFunction, resolver);
+        invokes.assertWasInvokedWith(providerZeroFunction, []);
     }
 
     [Test]
-    public function a_provider_that_expects_a_resolver_returns_a_value():void {
-        assertThat(invokeProvider(expectingProviderFunction, resolver), strictlyEqualTo(wasProvided));
+    public function for_a_provider_that_expects_zero_arguments_resolver_is_NOT_a_required_argument():void {
+        invokeProvider(providerZeroFunction, null);
+        invokes.assertWasInvokedWith(providerZeroFunction, []);
     }
 
-    [Test(expects="as3.depending.provider.CustomError")]
-    public function a_provider_that_expects_a_resolver_must_not_catch_errors():void {
-        shouldProvide = new CustomError();
-        invokeProvider(expectingProviderFunction, resolver);
+    [Test]
+    public function a_provider_that_expects_zero_arguments_returns_a_value():void {
+        shouldProvide = new Instance();
+        assertThat(invokeProvider(providerZeroFunction, null), strictlyEqualTo(shouldProvide));
     }
 
+    private function providerZeroFunctionThrowing():Object {
+        invokes.invoke(providerZeroFunctionThrowing);
+        throw new CustomError();
+    }
+    [Test]
+    public function a_provider_that_expects_zero_arguments_must_not_catch_errors():void {
+        assertThat(
+                function ():void {
+                    invokeProvider(providerZeroFunctionThrowing, null);
+                },
+                throws(instanceOf(CustomError))
+        );
+        invokes.assertInvokes(providerZeroFunctionThrowing, 1);
+    }
 }
 }
