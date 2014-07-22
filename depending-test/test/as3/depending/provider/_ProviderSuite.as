@@ -4,6 +4,8 @@ package as3.depending.provider {
 public class _ProviderSuite {
 
     //noinspection JSUnusedGlobalSymbols
+    public var _Test_invokeProvider:Test_invokeProvider;
+    //noinspection JSUnusedGlobalSymbols
     public var _TestTypeProvider:TestTypeProvider;
     //noinspection JSUnusedGlobalSymbols
     public var _TestFactoryProvider:TestFactoryProvider;

@@ -1,6 +1,6 @@
 package as3.depending.provider {
 import as3.depending.scope.impl.Invokes;
-import as3.depending.scope.impl.ResolverMock;
+import as3.depending.scope.impl.ResolverDummy;
 
 import org.flexunit.assertThat;
 import org.hamcrest.collection.array;
@@ -11,14 +11,14 @@ public class TestLazyValueProvider {
     private var provider:LazyValueProvider;
     private var contained:ProviderMock;
     private var invokes:Invokes;
-    private var resolver:ResolverMock;
+    private var resolver:ResolverDummy;
 
     [Before]
     public function setUp():void {
         invokes = new Invokes();
         contained = new ProviderMock(invokes);
         provider = new LazyValueProvider(contained);
-        resolver = new ResolverMock()
+        resolver = new ResolverDummy()
     }
 
     [Test]

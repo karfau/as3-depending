@@ -1,7 +1,7 @@
 package as3.depending.scope.impl {
 import as3.depending.RelaxedResolver;
 
-public class ResolverMock implements RelaxedResolver {
+public class ResolverDummy implements RelaxedResolver {
 
     public function get(identifier:Object):* {
         return undefined;

@@ -1,7 +1,7 @@
 package as3.depending.provider {
 import as3.depending.examples.tests.Instance;
 import as3.depending.scope.impl.Invokes;
-import as3.depending.scope.impl.ResolverMock;
+import as3.depending.scope.impl.ResolverDummy;
 
 import org.hamcrest.collection.array;
 
@@ -9,12 +9,12 @@ public class TestFactoryProvider {
 
     //noinspection JSFieldCanBeLocal
     private var provider:FactoryProvider;
-    private var resolver:ResolverMock;
+    private var resolver:ResolverDummy;
     private var invokes:Invokes;
 
     [Before]
     public function setUp():void {
-        resolver = new ResolverMock();
+        resolver = new ResolverDummy();
         invokes = new Invokes();
     }
 

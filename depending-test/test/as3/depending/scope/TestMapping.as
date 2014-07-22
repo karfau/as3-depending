@@ -24,7 +24,7 @@ public class TestMapping {
     [Before]
     public function setUp():void {
         DependingDefinitionMock.lastInstance = null;
-        resolver = new ResolverMock();
+        resolver = new ResolverDummy();
         mapping = new Mapping(IProtocol, resolver);
         invokes = new Invokes();
         DependingDefinitionMock.invokes = invokes;
