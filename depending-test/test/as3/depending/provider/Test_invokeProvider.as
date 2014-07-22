@@ -5,7 +5,6 @@ import as3.depending.scope.impl.Invokes;
 import as3.depending.scope.impl.ResolverDummy;
 
 import org.flexunit.assertThat;
-import org.flexunit.asserts.assertTrue;
 import org.flexunit.asserts.fail;
 import org.hamcrest.core.throws;
 import org.hamcrest.object.instanceOf;
@@ -40,6 +39,28 @@ public class Test_invokeProvider {
             fail("invokeProvider needs to return a typed value");
         }
     }
+
+    [Test]
+    public function invokeProvider_first_argument_can_NOT_be_an_Object():void {
+        assertThat(
+                function ():void {
+                    invokeProvider({}, null);
+                },
+                throws(instanceOf(ArgumentError))
+        );
+    }
+
+    [Test]
+    public function invokeProvider_first_argument_can_NOT_be_null():void {
+        assertThat(
+                function ():void {
+                    invokeProvider(null, null);
+                },
+                throws(instanceOf(ArgumentError))
+        );
+    }
+
+
 
     private function expectingProviderFunction(expected:Resolver):Object {
         invokes.invoke(expectingProviderFunction, expected);
@@ -122,5 +143,68 @@ public class Test_invokeProvider {
         );
         invokes.assertInvokes(providerZeroFunctionThrowing, 1);
     }
+    private var providerZero:ProviderZeroMock;
+
+
+    [Test]
+    public function provider_can_be_a_Providing_that_expects_zero_arguments():void {
+        providerZero = new ProviderZeroMock(invokes);
+        invokeProvider(providerZero, resolver);
+        invokes.assertWasInvokedWith(providerZero.provide, []);
+    }
+
+    [Test]
+    public function for_a_Providing_that_expects_zero_arguments_resolver_is_NOT_a_required_argument():void {
+        providerZero = new ProviderZeroMock(invokes);
+        invokeProvider(providerZero, null);
+        invokes.assertWasInvokedWith(providerZero.provide, []);
+    }
+
+    [Test]
+    public function a_Providing_that_expects_zero_arguments_returns_a_value():void {
+        providerZero = new ProviderZeroMock(invokes);
+        shouldProvide = new Instance();
+        assertThat(invokeProvider(providerZero, null), strictlyEqualTo(shouldProvide));
+    }
+
+    [Test]
+    public function a_Providing_that_expects_zero_arguments_must_not_catch_errors():void {
+        providerZero = new ProviderZeroMockThrowing(invokes);
+        assertThat(
+                function ():void {
+                    invokeProvider(providerZero, null);
+                },
+                throws(instanceOf(CustomError))
+        );
+        invokes.assertInvokes(providerZero.provide, 1);
+    }
 }
+}
+
+import as3.depending.provider.CustomError;
+import as3.depending.provider.ProviderZero;
+import as3.depending.provider.Test_invokeProvider;
+import as3.depending.scope.impl.Invokes;
+
+class ProviderZeroMock implements ProviderZero{
+    private var _invokes:Invokes;
+    public function ProviderZeroMock(invokes:Invokes) {
+        _invokes = invokes;
+    }
+
+    public function provide():Object {
+        _invokes.invoke(provide);
+        return Test_invokeProvider.shouldProvide;
+    }
+}
+class ProviderZeroMockThrowing extends ProviderZeroMock{
+
+    function ProviderZeroMockThrowing(invokes:Invokes) {
+        super(invokes);
+    }
+
+    override public function provide():Object {
+        super.provide();
+        throw new CustomError();
+    }
 }
