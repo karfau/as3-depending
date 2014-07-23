@@ -6,6 +6,7 @@ import as3.depending.scope.impl.*;
 
 import org.flexunit.assertThat;
 import org.flexunit.asserts.assertNull;
+import org.hamcrest.Matcher;
 import org.hamcrest.collection.*;
 import org.hamcrest.core.*;
 import org.hamcrest.object.*;
@@ -62,16 +63,18 @@ public class TestMapping {
 
     [Test]
     public function toValue_specifies_ValueProvider():void {
-        mapping.toValue(null);
-
-        assertThat(mapping.provider, isA(ValueProvider));
+        const valueProvider:ProviderZero = mapping.toValue(null);
+        assertThat(valueProvider, equalToSpecifiedValueProvider());
     }
 
     [Test]
     public function toInstance_specifies_ValueProvider():void {
-        mapping.toInstance(null);
+        const valueProvider:ProviderZero = mapping.toInstance(null);
+        assertThat(valueProvider, equalToSpecifiedValueProvider());
+    }
 
-        assertThat(mapping.provider, isA(ValueProvider));
+    private function equalToSpecifiedValueProvider():Matcher {
+        return allOf(strictlyEqualTo(mapping.provider), instanceOf(ValueProvider));
     }
 
     [Test]
@@ -93,9 +96,8 @@ public class TestMapping {
     public function asEagerSingleton_specifies_ValueProvider():void {
         var providerMock:ProviderMock = new ProviderMock(invokes);
 
-        mapping.toProvider(providerMock).asEagerSingleton();
-
-        assertThat(mapping.provider, isA(ValueProvider));
+        const valueProvider:ProviderZero = mapping.toProvider(providerMock).asEagerSingleton();
+        assertThat(valueProvider, equalToSpecifiedValueProvider());
     }
 
     [Test]
@@ -123,36 +125,47 @@ public class TestMapping {
         invokes.assertWasInvokedWith(providerMock.provide, array(resolver));
     }
 
+    [Test]
+    public function asEagerSingleton_invokes_LazyValueProvider():void {
+        const providerMock:ProviderMock = new ProviderMock(invokes);
+        var evilCase:LazyValueProvider = new LazyValueProvider(providerMock);
+
+        assertThat(mapping.toProvider(evilCase).asEagerSingleton(), equalToSpecifiedValueProvider());
+
+        invokes.assertWasInvokedWith(providerMock.provide, array(resolver));
+    }
+
 
     [Test]
     public function asEagerSingleton_keeps_specified_ValueProvider():void {
-        mapping.toInstance(null);
-
-        var valueProvider:ValueProvider = ValueProvider(mapping.provider);
+        mapping.toProvider(ProviderMock.Null);
 
         mapping.asEagerSingleton();
 
-        assertThat(mapping.provider, strictlyEqualTo(valueProvider));
+        assertThat(mapping.provider, strictlyEqualTo(ProviderMock.Null));
     }
 
     [Test]
     public function asSingleton_specifies_LazyValueProvider():void {
         var providerMock:ProviderMock = new ProviderMock(invokes);
 
-        mapping.toProvider(providerMock).asSingleton();
+        var singletonProvider:SameInstanceProviding = mapping.toProvider(providerMock).asSingleton();
 
         assertThat(mapping.provider, isA(LazyValueProvider));
-    }
-
-    [Test]
-    public function asSingleton_keeps_specified_ValueProvider():void {
-        mapping.toInstance(null);
-
-        var valueProvider:ValueProvider = ValueProvider(mapping.provider);
 
         mapping.asSingleton();
 
-        assertThat(mapping.provider, strictlyEqualTo(valueProvider));
+        assertThat(mapping.provider, strictlyEqualTo(singletonProvider));
+    }
+
+    [Test]
+    public function asSingleton_keeps_specified_SameInstanceProvider():void {
+        var provider:SameInstanceProviding = new SameInstanceProviderMock();
+        mapping.toProvider(provider);
+
+        mapping.asSingleton();
+
+        assertThat(mapping.provider, strictlyEqualTo(provider));
     }
 
 

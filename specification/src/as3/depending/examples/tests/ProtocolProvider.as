@@ -1,10 +1,9 @@
 package as3.depending.examples.tests {
-import as3.depending.Provider;
-import as3.depending.Resolver;
+import as3.depending.provider.ProviderZero;
 
-public class ProtocolProvider implements Provider {
+public class ProtocolProvider implements ProviderZero {
 
-    public function provide(resolver:Resolver = null):Object {
+    public function provide():Object {
         return new ProtocolImpl();
     }
 

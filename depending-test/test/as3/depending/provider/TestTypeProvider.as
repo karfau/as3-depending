@@ -5,7 +5,6 @@ import as3.depending.scope.impl.Invokes;
 import as3.depending.scope.impl.ResolverDummy;
 
 import org.flexunit.assertThat;
-
 import org.flexunit.asserts.assertNull;
 import org.hamcrest.collection.array;
 import org.hamcrest.core.allOf;
@@ -35,12 +34,12 @@ public class TestTypeProvider {
 
         assertNull(Instance.last);
 
-        var first:Instance = Instance(provider.provide());
+        var first:Instance = Instance(provider.provide(null));
 
         assertThat(first, allOf(
                 notNullValue(),
                 strictlyEqualTo(Instance.last),
-                not(equalTo(provider.provide()))
+                not(equalTo(provider.provide(null)))
         ));
     }
 

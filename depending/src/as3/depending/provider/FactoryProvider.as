@@ -1,5 +1,4 @@
 package as3.depending.provider {
-import as3.depending.Provider;
 import as3.depending.Resolver;
 
 /**
@@ -11,7 +10,7 @@ import as3.depending.Resolver;
  * That means methods with a signature similar to Provider.provide will be supported
  * without setting a resolver instance at construction time.
  */
-public class FactoryProvider implements Provider {
+public class FactoryProvider implements ProviderExpecting {
 
     private var factory:Function;
     private var params:Array;
@@ -21,7 +20,7 @@ public class FactoryProvider implements Provider {
         this.params = params;
     }
 
-    public function provide(resolver:Resolver = null):Object {
+    public function provide(resolver:Resolver):Object {
         var value:Object;
         if(factory.length == 1 && (params == null || params.length == 0)){
             value = factory(resolver);

@@ -30,10 +30,10 @@ public class TestFactoryProvider {
 
         invokes.assertNoInvokes(factory);
 
-        provider.provide();
+        provider.provide(null);
         invokes.assertWasInvokedWith(factory, array());
 
-        provider.provide();
+        provider.provide(null);
         invokes.assertWasInvokedWith(factory, array(), array());
     }
 

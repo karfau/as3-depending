@@ -2,6 +2,8 @@ package as3.depending.scope {
 import as3.depending.examples.tests.Instance;
 import as3.depending.provider.LazyValueProvider;
 import as3.depending.provider.ProviderMock;
+import as3.depending.provider.SameInstanceProviderMock;
+import as3.depending.provider.SameInstanceProviding;
 import as3.depending.provider.ValueProvider;
 import as3.depending.scope.impl.Invokes;
 
@@ -45,24 +47,42 @@ public class TestSpecified {
     public function asSingleton_specifies_a_LazyValueProvider_wrapping_provider():void {
         it.setProvider(provider);
 
-        it.asSingleton();
+        var singletonProvider:SameInstanceProviding = it.asSingleton();
         assertThat(it.provider, instanceOf(LazyValueProvider));
 
         it.provide();
         invokes.assertWasInvokedWith(provider.provide, array(strictlyEqualTo(scope)));
+
+        it.asSingleton();//make sure the created LazyValueProvider is not wrapped again
+        assertThat(it.provider, strictlyEqualTo(singletonProvider));
+
     }
 
     [Test]
-    public function asSingleton_keeps_specified_ValueProvider():void {
-        it.setProvider(ProviderMock.Null);
+    public function asSingleton_keeps_specified_SameInstanceProvider():void {
+        var provider:SameInstanceProviding = new SameInstanceProviderMock();
+        it.setProvider(provider);
 
         it.asSingleton();
-        assertThat(it.provider, strictlyEqualTo(ProviderMock.Null));
+
+        assertThat(it.provider, strictlyEqualTo(provider));
     }
 
     [Test]
     public function asEagerSingleton_invokes_provider_and_specifies_ValueProvider_for_result():void {
         it.setProvider(provider);
+
+        it.asEagerSingleton();
+        invokes.assertWasInvokedWith(provider.provide, array(strictlyEqualTo(scope)));
+        assertThat(it.provider, instanceOf(ValueProvider));
+        assertThat(it.provide(), strictlyEqualTo(provider.lastProvided));
+
+    }
+
+    [Test]
+    public function asEagerSingleton_invokes_LazyValueProvider_and_specifies_ValueProvider_for_result():void {
+        var evilCase:LazyValueProvider = new LazyValueProvider(provider);
+        it.setProvider(evilCase);
 
         it.asEagerSingleton();
         invokes.assertWasInvokedWith(provider.provide, array(strictlyEqualTo(scope)));

@@ -1,10 +1,9 @@
 package as3.depending.provider {
-import as3.depending.scope.impl.*;
-import as3.depending.Provider;
 import as3.depending.Resolver;
 import as3.depending.examples.tests.Instance;
+import as3.depending.scope.impl.*;
 
-public class ProviderMock implements Provider {
+public class ProviderMock implements ProviderExpecting {
 
     protected var invokes:Invokes;
     private var _last:Object;
@@ -16,7 +15,7 @@ public class ProviderMock implements Provider {
         this.invokes = invokes;
     }
 
-    public function provide(resolver:Resolver = null):Object {
+    public function provide(resolver:Resolver):Object {
         if(invokes){
             invokes.invoke(provide,resolver);
         }
@@ -24,7 +23,7 @@ public class ProviderMock implements Provider {
         return  _last;
     }
 
-    public static const Null:ValueProvider= new ValueProvider(null);
+    public static const Null:ValueProvider = new ValueProvider(null);
 
     public static function Failing(invokes:Invokes):ProviderMock {
         return new FailingProviderMock(invokes);
@@ -43,7 +42,7 @@ class FailingProviderMock extends ProviderMock{
         super(invokes);
     }
 
-    override public function provide(resolver:Resolver = null):Object {
+    override public function provide(resolver:Resolver):Object {
         invokes.invoke(provide,resolver);
         throw new CustomError();
     }

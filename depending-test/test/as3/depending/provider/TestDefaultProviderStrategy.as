@@ -20,35 +20,31 @@ public class TestDefaultProviderStrategy {
     [Test]
     public function creates_ValueProvider_for_null():void {
         const value:Object = null;
-        const provider:Providing = it.providerFor(value);
-        assertThat(provider, instanceOf(ValueProvider));
-        assertThat(ValueProvider(provider).provide(), strictlyEqualTo(value));
+        const provider:ValueProvider = ValueProvider(it.providerFor(value));
+        assertThat(provider.provide(), strictlyEqualTo(value));
     }
 
     [Test]
     public function creates_ValueProvider_for_instance():void {
         const value:Instance = new Instance();
-        const provider:Providing = it.providerFor(value);
-        assertThat(provider, instanceOf(ValueProvider));
-        assertThat(ValueProvider(provider).provide(), strictlyEqualTo(value));
+        const provider:ValueProvider = ValueProvider(it.providerFor(value));
+        assertThat(provider.provide(), strictlyEqualTo(value));
     }
 
     [Test]
     public function creates_TypeProvider_for_Class_value():void {
-        const provider:Providing = it.providerFor(Instance);
-        assertThat(provider, instanceOf(TypeProvider));
-        assertThat(TypeProvider(provider).provide(), instanceOf(Instance));
+        const provider:TypeProvider = TypeProvider(it.providerFor(Instance));
+        assertThat(provider.provide(null), instanceOf(Instance));
     }
 
     [Test]
     public function creates_FactoryProvider_for_Function_value():void {
         var invoke:Invokes = new Invokes();
 
-        const provider:Providing = it.providerFor(invoke.noParameters);
-        assertThat(provider, instanceOf(FactoryProvider));
+        const provider:FactoryProvider = FactoryProvider(it.providerFor(invoke.noParameters));
         invoke.assertNoInvokes(invoke.noParameters);
 
-        FactoryProvider(provider).provide();
+        provider.provide(null);
         invoke.assertInvokes(invoke.noParameters, 1)
     }
 

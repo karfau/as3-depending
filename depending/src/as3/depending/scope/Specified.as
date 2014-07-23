@@ -1,6 +1,7 @@
 package as3.depending.scope {
 import as3.depending.Providing;
 import as3.depending.provider.LazyValueProvider;
+import as3.depending.provider.SameInstanceProviding;
 import as3.depending.provider.ValueProvider;
 import as3.depending.provider.invokeProvider;
 
@@ -27,18 +28,22 @@ public class Specified {
         return invokeProvider(_provider, _scope);
     }
 
-    public function asSingleton():void {
-        if (provider is ValueProvider) {
-            return;
+    public function asSingleton():SameInstanceProviding {
+        var valueProvider:SameInstanceProviding = _provider as SameInstanceProviding;
+        if (valueProvider == null) {
+            valueProvider = new LazyValueProvider(provider);
+            setProvider(valueProvider);
         }
-        setProvider(new LazyValueProvider(provider));
+        return valueProvider;
     }
 
-    public function asEagerSingleton():void {
-        if (provider is ValueProvider) {
-            return;
+    public function asEagerSingleton():ValueProvider {
+        var valueProvider:ValueProvider = _provider as ValueProvider;
+        if (valueProvider == null) {
+            valueProvider = new ValueProvider(provide());
+            setProvider(valueProvider);
         }
-        setProvider(new ValueProvider(provide()));
+        return valueProvider;
     }
 }
 }

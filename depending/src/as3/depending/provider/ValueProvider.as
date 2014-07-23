@@ -1,18 +1,15 @@
 package as3.depending.provider {
-import as3.depending.Provider;
-import as3.depending.Resolver;
-
 /**
  * Each instance of this provider always returns the given value.
  */
-public class ValueProvider implements Provider {
+public class ValueProvider implements ProviderZero, SameInstanceProviding {
     protected var value:Object;
 
     public function ValueProvider(value:Object) {
         this.value = value;
     }
 
-    public function provide(resolver:Resolver = null):Object {
+    public function provide():Object {
         return value;
     }
 

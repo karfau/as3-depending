@@ -11,19 +11,19 @@ import as3.depending.Resolver;
  *
  * It will throw an ArgumentError when created without a provider.
  */
-public class LazyValueProvider extends ValueProvider {
+public class LazyValueProvider implements ProviderExpecting, SameInstanceProviding {
 
     private var provider:Providing;
+    private var value:Object;
 
     public function LazyValueProvider(provider:Providing) {
-        super(null);//compiler error 1201 : super can not be called after throw
         if(provider == null){
             throw new ArgumentError('expected Provider but was null');
         }
         this.provider = provider;
     }
 
-    override public function provide(resolver:Resolver = null):Object {
+    public function provide(resolver:Resolver):Object {
         if(value == null){
             value = invokeProvider(provider, resolver);
         }

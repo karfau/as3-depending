@@ -43,35 +43,37 @@ public class Mapping {
         return toProvider(new TypeProvider(implementing));
     }
 
-    public function toInstance(instance:Object):Mapping {
+    public function toInstance(instance:Object):ValueProvider {
         resolveDepending(instance);
-        toValue(instance);
-        return this;
+        return toValue(instance);
     }
 
-    public function toValue(value:Object):void {
-        toProvider(new ValueProvider(value));
+    public function toValue(value:Object):ValueProvider {
+        const valueProvider:ValueProvider = new ValueProvider(value);
+        toProvider(valueProvider);
+        return valueProvider;
     }
 
     public function toFactory(method:Function, ...params):Mapping {
         return toProvider(new FactoryProvider(method, params));
     }
 
-    public function asSingleton():Providing {
+    public function asSingleton():SameInstanceProviding {
         ensureProvider();
-        if(_provider is ValueProvider){
-            return _provider;
+        var lazyValueProvider:SameInstanceProviding = _provider as SameInstanceProviding;
+        if(lazyValueProvider == null){
+            lazyValueProvider = new LazyValueProvider(_provider);
+            toProvider(lazyValueProvider);
         }
-        toProvider(new LazyValueProvider(_provider));
-        return _provider;
+        return lazyValueProvider;
     }
 
-    public function asEagerSingleton():Providing {
-        if(_provider is ValueProvider){
-            return _provider;
+    public function asEagerSingleton():ValueProvider {
+        var valueProvider:ValueProvider = _provider as ValueProvider;
+        if(valueProvider == null){
+            valueProvider = toValue(getValue())
         }
-        toValue(getValue());
-        return _provider;
+        return valueProvider;
     }
 
     public function getValue():Object {
