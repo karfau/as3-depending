@@ -87,9 +87,13 @@ public class TestMapping {
 
     [Test]
     public function toFactory_specifies_FactoryProvider():void {
-        mapping.toFactory(null);
+        mapping.toFactory(dummy);
 
         assertThat(mapping.provider, instanceOf(FactoryProvider));
+    }
+
+    private function dummy():void {
+
     }
 
     [Test]

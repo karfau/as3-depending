@@ -18,7 +18,7 @@ public class LazyValueProvider implements ProviderExpecting, SameInstanceProvidi
 
     public function LazyValueProvider(provider:Providing) {
         if(provider == null){
-            throw new ArgumentError('expected Provider but was null');
+            throw new ArgumentError('expected Providing but was null');
         }
         this.provider = provider;
     }

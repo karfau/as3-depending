@@ -11,6 +11,9 @@ public class TypeProvider implements ProviderExpecting {
     private var Impl:Class;
 
     public function TypeProvider(implementation:Class) {
+        if(implementation == null){
+            throw new ArgumentError('expected Class but was null');
+        }
         this.Impl = implementation;
     }
 

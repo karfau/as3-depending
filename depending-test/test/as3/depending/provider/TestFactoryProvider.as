@@ -23,6 +23,11 @@ public class TestFactoryProvider {
         provider = null;
     }
 
+    [Test(expects="ArgumentError")]
+    public function creation_fails_without_provider():void {
+        provider = new FactoryProvider(null);
+    }
+
     [Test]
     public function provide_with_factory_without_parameters():void {
         const factory:Function = invokes.noParameters;

@@ -16,6 +16,9 @@ public class FactoryProvider implements ProviderExpecting {
     private var params:Array;
 
     public function FactoryProvider(factory:Function, params:Array = null) {
+        if(factory == null){
+            throw new ArgumentError('expected Function but was null');
+        }
         this.factory = factory;
         this.params = params;
     }

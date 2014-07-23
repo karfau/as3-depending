@@ -26,6 +26,11 @@ public class TestTypeProvider {
         invokes = new Invokes();
     }
 
+    [Test(expects="ArgumentError")]
+    public function creation_fails_without_type():void {
+        provider = new TypeProvider(null);
+    }
+
 
     [Test]
     public function provide_creates_Instance():void {
