@@ -85,7 +85,7 @@ public class Test_invokeProvider {
     }
 
     [Test]
-    public function a_provider_that_expects_a_resolver_returns_a_value():void {
+    public function invoking_with_a_provider_that_expects_a_resolver_returns_a_value():void {
         shouldProvide = new Instance();
         assertThat(invokeProvider(expectingProviderFunction, resolver), strictlyEqualTo(shouldProvide));
     }
@@ -124,7 +124,7 @@ public class Test_invokeProvider {
     }
 
     [Test]
-    public function a_provider_that_expects_zero_arguments_returns_a_value():void {
+    public function invoking_with_a_provider_that_expects_zero_arguments_returns_a_value():void {
         shouldProvide = new Instance();
         assertThat(invokeProvider(providerZeroFunction, null), strictlyEqualTo(shouldProvide));
     }
@@ -161,7 +161,7 @@ public class Test_invokeProvider {
     }
 
     [Test]
-    public function a_Providing_that_expects_zero_arguments_returns_a_value():void {
+    public function invoking_with_a_Providing_that_expects_zero_arguments_returns_a_value():void {
         providerZero = new ProviderZeroMock(invokes);
         shouldProvide = new Instance();
         assertThat(invokeProvider(providerZero, null), strictlyEqualTo(shouldProvide));
@@ -178,8 +178,9 @@ public class Test_invokeProvider {
         );
         invokes.assertInvokes(providerZero.provide, 1);
     }
-    private var providerExpecting:ProviderExpectingMock;
 
+
+    private var providerExpecting:ProviderExpectingMock;
 
     [Test]
     public function provider_can_be_a_Providing_that_expects_a_resolver():void {
@@ -201,7 +202,7 @@ public class Test_invokeProvider {
     }
 
     [Test]
-    public function a_Providing_that_expects_a_resolver_returns_a_value():void {
+    public function invoking_with_a_Providing_that_expects_a_resolver_returns_a_value():void {
         providerExpecting = new ProviderExpectingMock(invokes);
         shouldProvide = new Instance();
         assertThat(invokeProvider(providerExpecting, resolver), strictlyEqualTo(shouldProvide));
@@ -217,6 +218,45 @@ public class Test_invokeProvider {
                 throws(instanceOf(CustomError))
         );
         invokes.assertInvokes(providerExpecting.provide, 1);
+    }
+
+    private var providerLegacy:ProviderMock;
+
+    [Test]
+    public function provider_can_be_a_Provider():void {
+        providerLegacy = new ProviderMock(invokes);
+        invokeProvider(providerLegacy, resolver);
+        invokes.assertWasInvokedWith(providerLegacy.provide, [resolver]);
+    }
+
+    [Test]
+    public function for_a_Provider_resolver_is_a_required_argument():void {
+        providerLegacy = new ProviderMock(invokes);
+        assertThat(
+                function ():void {
+                    invokeProvider(providerLegacy, null);
+                },
+                throws(instanceOf(ArgumentError))
+        );
+        invokes.assertNoInvokes(providerLegacy.provide);
+    }
+
+    [Test]
+    public function invoking_with_a_Provider_returns_a_value():void {
+        providerLegacy = new ProviderMock(invokes);
+        assertThat(invokeProvider(providerLegacy, resolver), strictlyEqualTo(providerLegacy.lastProvided));
+    }
+
+    [Test]
+    public function a_Provider_must_not_catch_errors():void {
+        providerLegacy = ProviderMock.Failing(invokes);
+        assertThat(
+                function ():void {
+                    invokeProvider(providerLegacy, resolver);
+                },
+                throws(instanceOf(CustomError))
+        );
+        invokes.assertInvokes(providerLegacy.provide, 1);
     }
 }
 }

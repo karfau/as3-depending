@@ -6,7 +6,7 @@ import as3.depending.examples.tests.Instance;
 
 public class ProviderMock implements Provider {
 
-    private var invokes:Invokes;
+    protected var invokes:Invokes;
     private var _last:Object;
     public function get lastProvided():Object {
         return _last;
@@ -26,5 +26,25 @@ public class ProviderMock implements Provider {
 
     public static const Null:ValueProvider= new ValueProvider(null);
 
+    public static function Failing(invokes:Invokes):ProviderMock {
+        return new FailingProviderMock(invokes);
+    }
+
 }
+}
+
+import as3.depending.Resolver;
+import as3.depending.provider.CustomError;
+import as3.depending.provider.ProviderMock;
+import as3.depending.scope.impl.Invokes;
+
+class FailingProviderMock extends ProviderMock{
+    public function FailingProviderMock(invokes:Invokes) {
+        super(invokes);
+    }
+
+    override public function provide(resolver:Resolver = null):Object {
+        invokes.invoke(provide,resolver);
+        throw new CustomError();
+    }
 }
