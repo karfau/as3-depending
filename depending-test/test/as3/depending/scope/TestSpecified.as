@@ -39,7 +39,7 @@ public class TestSpecified {
 
     [Test(expects="TypeError")]
     public function provide_returns_undefined_without_provider():void {
-        assertNull('it.provider',it.provider);
+        assertNull('it.provider', it.provider);
         it.provide();
     }
 

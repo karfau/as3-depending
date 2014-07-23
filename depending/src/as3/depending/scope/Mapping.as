@@ -76,7 +76,7 @@ public class Mapping {
 
     public function getValue():Object {
         ensureProvider();
-        var value:Object = _provider.provide(resolver);
+        var value:Object = invokeProvider(_provider, resolver);
         return value;
     }
 

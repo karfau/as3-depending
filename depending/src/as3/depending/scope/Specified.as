@@ -2,6 +2,7 @@ package as3.depending.scope {
 import as3.depending.Provider;
 import as3.depending.provider.LazyValueProvider;
 import as3.depending.provider.ValueProvider;
+import as3.depending.provider.invokeProvider;
 
 public class Specified {
 
@@ -23,7 +24,7 @@ public class Specified {
     }
 
     public function provide():Object {
-        return _provider.provide(_scope)
+        return invokeProvider(_provider, _scope);
     }
 
     public function asSingleton():void {

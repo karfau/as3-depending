@@ -46,7 +46,7 @@ public class Test_invokeProvider {
                 function ():void {
                     invokeProvider({}, null);
                 },
-                throws(instanceOf(ArgumentError))
+                throws(instanceOf(TypeError))
         );
     }
 
@@ -56,7 +56,7 @@ public class Test_invokeProvider {
                 function ():void {
                     invokeProvider(null, null);
                 },
-                throws(instanceOf(ArgumentError))
+                throws(instanceOf(TypeError))
         );
     }
 

@@ -10,7 +10,7 @@ public function invokeProvider(provider:Object, resolver:Resolver):Object {
         if(provider is Provider){
             method = provider.provide as Function;
         } else if (providing == null) {
-            throw new ArgumentError('expected a Function or a Providing but was ' + provider);
+            throw new TypeError('expected a Function or a Providing but was ' + provider);
         }else{
             method = providing.provide as Function;
         }

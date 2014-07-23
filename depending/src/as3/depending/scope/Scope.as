@@ -2,6 +2,7 @@ package as3.depending.scope {
 import as3.depending.*;
 import as3.depending.provider.DefaultProviderStrategy;
 import as3.depending.provider.ProviderStrategy;
+import as3.depending.provider.invokeProvider;
 
 /**
  * This implementation of Resolver offers the possibility to specify the decisions about how to resolve dependencies at runtime.
@@ -31,7 +32,7 @@ public class Scope extends BaseRelaxedResolver {
 
     override protected function doResolve(identifier:Object):* {
         if (specifies[identifier] is Provider) {
-            return Provider(specifies[identifier]).provide(this);
+            return invokeProvider(specifies[identifier], this);
         }
         if (specifies[identifier] is Specified) {
             return Specified(specifies[identifier]).provide();
@@ -41,7 +42,7 @@ public class Scope extends BaseRelaxedResolver {
             if(implicitResolving){
                 var provider:Provider = implicitResolving.providerFor(identifier);
                 if(provider){
-                    var value:Object = provider.provide(this);
+                    var value:Object = invokeProvider(provider, this);
                 }
                 return value;
             }
