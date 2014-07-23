@@ -1,5 +1,5 @@
 package as3.depending.scope {
-import as3.depending.Provider;
+import as3.depending.Providing;
 import as3.depending.provider.LazyValueProvider;
 import as3.depending.provider.ValueProvider;
 import as3.depending.provider.invokeProvider;
@@ -11,11 +11,11 @@ public class Specified {
         return _scope;
     }
 
-    private var _provider:Provider;
-    internal function setProvider(provider:Provider):void {
+    private var _provider:Providing;
+    internal function setProvider(provider:Providing):void {
         _provider = provider
     }
-    public function get provider():Provider {
+    public function get provider():Providing {
         return _provider;
     }
 

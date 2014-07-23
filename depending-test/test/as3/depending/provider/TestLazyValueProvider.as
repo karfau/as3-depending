@@ -39,7 +39,7 @@ public class TestLazyValueProvider {
 
     [Test]
     public function provide_returns_singleton():void {
-        const first:Object = provider.provide();
+        const first:Object = provider.provide(resolver);
         assertThat(provider.provide(), strictlyEqualTo(first));
         invokes.assertInvokes(contained.provide, 1);
     }

@@ -1,5 +1,5 @@
 package as3.depending.scope {
-import as3.depending.Provider;
+import as3.depending.Providing;
 import as3.depending.examples.tests.*;
 
 public class ScopeMapAdapter extends ScopeSpecifyAdapter {
@@ -31,7 +31,7 @@ public class ScopeMapAdapter extends ScopeSpecifyAdapter {
         scope.map(definingInterface).toInstance(instance);
     }
 
-    override public function specifyAProviderForResolver(definingInterface:Class, provider:Provider):void {
+    override public function specifyAProviderForResolver(definingInterface:Class, provider:Providing):void {
         handleInstanceCaching(scope.map(definingInterface).toProvider(provider));
     }
 

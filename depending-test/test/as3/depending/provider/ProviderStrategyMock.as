@@ -1,5 +1,5 @@
 package as3.depending.provider {
-import as3.depending.Provider;
+import as3.depending.Providing;
 import as3.depending.scope.impl.Invokes;
 
 public class ProviderStrategyMock implements ProviderStrategy {
@@ -10,7 +10,7 @@ public class ProviderStrategyMock implements ProviderStrategy {
         this.invokes = invokes;
     }
 
-    public function providerFor(value:*):Provider {
+    public function providerFor(value:*):Providing {
         if(invokes){
             invokes.invoke(providerFor, value);
         }

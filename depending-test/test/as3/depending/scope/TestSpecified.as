@@ -1,5 +1,4 @@
 package as3.depending.scope {
-import as3.depending.Provider;
 import as3.depending.examples.tests.Instance;
 import as3.depending.provider.LazyValueProvider;
 import as3.depending.provider.ProviderMock;
@@ -8,8 +7,6 @@ import as3.depending.scope.impl.Invokes;
 
 import org.flexunit.assertThat;
 import org.flexunit.asserts.assertNull;
-import org.flexunit.asserts.assertTrue;
-
 import org.hamcrest.collection.array;
 import org.hamcrest.object.instanceOf;
 import org.hamcrest.object.strictlyEqualTo;

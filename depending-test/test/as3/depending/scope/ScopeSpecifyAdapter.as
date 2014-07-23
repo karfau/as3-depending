@@ -1,5 +1,5 @@
 package as3.depending.scope {
-import as3.depending.Provider;
+import as3.depending.Providing;
 import as3.depending.examples.tests.ConstructorInjectableProtocol;
 import as3.depending.examples.tests.IResolverSpecProtocol;
 import as3.depending.examples.tests.InlineConstructorInjectableProtocol;
@@ -41,7 +41,7 @@ public class ScopeSpecifyAdapter extends ResolverAdapter {
         scope.specify(definingInterface, instance);
     }
 
-    override public function specifyAProviderForResolver(definingInterface:Class, provider:Provider):void {
+    override public function specifyAProviderForResolver(definingInterface:Class, provider:Providing):void {
         handleInstanceCaching(scope.specify(definingInterface, provider));
     }
 

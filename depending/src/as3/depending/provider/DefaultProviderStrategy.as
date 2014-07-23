@@ -1,5 +1,5 @@
 package as3.depending.provider {
-import as3.depending.Provider;
+import as3.depending.Providing;
 
 public class DefaultProviderStrategy implements ProviderStrategy {
 
@@ -7,11 +7,11 @@ public class DefaultProviderStrategy implements ProviderStrategy {
 
     public var staticTypeFactoryConvention:String = "create";
 
-    public function providerFor(value:*):Provider {
-        if (value is Provider) {
+    public function providerFor(value:*):Providing {
+        if (value is Providing) {
             return value;
         }
-        var result:Provider;
+        var result:Providing;
         for each (var strategy:ProviderStrategy in strategies) {
             if(strategy){
                 result = strategy.providerFor(value);

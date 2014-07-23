@@ -1,5 +1,5 @@
 package as3.depending.provider {
-import as3.depending.Provider;
+import as3.depending.Providing;
 
 /**
  * A ProviderStrategy decides if it can return a Provider value.
@@ -9,6 +9,6 @@ import as3.depending.Provider;
  * The DefaultProviderStrategy is an implementation that always returns a Provider.
  */
 public interface ProviderStrategy {
-    function providerFor(value:*):Provider;
+    function providerFor(value:*):Providing;
 }
 }

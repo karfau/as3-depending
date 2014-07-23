@@ -5,10 +5,10 @@ import as3.depending.provider.*;
 /**
  * A Mapping instance is responsible for creating instances of the given type, with fully resolved dependencies using the method getValue().
  *
- * To do this it offers a fluid API to configure the correct Provider
+ * To do this it offers a fluid API to configure the correct provider
  * and uses the given resolver to resolve additional dependencies.
  *
- * If no Provider has been configured a Mapping will try to invoke the constructor for the given type.
+ * If no provider has been configured a Mapping will try to invoke the constructor for the given type.
  * If the given type is an interfaces this results in a VerifyError with errorCode 1001.
  */
 public class Mapping {
@@ -25,13 +25,13 @@ public class Mapping {
         this.resolver = resolver;
     }
 
-    private var _provider:Provider;
+    private var _provider:Providing;
 
-    public function get provider():Provider {
+    public function get provider():Providing {
         return _provider;
     }
 
-    public function toProvider(provider:Provider):Mapping {
+    public function toProvider(provider:Providing):Mapping {
         if(resolver is Scope){
             Scope(resolver).specify(forType, provider);
         }
@@ -57,7 +57,7 @@ public class Mapping {
         return toProvider(new FactoryProvider(method, params));
     }
 
-    public function asSingleton():Provider {
+    public function asSingleton():Providing {
         ensureProvider();
         if(_provider is ValueProvider){
             return _provider;
@@ -66,7 +66,7 @@ public class Mapping {
         return _provider;
     }
 
-    public function asEagerSingleton():Provider {
+    public function asEagerSingleton():Providing {
         if(_provider is ValueProvider){
             return _provider;
         }

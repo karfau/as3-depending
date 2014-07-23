@@ -31,7 +31,7 @@ public class Scope extends BaseRelaxedResolver {
     private var mappings:Object;
 
     override protected function doResolve(identifier:Object):* {
-        if (specifies[identifier] is Provider) {
+        if (specifies[identifier] is Providing) {
             return invokeProvider(specifies[identifier], this);
         }
         if (specifies[identifier] is Specified) {
@@ -40,7 +40,7 @@ public class Scope extends BaseRelaxedResolver {
         var mapping:Mapping = identifier is Class ? getMapping(Class(identifier)) : null;
         if (mapping == null) {
             if(implicitResolving){
-                var provider:Provider = implicitResolving.providerFor(identifier);
+                var provider:Providing = implicitResolving.providerFor(identifier);
                 if(provider){
                     var value:Object = invokeProvider(provider, this);
                 }
@@ -77,7 +77,7 @@ public class Scope extends BaseRelaxedResolver {
 
     public function specify(identifier:Object, ...specification):Specified {
         var value:Object = specification.length == 1 ? specification[0] : identifier;
-        const provider:Provider = providerStrategy.providerFor(value);
+        const provider:Providing = providerStrategy.providerFor(value);
         var specified:Specified = specifies[identifier] as Specified;
         if(specified == null){
             specified = new Specified(this);

@@ -8,7 +8,8 @@ package as3.depending {
  * but this could also be a more specific factory or pool.
  *
  */
-public interface Provider {
+[Deprecated(replacement="Providing")]
+public interface Provider extends Providing{
 
     /**
      * @return an instance

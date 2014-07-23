@@ -1,5 +1,5 @@
 package as3.depending.provider {
-import as3.depending.Provider;
+import as3.depending.Providing;
 import as3.depending.Resolver;
 
 /**
@@ -13,9 +13,9 @@ import as3.depending.Resolver;
  */
 public class LazyValueProvider extends ValueProvider {
 
-    private var provider:Provider;
+    private var provider:Providing;
 
-    public function LazyValueProvider(provider:Provider) {
+    public function LazyValueProvider(provider:Providing) {
         super(null);//compiler error 1201 : super can not be called after throw
         if(provider == null){
             throw new ArgumentError('expected Provider but was null');
@@ -25,7 +25,7 @@ public class LazyValueProvider extends ValueProvider {
 
     override public function provide(resolver:Resolver = null):Object {
         if(value == null){
-            value = provider.provide(resolver);
+            value = invokeProvider(provider, resolver);
         }
         return value;
     }
