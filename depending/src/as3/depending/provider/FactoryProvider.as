@@ -28,19 +28,19 @@ public class FactoryProvider implements ProviderExpecting {
     private var factory:Function;
     private var params:Array;
 
-    public function FactoryProvider(factory:Function, params:Array = null) {
+    public function FactoryProvider(factory:Function, parameters:Array = null) {
         if(factory == null){
             throw new ArgumentError('expected Function but was null');
         }
-        if(factory.length == 1 && (params == null || params.length == 0)){
-            params = [Resolver];
+        if(factory.length == 1 && (parameters == null || parameters.length == 0)){
+            parameters = [Resolver];
         }
-        var num:uint = params == null?0:params.length;
+        var num:uint = parameters == null?0:parameters.length;
         if(factory.length > 0 && factory.length != num){
-            throw new ArgumentError('factory expects '+factory.length+' arguments but received '+num+' params.');
+            throw new ArgumentError('factory expects '+factory.length+' arguments but received '+num+' parameters.');
         }
         this.factory = factory;
-        this.params = params;
+        this.params = parameters;
     }
 
     public function provide(resolver:Resolver):Object {
