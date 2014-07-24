@@ -1,9 +1,15 @@
 package as3.depending.provider {
+import as3.depending.Resolver;
 import as3.depending.examples.tests.Instance;
 import as3.depending.scope.impl.Invokes;
 import as3.depending.scope.impl.ResolverDummy;
 
+import org.flexunit.assertThat;
+import org.flexunit.asserts.assertTrue;
 import org.hamcrest.collection.array;
+import org.hamcrest.core.describedAs;
+import org.hamcrest.core.throws;
+import org.hamcrest.object.instanceOf;
 
 public class TestFactoryProvider {
 
@@ -24,8 +30,56 @@ public class TestFactoryProvider {
     }
 
     [Test(expects="ArgumentError")]
-    public function creation_fails_without_provider():void {
+    public function creation_fails_without_factory():void {
         provider = new FactoryProvider(null);
+    }
+
+    [Test]
+    public function creation_fails_for_factory_with_two_arguments_parameters_count_mismatch():void {
+        var factory:Function = invokes.twoParameters;
+        assertCreationFails(factory, null);
+        assertCreationFails(factory, []);
+        assertCreationFails(factory, [1]);
+        assertCreationFails(factory, [1, 2, 3]);
+        invokes.assertNoInvokes(factory);
+    }
+
+    [Test]
+    public function creation_fails_for_factory_with_one_argument_parameters_count_mismatch():void {
+        var factory:Function = invokes.oneParameter;
+        assertCreationFails(factory, [1, 2]);
+        assertCreationFails(factory, [1, 2, 3]);
+        invokes.assertNoInvokes(factory);
+    }
+
+    private function assertCreationFails(factory:Function, parameters:Array):void {
+        assertThat(function ():void {
+            new FactoryProvider(factory, parameters);
+        }, describedAs("creation to fail when factory has %0 arguments,\n and parameters is %1",
+                throws(instanceOf(ArgumentError)),
+                factory.length, parameters
+        ));
+    }
+
+    [Test]
+    public function argumentList_null():void {
+        assertTrue(FactoryProvider.argumentList(resolver, null)===null);
+    }
+    [Test]
+    public function argumentList_empty():void {
+        const params:Array = [];
+        assertTrue(FactoryProvider.argumentList(resolver, params)===params);
+    }
+    [Test]
+    public function argumentList_resolver_is_replaced():void {
+
+        assertThat(FactoryProvider.argumentList(resolver, [Resolver]), array(resolver));
+        var instance:Instance = new Instance();
+        assertThat(FactoryProvider.argumentList(resolver, [instance, Resolver, null]), array(instance, resolver, null));
+    }
+    [Test]
+    public function argumentList_ResolverDummy_is_replaced():void {
+        assertThat(FactoryProvider.argumentList(resolver, [ResolverDummy]), array(resolver));
     }
 
     [Test]

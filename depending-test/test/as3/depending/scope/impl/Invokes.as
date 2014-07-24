@@ -43,6 +43,11 @@ public class Invokes {
         return one;
     }
 
+    public function twoParameters(one:*,two:*):* {
+        invoke(oneParameter, one, two);
+        return [one,two];
+    }
+
     public function variableParameters(...parameters):* {
         invoke(variableParameters, parameters);
         return parameters;
