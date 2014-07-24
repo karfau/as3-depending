@@ -6,16 +6,18 @@ import as3.depending.scope.impl.ResolverDummy;
 
 import org.flexunit.assertThat;
 import org.flexunit.asserts.assertTrue;
+import org.flexunit.asserts.fail;
 import org.hamcrest.collection.array;
 import org.hamcrest.core.describedAs;
 import org.hamcrest.core.throws;
 import org.hamcrest.object.instanceOf;
+import org.hamcrest.object.strictlyEqualTo;
 
 public class TestFactoryProvider {
 
     //noinspection JSFieldCanBeLocal
     private var provider:FactoryProvider;
-    private var resolver:ResolverDummy;
+    private var resolver:Resolver;
     private var invokes:Invokes;
 
     [Before]
@@ -60,26 +62,60 @@ public class TestFactoryProvider {
                 factory.length, parameters
         ));
     }
+    private function notCalled(...args):void{
+        fail("should not be called but was called with ["+args.join(', ')+"]");
+    }
 
     [Test]
     public function argumentList_null():void {
-        assertTrue(FactoryProvider.argumentList(resolver, null)===null);
+        assertTrue(FactoryProvider.argumentList(resolver, null, notCalled)===null);
     }
     [Test]
     public function argumentList_empty():void {
         const params:Array = [];
-        assertTrue(FactoryProvider.argumentList(resolver, params)===params);
+        assertTrue(FactoryProvider.argumentList(resolver, params, notCalled)===params);
     }
     [Test]
-    public function argumentList_resolver_is_replaced():void {
-
-        assertThat(FactoryProvider.argumentList(resolver, [Resolver]), array(resolver));
+    public function argumentList_uses_parameterMapper():void {
         var instance:Instance = new Instance();
-        assertThat(FactoryProvider.argumentList(resolver, [instance, Resolver, null]), array(instance, resolver, null));
+        assertThat(
+                FactoryProvider.argumentList(resolver, [null, Resolver, instance], parameterMapper),
+                array(
+                        strictlyEqualTo("null"),
+                        strictlyEqualTo(Object(Resolver).toString()),
+                        strictlyEqualTo(instance.toString())
+                ));
+        invokes.assertWasInvokedWith(parameterMapper,
+                array(resolver, null),
+                array(resolver, Resolver),
+                array(resolver, instance)
+        );
+
     }
+    private function parameterMapper(resolver:Resolver, identifier:Object):* {
+        invokes.invoke(parameterMapper, resolver, identifier);
+        return identifier == null ? "null" : identifier.toString();
+    }
+
+
     [Test]
-    public function argumentList_ResolverDummy_is_replaced():void {
-        assertThat(FactoryProvider.argumentList(resolver, [ResolverDummy]), array(resolver));
+    public function provide_uses_argumentList_to_replace_Resolver():void {
+        provider = new FactoryProvider(invokes.oneParameter, [Resolver]);
+        provider.provide(resolver);
+        invokes.assertWasInvokedWith(invokes.oneParameter, array(resolver));
+    }
+
+    [Test]
+    public function provide_uses_argumentList_to_replace_ResolverDummy_in_list():void {
+        var instance:Instance = new Instance();
+        provider = new FactoryProvider(invokes.variableParameters, [instance, ResolverDummy, Instance, null]);
+        provider.provide(resolver);
+        invokes.assertWasInvokedWith(invokes.variableParameters, array(
+                strictlyEqualTo(instance),
+                strictlyEqualTo(resolver),
+                strictlyEqualTo(Instance),
+                strictlyEqualTo(null)
+        ));
     }
 
     [Test]

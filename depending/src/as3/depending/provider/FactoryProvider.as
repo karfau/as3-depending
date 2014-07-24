@@ -12,17 +12,15 @@ import as3.depending.Resolver;
  */
 public class FactoryProvider implements ProviderExpecting {
 
-    internal static function argumentList(resolver:Resolver, params:Array):Object {
-        if(params != null && params.length > 0){
-            const result:Array = new Array(params.length);
-            var type:Class;
-            for (var i:int = 0; i < params.length; i++) {
-                type = params[i] as Class;
-                result[i] = (type && resolver is type) ? resolver : params[i];
+    internal static function argumentList(resolver:Resolver, parameters:Array, parameterMapper:Function):Array {
+        if(parameters != null && parameters.length > 0){
+            const result:Array = new Array(parameters.length);
+            for (var i:int = 0; i < parameters.length; i++) {
+                result[i] = parameterMapper(resolver, parameters[i]);
             }
             return result;
         }
-        return params
+        return parameters
     }
 
     private var factory:Function;
@@ -44,7 +42,12 @@ public class FactoryProvider implements ProviderExpecting {
     }
 
     public function provide(resolver:Resolver):Object {
-        return factory.apply(null, argumentList(resolver, params));
+        return factory.apply(null, argumentList(resolver, params, resolveArgument));
+    }
+
+    protected function resolveArgument(resolver:Resolver, identifier:*):*{
+        var type:Class = identifier as Class;
+        return (type && resolver is type) ? resolver : identifier;
     }
 
 }
