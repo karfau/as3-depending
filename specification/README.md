@@ -54,7 +54,7 @@ what subset the container should take care of, will be referred to as **inline s
     1. The usage of such a ***convention*** &lt;should not&gt; add a *dependency* to the concrete DI container implementation to the *definition* of a ***depending***.
     1. The usage of such a ***convention*** is allowed add the following kinds of *dependency* to the *definition* of a ***depending***:
         1. A *dependency* to an injected [*resolver*](#3-resolver) or an *interface* representing a *resolver*.
-        1. A *dependency* to an [*identifier type*](#2-3-identifier-types) when supported by the DI container.
+        1. A *dependency* to an [*identifier type*](#23-identifier-types) when supported by the DI container.
 
 
 ### 2. Identifiers
