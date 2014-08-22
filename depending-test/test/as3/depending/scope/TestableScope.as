@@ -7,9 +7,6 @@ internal class TestableScope extends Scope {
     public function TestableScope(invokes:Invokes) {
         this.invokes = invokes;
     }
-    override protected function createMapping(type:Class):Mapping {
-        return new TestableMapping(type, invokes);
-    }
 
     override public function specify(identifier:Object, ...specification):Specified {
         var args:Array = [identifier].concat(specification);
