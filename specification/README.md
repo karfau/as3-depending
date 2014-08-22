@@ -52,7 +52,7 @@ what subset the container should take care of, will be referred to as **inline s
  
 1. A DI container &lt;should&gt; provide **conventions** to allow  ***inline specifying***.
     1. The usage of such a ***convention*** &lt;should not&gt; add a *dependency* to the concrete DI container implementation to the *definition* of a ***depending***.
-    1. The usage of such a ***convention*** is allowed add the following kinds of *dependency* to the *definition* of a ***depending***:
+    1. The usage of such a ***convention*** is allowed to add the following kinds of *dependency* to the *definition* of a ***depending***:
         1. A *dependency* to an injected [*resolver*](#3-resolver) or an *interface* representing a *resolver*.
         1. A *dependency* to an [*identifier type*](#23-identifier-types) when supported by the DI container.
 
@@ -117,7 +117,7 @@ supporting *identifier types* without supporting *complex identifiers* only incr
 1. A ***resolver*** **fails** when nothing has been *specified* for a given *identifier* or any `Error` occurs while resolving.
 1. A ***resolver*** &lt;must&gt; **behave consistent** the same way on each ***failing*** invoke:
     1. a **strict** ***resolver*** throws an `Error`
-        1. a  ***failing strict resolver*** &lt;should&gt; throw a *detectable error* that is *defined* the DI container.
+        1. a  ***failing strict resolver*** &lt;should&gt; throw a *detectable error* that is *defined* by the DI container.
     1. a **lax** ***resolver*** returns `undefined`
 1. A DI container &lt;must&gt; support ***strict resolvers***
 1. A DI container &lt;can&gt; support ***lax resolvers***
@@ -167,9 +167,9 @@ supporting *identifier types* without supporting *complex identifiers* only incr
        the *provider* &lt;must&gt; be invoked the correct way ([see 4.2,4.3](#4-provider)) <br/>
        and its current result &lt;must&gt; be returned by the *resolver*. 
     1. When *value* is not given the *identifier* &lt;should&gt; be used as *value*.
-       When this is not supported ***specifying*** only an *identifier* &lt;should not&gt; be compilable or &lt;must&gt; `throw` a *detectable error*.
+       When this is not supported ***specifying*** only an *identifier* either &lt;must not&gt; be compilable or &lt;must&gt; `throw` a *detectable error*.
     1. When *value* is a `Class` reference, based on the ***instance caching strategy***,<br/>
-       the *resolver* has &lt;must&gt; return an *instance* of that *type*.
+       the *resolver* &lt;must&gt; return an *instance* of that *type*.
        1. When the *definition* of *value* contains *inline specifying conventions*,<br/>
           the resolved *instance* &lt;must&gt; be returned with injected dependencies
     1. When *value* is none of the above the *resolver* &lt;must&gt; return *value* on each invoke. <br/>
@@ -185,9 +185,9 @@ supporting *identifier types* without supporting *complex identifiers* only incr
 1. When an *identifier* is ***specified*** multiple times, a ***scope*** &lt;must&gt; always **operate** in one of the following ways:
     - the last ***specify*** overrides the previous one
     - it `throw`s a *detectable error* with a meaningful message
-1. A ***scope*** &lt;should&gt; support both ways to ***operate*** an allow to configure which one is active.
+1. A ***scope*** &lt;should&gt; support both ways to ***operate*** and allow to configure which one is active.
 1. A ***scope*** &lt;should&gt; allow to remove something ***specified*** with an *identifier*, <br/>
    in a way that *resolving* for the *identifier* lets the *resolver* *fail*. 
 1. A ***scope*** &lt;can&gt; allow to ***specify*** a *provider* without as an *identifier*.
-    1. The *provider* &lt;must&gt; be correctly invoked immediately and the *type* of the returned *value* &lt;must&gt; be used as the *identifier*.
+    1. The *provider* &lt;must&gt; be invoked correctly immediately and the *type* of the returned *value* &lt;must&gt; be used as the *identifier*.
 1. A ***scope*** &lt;can&gt; allow to ask if something has been ***specified*** for an *identifier*.
