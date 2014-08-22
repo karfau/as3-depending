@@ -4,11 +4,9 @@ import as3.depending.Resolver;
 /**
  * This provider invokes the given method with the given parameters on each invoke.
  *
- * When the factory method takes one argument and no params are provided,
- * the resolver given to provide() will be used as single parameter.
- *
- * That means methods with a signature similar to Provider.provide will be supported
- * without setting a resolver instance at construction time.
+ * When <code>factory</code> is a provider after the specification,
+ * parameters do not have to be provided,
+ * the resolver given to provide() will be used as an argument to <code>factory</code> if it expects a single parameter.
  */
 public class FactoryProvider implements ProviderExpecting {
 

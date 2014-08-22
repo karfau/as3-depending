@@ -3,12 +3,13 @@ import as3.depending.*;
 import as3.depending.provider.*;
 
 /**
- * A Mapping instance is responsible for creating instances of the given type, with fully resolved dependencies using the method getValue().
+ * A Mapping instance is responsible for creating instances of the given type,
+ * with fully resolved dependencies using the method getValue().
  *
- * To do this it offers a fluid API to configure the correct provider
+ * To do this it offers a fluid API to configure the correct Providing
  * and uses the given resolver to resolve additional dependencies.
  *
- * If no provider has been configured a Mapping will try to invoke the constructor for the given type.
+ * If no Providing has been configured a Mapping will try to invoke the constructor for the given type.
  * If the given type is an interfaces this results in a VerifyError with errorCode 1001.
  */
 public class Mapping {
@@ -25,17 +26,17 @@ public class Mapping {
         this.resolver = resolver;
     }
 
-    private var _provider:Providing;
+    private var _providing:Providing;
 
-    public function get provider():Providing {
-        return _provider;
+    public function get providing():Providing {
+        return _providing;
     }
 
     public function toProvider(provider:Providing):Mapping {
         if(resolver is Scope){
             Scope(resolver).specify(forType, provider);
         }
-        this._provider = provider;
+        this._providing = provider;
         return this;
     }
 
@@ -60,16 +61,16 @@ public class Mapping {
 
     public function asSingleton():SameInstanceProviding {
         ensureProvider();
-        var lazyValueProvider:SameInstanceProviding = _provider as SameInstanceProviding;
+        var lazyValueProvider:SameInstanceProviding = _providing as SameInstanceProviding;
         if(lazyValueProvider == null){
-            lazyValueProvider = new LazyValueProvider(_provider);
+            lazyValueProvider = new LazyValueProvider(_providing);
             toProvider(lazyValueProvider);
         }
         return lazyValueProvider;
     }
 
     public function asEagerSingleton():ValueProvider {
-        var valueProvider:ValueProvider = _provider as ValueProvider;
+        var valueProvider:ValueProvider = _providing as ValueProvider;
         if(valueProvider == null){
             valueProvider = toValue(getValue())
         }
@@ -78,12 +79,12 @@ public class Mapping {
 
     public function getValue():Object {
         ensureProvider();
-        var value:Object = invokeProvider(_provider, resolver);
+        var value:Object = invokeProvider(_providing, resolver);
         return value;
     }
 
     private function ensureProvider():void {
-        if (_provider == null) {
+        if (_providing == null) {
             toType(forType);
         }
     }

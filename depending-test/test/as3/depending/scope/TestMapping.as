@@ -35,18 +35,18 @@ public class TestMapping {
     public function getValue_specifies_TypeProvider_when_provider_is_not_specified():void {
         mapping = new Mapping(ProtocolImpl, resolver);
 
-        assertNull(mapping.provider);
+        assertNull(mapping.providing);
 
         mapping.getValue();
 
-        assertThat(mapping.provider, instanceOf(TypeProvider));
+        assertThat(mapping.providing, instanceOf(TypeProvider));
     }
 
     [Test]
     public function toType_specifies_TypeProvider():void {
         mapping.toType(ProtocolImpl);
 
-        assertThat(mapping.provider, instanceOf(TypeProvider));
+        assertThat(mapping.providing, instanceOf(TypeProvider));
     }
 
     [Test]
@@ -74,7 +74,7 @@ public class TestMapping {
     }
 
     private function equalToSpecifiedValueProvider():Matcher {
-        return allOf(strictlyEqualTo(mapping.provider), instanceOf(ValueProvider));
+        return allOf(strictlyEqualTo(mapping.providing), instanceOf(ValueProvider));
     }
 
     [Test]
@@ -89,7 +89,7 @@ public class TestMapping {
     public function toFactory_specifies_FactoryProvider():void {
         mapping.toFactory(dummy);
 
-        assertThat(mapping.provider, instanceOf(FactoryProvider));
+        assertThat(mapping.providing, instanceOf(FactoryProvider));
     }
 
     private function dummy():void {
@@ -146,7 +146,7 @@ public class TestMapping {
 
         mapping.asEagerSingleton();
 
-        assertThat(mapping.provider, strictlyEqualTo(ProviderMock.Null));
+        assertThat(mapping.providing, strictlyEqualTo(ProviderMock.Null));
     }
 
     [Test]
@@ -155,11 +155,11 @@ public class TestMapping {
 
         var singletonProvider:SameInstanceProviding = mapping.toProvider(providerMock).asSingleton();
 
-        assertThat(mapping.provider, isA(LazyValueProvider));
+        assertThat(mapping.providing, isA(LazyValueProvider));
 
         mapping.asSingleton();
 
-        assertThat(mapping.provider, strictlyEqualTo(singletonProvider));
+        assertThat(mapping.providing, strictlyEqualTo(singletonProvider));
     }
 
     [Test]
@@ -169,7 +169,7 @@ public class TestMapping {
 
         mapping.asSingleton();
 
-        assertThat(mapping.provider, strictlyEqualTo(provider));
+        assertThat(mapping.providing, strictlyEqualTo(provider));
     }
 
 
