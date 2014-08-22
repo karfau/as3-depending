@@ -83,7 +83,7 @@ public class Scope extends BaseRelaxedResolver {
             specified = new Specified(this);
             specifies[identifier] = specified;
         }
-        specified.setProvider(provider);
+        specified.setProviding(provider);
         if (value != null && identifier === value){
             specifies[value.constructor] = provider
         }

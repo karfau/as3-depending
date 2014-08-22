@@ -12,12 +12,12 @@ public class Specified {
         return _scope;
     }
 
-    private var _provider:Providing;
-    internal function setProvider(provider:Providing):void {
-        _provider = provider
+    private var _providing:Providing;
+    internal function setProviding(provider:Providing):void {
+        _providing = provider
     }
-    public function get provider():Providing {
-        return _provider;
+    public function get providing():Providing {
+        return _providing;
     }
 
     public function Specified(scope:Scope) {
@@ -25,23 +25,23 @@ public class Specified {
     }
 
     public function provide():Object {
-        return invokeProvider(_provider, _scope);
+        return invokeProvider(_providing, _scope);
     }
 
     public function asSingleton():SameInstanceProviding {
-        var valueProvider:SameInstanceProviding = _provider as SameInstanceProviding;
+        var valueProvider:SameInstanceProviding = _providing as SameInstanceProviding;
         if (valueProvider == null) {
-            valueProvider = new LazyValueProvider(provider);
-            setProvider(valueProvider);
+            valueProvider = new LazyValueProvider(providing);
+            setProviding(valueProvider);
         }
         return valueProvider;
     }
 
     public function asEagerSingleton():ValueProvider {
-        var valueProvider:ValueProvider = _provider as ValueProvider;
+        var valueProvider:ValueProvider = _providing as ValueProvider;
         if (valueProvider == null) {
             valueProvider = new ValueProvider(provide());
-            setProvider(valueProvider);
+            setProviding(valueProvider);
         }
         return valueProvider;
     }

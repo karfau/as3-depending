@@ -31,50 +31,50 @@ public class TestSpecified {
 
     [Test]
     public function provide_invokes_provider_with_scope():void {
-        it.setProvider(provider);
+        it.setProviding(provider);
         assertThat(it.provide(), instanceOf(Instance));
         invokes.assertWasInvokedWith(provider.provide, array(scope))
     }
 
     [Test(expects="TypeError")]
     public function provide_returns_undefined_without_provider():void {
-        assertNull('it.provider', it.provider);
+        assertNull('it.providing', it.providing);
         it.provide();
     }
 
 
     [Test]
     public function asSingleton_specifies_a_LazyValueProvider_wrapping_provider():void {
-        it.setProvider(provider);
+        it.setProviding(provider);
 
         var singletonProvider:SameInstanceProviding = it.asSingleton();
-        assertThat(it.provider, instanceOf(LazyValueProvider));
+        assertThat(it.providing, instanceOf(LazyValueProvider));
 
         it.provide();
         invokes.assertWasInvokedWith(provider.provide, array(strictlyEqualTo(scope)));
 
         it.asSingleton();//make sure the created LazyValueProvider is not wrapped again
-        assertThat(it.provider, strictlyEqualTo(singletonProvider));
+        assertThat(it.providing, strictlyEqualTo(singletonProvider));
 
     }
 
     [Test]
     public function asSingleton_keeps_specified_SameInstanceProvider():void {
         var provider:SameInstanceProviding = new SameInstanceProviderMock();
-        it.setProvider(provider);
+        it.setProviding(provider);
 
         it.asSingleton();
 
-        assertThat(it.provider, strictlyEqualTo(provider));
+        assertThat(it.providing, strictlyEqualTo(provider));
     }
 
     [Test]
     public function asEagerSingleton_invokes_provider_and_specifies_ValueProvider_for_result():void {
-        it.setProvider(provider);
+        it.setProviding(provider);
 
         it.asEagerSingleton();
         invokes.assertWasInvokedWith(provider.provide, array(strictlyEqualTo(scope)));
-        assertThat(it.provider, instanceOf(ValueProvider));
+        assertThat(it.providing, instanceOf(ValueProvider));
         assertThat(it.provide(), strictlyEqualTo(provider.lastProvided));
 
     }
@@ -82,21 +82,21 @@ public class TestSpecified {
     [Test]
     public function asEagerSingleton_invokes_LazyValueProvider_and_specifies_ValueProvider_for_result():void {
         var evilCase:LazyValueProvider = new LazyValueProvider(provider);
-        it.setProvider(evilCase);
+        it.setProviding(evilCase);
 
         it.asEagerSingleton();
         invokes.assertWasInvokedWith(provider.provide, array(strictlyEqualTo(scope)));
-        assertThat(it.provider, instanceOf(ValueProvider));
+        assertThat(it.providing, instanceOf(ValueProvider));
         assertThat(it.provide(), strictlyEqualTo(provider.lastProvided));
 
     }
 
     [Test]
     public function asEagerSingleton_keeps_specified_ValueProvider():void {
-        it.setProvider(ProviderMock.Null);
+        it.setProviding(ProviderMock.Null);
 
         it.asEagerSingleton();
-        assertThat(it.provider, strictlyEqualTo(ProviderMock.Null));
+        assertThat(it.providing, strictlyEqualTo(ProviderMock.Null));
     }
 
 }

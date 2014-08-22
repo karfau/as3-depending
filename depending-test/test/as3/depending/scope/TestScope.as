@@ -43,7 +43,7 @@ public class TestScope {
     public function specify_allows_access_to_provider():void {
         const provider:ProviderMock = new ProviderMock(invokes);
         var it:Specified = scope.specify(provider);
-        assertThat(it.provider, strictlyEqualTo(provider));
+        assertThat(it.providing, strictlyEqualTo(provider));
     }
 
     [Test]
