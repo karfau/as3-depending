@@ -9,8 +9,8 @@ import as3.depending.provider.*;
  * To do this it offers a fluid API to configure the correct Providing
  * and uses the given resolver to resolve additional dependencies.
  *
- * If no Providing has been configured a Mapping will try to invoke the constructor for the given type.
- * If the given type is an interfaces this results in a VerifyError with errorCode 1001.
+ * At construction time a TypeProvider is set as providing.
+ * Invoking a TypeProvider for an Interface results in a VerifyError with errorCode 1001.
  */
 public class Mapping {
 
@@ -22,8 +22,12 @@ public class Mapping {
     }
 
     public function Mapping(forType:Class, resolver:Resolver) {
+        if(forType == null){
+            throw new ArgumentError('expected Class but was null');
+        }
         this.forType = forType;
         this.resolver = resolver;
+        toType(forType);
     }
 
     private var _providing:Providing;
@@ -60,7 +64,6 @@ public class Mapping {
     }
 
     public function asSingleton():SameInstanceProviding {
-        ensureProvider();
         var lazyValueProvider:SameInstanceProviding = _providing as SameInstanceProviding;
         if(lazyValueProvider == null){
             lazyValueProvider = new LazyValueProvider(_providing);
@@ -78,15 +81,8 @@ public class Mapping {
     }
 
     public function getValue():Object {
-        ensureProvider();
         var value:Object = invokeProvider(_providing, resolver);
         return value;
-    }
-
-    private function ensureProvider():void {
-        if (_providing == null) {
-            toType(forType);
-        }
     }
 
     private function resolveDepending(value:Object):void {

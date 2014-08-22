@@ -5,6 +5,8 @@ import as3.depending.Resolver;
 /**
  * Each instance of this provider creates a new instance of the given Class,
  * by calling its constructor with zero arguments.
+ *
+ * Invoking a TypeProvider for an Interface results in a VerifyError with errorCode 1001.
  */
 public class TypeProvider implements ProviderExpecting {
 

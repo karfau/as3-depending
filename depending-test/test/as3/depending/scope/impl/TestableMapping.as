@@ -5,8 +5,8 @@ public class TestableMapping extends Mapping {
 
     private var invokes:Invokes;
 
-    public function TestableMapping(invokes:Invokes) {
-        super(null, null);
+    public function TestableMapping(forType:Class, invokes:Invokes) {
+        super(forType, null);
         this.invokes = invokes;
     }
 

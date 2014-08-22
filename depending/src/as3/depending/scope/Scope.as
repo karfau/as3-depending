@@ -37,22 +37,18 @@ public class Scope extends BaseRelaxedResolver {
         if (specifies[identifier] is Specified) {
             return Specified(specifies[identifier]).provide();
         }
-        var mapping:Mapping = identifier is Class ? getMapping(Class(identifier)) : null;
-        if (mapping == null) {
-            if(implicitResolving){
-                var provider:Providing = implicitResolving.providerFor(identifier);
-                if(provider){
-                    var value:Object = invokeProvider(provider, this);
-                }
-                return value;
+        if(implicitResolving){
+            var provider:Providing = implicitResolving.providerFor(identifier);
+            if(provider){
+                var value:Object = invokeProvider(provider, this);
             }
-            throw new Error("Scope can not resolve " + identifier);
+            return value;
         }
-        return mapping.getValue();
+        throw new Error("Scope can not resolve " + identifier);
     }
 
     public function isSpecified(type:*):Boolean {
-        return specifies[type] || getMapping(type) != null;
+        return specifies[type];
     }
 
     public function map(type:Class):Mapping {

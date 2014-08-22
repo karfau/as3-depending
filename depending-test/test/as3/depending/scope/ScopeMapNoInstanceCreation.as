@@ -8,6 +8,13 @@ public class ScopeMapNoInstanceCreation extends RelaxedResolverNoInstanceCreatio
         return new ScopeMapAdapter();
     }
 
+    /**
+     * Scope.map() doesn't support null as an argument
+     */
+    override public function resolving_null():void {
+        //super.resolving_null();
+    }
+
     [Test]
     public function forceInheritedTests():void {
         //if a class has no testMethod it will not execute the inherited tests

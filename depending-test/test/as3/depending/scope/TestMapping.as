@@ -5,7 +5,6 @@ import as3.depending.provider.*;
 import as3.depending.scope.impl.*;
 
 import org.flexunit.assertThat;
-import org.flexunit.asserts.assertNull;
 import org.hamcrest.Matcher;
 import org.hamcrest.collection.*;
 import org.hamcrest.core.*;
@@ -31,6 +30,7 @@ public class TestMapping {
         DependingDefinitionMock.invokes = invokes;
     }
 
+/*
     [Test]
     public function getValue_specifies_TypeProvider_when_provider_is_not_specified():void {
         mapping = new Mapping(ProtocolImpl, resolver);
@@ -41,6 +41,7 @@ public class TestMapping {
 
         assertThat(mapping.providing, instanceOf(TypeProvider));
     }
+*/
 
     [Test]
     public function toType_specifies_TypeProvider():void {
@@ -177,12 +178,12 @@ public class TestMapping {
     public function toProvider_specifies_when_resolver_is_Scope():void {
         resolver = new TestableScope(invokes);
         mapping = new Mapping(ProtocolImpl, scope);
-        invokes.assertNoInvokes(scope.specify);
+//        invokes.assertNoInvokes(scope.specify);
 
         const provider:ProviderMock = new ProviderMock();
         mapping.toProviding(provider);
 
-        invokes.assertWasInvokedWith(scope.specify, array(ProtocolImpl, provider))
+        invokes.assertWasInvokedWith(scope.specify, anything(), array(ProtocolImpl, provider))
     }
 
 

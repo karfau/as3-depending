@@ -95,34 +95,9 @@ public class TestScope {
     }
 
     [Test]
-    public function get_invokes_Mapping_getValue():void {
-        scope = new TestableScope(invokes);
-        var mapping:Mapping = scope.map(IProtocol);
-
-        invokes.assertNoInvokes(mapping.getValue);
-
-        scope.get(IProtocol);
-
-        invokes.assertInvokes(mapping.getValue, 1);
-    }
-
-    [Test]
-    public function optionally_invokes_Mapping_getValue():void {
-        scope = new TestableScope(invokes);
-        var mapping:Mapping = scope.map(IProtocol);
-        assertThat(mapping, instanceOf(TestableMapping));
-
-        invokes.assertNoInvokes(mapping.getValue);
-
-        scope.optionally(IProtocol);
-
-        invokes.assertInvokes(mapping.getValue, 1);
-    }
-
-    [Test]
     public function after_map_identifier_isSpecified():void {
-        scope.map(null);
-        assertTrue('for null',scope.isSpecified(null));
+//        scope.map(null);
+//        assertTrue('for null',scope.isSpecified(null));
         scope.map(IProtocol);
         assertTrue('for IProtocol',scope.isSpecified(IProtocol));//not constructable
         scope.map(ProtocolImpl);
