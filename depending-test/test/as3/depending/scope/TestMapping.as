@@ -52,7 +52,7 @@ public class TestMapping {
     [Test]
     public function toProvider_on_getValue_uses_provider():void {
         const provider:ProviderMock = new ProviderMock(invokes);
-        mapping.toProvider(provider);
+        mapping.toProviding(provider);
 
         invokes.assertNoInvokes(provider.provide);
 
@@ -100,7 +100,7 @@ public class TestMapping {
     public function asEagerSingleton_specifies_ValueProvider():void {
         var providerMock:ProviderMock = new ProviderMock(invokes);
 
-        const valueProvider:ProviderZero = mapping.toProvider(providerMock).asEagerSingleton();
+        const valueProvider:ProviderZero = mapping.toProviding(providerMock).asEagerSingleton();
         assertThat(valueProvider, equalToSpecifiedValueProvider());
     }
 
@@ -124,7 +124,7 @@ public class TestMapping {
     public function asEagerSingleton_invokes_current_provider():void {
         var providerMock:ProviderMock = new ProviderMock(invokes);
 
-        mapping.toProvider(providerMock).asEagerSingleton();
+        mapping.toProviding(providerMock).asEagerSingleton();
 
         invokes.assertWasInvokedWith(providerMock.provide, array(resolver));
     }
@@ -134,7 +134,7 @@ public class TestMapping {
         const providerMock:ProviderMock = new ProviderMock(invokes);
         var evilCase:LazyValueProvider = new LazyValueProvider(providerMock);
 
-        assertThat(mapping.toProvider(evilCase).asEagerSingleton(), equalToSpecifiedValueProvider());
+        assertThat(mapping.toProviding(evilCase).asEagerSingleton(), equalToSpecifiedValueProvider());
 
         invokes.assertWasInvokedWith(providerMock.provide, array(resolver));
     }
@@ -142,7 +142,7 @@ public class TestMapping {
 
     [Test]
     public function asEagerSingleton_keeps_specified_ValueProvider():void {
-        mapping.toProvider(ProviderMock.Null);
+        mapping.toProviding(ProviderMock.Null);
 
         mapping.asEagerSingleton();
 
@@ -153,7 +153,7 @@ public class TestMapping {
     public function asSingleton_specifies_LazyValueProvider():void {
         var providerMock:ProviderMock = new ProviderMock(invokes);
 
-        var singletonProvider:SameInstanceProviding = mapping.toProvider(providerMock).asSingleton();
+        var singletonProvider:SameInstanceProviding = mapping.toProviding(providerMock).asSingleton();
 
         assertThat(mapping.providing, isA(LazyValueProvider));
 
@@ -165,7 +165,7 @@ public class TestMapping {
     [Test]
     public function asSingleton_keeps_specified_SameInstanceProvider():void {
         var provider:SameInstanceProviding = new SameInstanceProviderMock();
-        mapping.toProvider(provider);
+        mapping.toProviding(provider);
 
         mapping.asSingleton();
 
@@ -180,7 +180,7 @@ public class TestMapping {
         invokes.assertNoInvokes(scope.specify);
 
         const provider:ProviderMock = new ProviderMock();
-        mapping.toProvider(provider);
+        mapping.toProviding(provider);
 
         invokes.assertWasInvokedWith(scope.specify, array(ProtocolImpl, provider))
     }

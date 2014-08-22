@@ -32,7 +32,7 @@ public class ScopeMapAdapter extends ScopeSpecifyAdapter {
     }
 
     override public function specifyAProviderForResolver(definingInterface:Class, provider:Providing):void {
-        handleInstanceCaching(scope.map(definingInterface).toProvider(provider));
+        handleInstanceCaching(scope.map(definingInterface).toProviding(provider));
     }
 
     override public function specifyAProviderFunctionForResolver(definingInterface:Class, provider:Function):void {

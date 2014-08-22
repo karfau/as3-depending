@@ -32,16 +32,16 @@ public class Mapping {
         return _providing;
     }
 
-    public function toProvider(provider:Providing):Mapping {
+    public function toProviding(providing:Providing):Mapping {
         if(resolver is Scope){
-            Scope(resolver).specify(forType, provider);
+            Scope(resolver).specify(forType, providing);
         }
-        this._providing = provider;
+        this._providing = providing;
         return this;
     }
 
     public function toType(implementing:Class):Mapping {
-        return toProvider(new TypeProvider(implementing));
+        return toProviding(new TypeProvider(implementing));
     }
 
     public function toInstance(instance:Object):ValueProvider {
@@ -51,12 +51,12 @@ public class Mapping {
 
     public function toValue(value:Object):ValueProvider {
         const valueProvider:ValueProvider = new ValueProvider(value);
-        toProvider(valueProvider);
+        toProviding(valueProvider);
         return valueProvider;
     }
 
     public function toFactory(method:Function, ...params):Mapping {
-        return toProvider(new FactoryProvider(method, params));
+        return toProviding(new FactoryProvider(method, params));
     }
 
     public function asSingleton():SameInstanceProviding {
@@ -64,7 +64,7 @@ public class Mapping {
         var lazyValueProvider:SameInstanceProviding = _providing as SameInstanceProviding;
         if(lazyValueProvider == null){
             lazyValueProvider = new LazyValueProvider(_providing);
-            toProvider(lazyValueProvider);
+            toProviding(lazyValueProvider);
         }
         return lazyValueProvider;
     }
