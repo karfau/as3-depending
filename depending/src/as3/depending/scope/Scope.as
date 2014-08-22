@@ -28,8 +28,6 @@ public class Scope extends BaseRelaxedResolver {
         mappings = {};
     }
 
-    private var mappings:Object;
-
     override protected function doResolve(identifier:Object):* {
         if (specifies[identifier] is Providing) {
             return invokeProvider(specifies[identifier], this);
@@ -49,6 +47,17 @@ public class Scope extends BaseRelaxedResolver {
 
     public function isSpecified(type:*):Boolean {
         return specifies[type];
+    }
+
+    private var mappings:Object;
+
+    protected function createMapping(type:Class):Mapping {
+        return new Mapping(type, this);
+    }
+
+    private function getMapping(type:Class):Mapping {
+        var mapping:Mapping = Mapping(mappings[type]);
+        return mapping;
     }
 
     public function map(type:Class):Mapping {
@@ -84,15 +93,6 @@ public class Scope extends BaseRelaxedResolver {
             specifies[value.constructor] = provider
         }
         return specified;
-    }
-
-    protected function createMapping(type:Class):Mapping {
-        return new Mapping(type, this);
-    }
-
-    private function getMapping(type:Class):Mapping {
-        var mapping:Mapping = Mapping(mappings[type]);
-        return mapping;
     }
 
 }

@@ -30,19 +30,6 @@ public class TestMapping {
         DependingDefinitionMock.invokes = invokes;
     }
 
-/*
-    [Test]
-    public function getValue_specifies_TypeProvider_when_provider_is_not_specified():void {
-        mapping = new Mapping(ProtocolImpl, resolver);
-
-        assertNull(mapping.providing);
-
-        mapping.getValue();
-
-        assertThat(mapping.providing, instanceOf(TypeProvider));
-    }
-*/
-
     [Test]
     public function toType_specifies_TypeProvider():void {
         mapping.toType(ProtocolImpl);
