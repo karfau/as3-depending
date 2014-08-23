@@ -26,6 +26,8 @@ public class _ScopeSuite {
     public var _ScopeSpecifyNoInstanceCreation:ScopeSpecifyNoInstanceCreation;
 
     //noinspection JSUnusedGlobalSymbols
+    public var _TestIdentifierMap:TestIdentifierMap;
+    //noinspection JSUnusedGlobalSymbols
     public var _TestMapping:TestMapping;
     //noinspection JSUnusedGlobalSymbols
     public var _TestScope:TestScope;

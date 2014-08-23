@@ -21,19 +21,23 @@ import as3.depending.provider.invokeProvider;
  */
 public class Scope extends BaseRelaxedResolver {
 
+//noinspection SpellCheckingInspection
+    private var _specifies:IdentifierMap;
+//    public function get specifies():IdentifierMap {
+//        return _specifies;
+//    }
+
     public var implicitResolving:ProviderStrategy;
 
     public function Scope(implicitResolving:ProviderStrategy = null) {
         this.implicitResolving = implicitResolving;
+        _specifies = new IdentifierMap();
         mappings = {};
     }
 
     override protected function doResolve(identifier:Object):* {
-        if (specifies[identifier] is Providing) {
-            return invokeProvider(specifies[identifier], this);
-        }
-        if (specifies[identifier] is Specified) {
-            return Specified(specifies[identifier]).provide();
+        if(_specifies.has(identifier)){
+            return invokeProvider(_specifies.get(identifier), this);
         }
         if(implicitResolving){
             var provider:Providing = implicitResolving.providerFor(identifier);
@@ -45,8 +49,8 @@ public class Scope extends BaseRelaxedResolver {
         throw new Error("Scope can not resolve " + identifier);
     }
 
-    public function isSpecified(type:*):Boolean {
-        return specifies[type];
+    public function isSpecified(identifier:*):Boolean {
+        return _specifies.has(identifier);
     }
 
     private var mappings:Object;
@@ -77,20 +81,19 @@ public class Scope extends BaseRelaxedResolver {
         return _providerStrategy;
     }
 
-//noinspection SpellCheckingInspection
-    private const specifies:Object = {};
-
-    public function specify(identifier:Object, ...specification):Specified {
-        var value:Object = specification.length == 1 ? specification[0] : identifier;
+    public function specify(identifier:Object, value:* = undefined):Specified {
+        if(value === undefined){
+            value = identifier;
+        }
         const provider:Providing = providerStrategy.providerFor(value);
-        var specified:Specified = specifies[identifier] as Specified;
+        var specified:Specified = _specifies.get(identifier) as Specified;
         if(specified == null){
             specified = new Specified(this);
-            specifies[identifier] = specified;
+            _specifies.set(identifier, specified);
         }
         specified.setProviding(provider);
         if (value != null && identifier === value){
-            specifies[value.constructor] = provider
+            _specifies.set(value.constructor, provider);
         }
         return specified;
     }

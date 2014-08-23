@@ -40,7 +40,7 @@ public class TestScope {
     }
 
     [Test]
-    public function specify_allows_access_to_provider():void {
+    public function specify_allows_access_to_providing():void {
         const provider:ProviderMock = new ProviderMock(invokes);
         var it:Specified = scope.specify(provider);
         assertThat(it.providing, strictlyEqualTo(provider));
@@ -96,8 +96,6 @@ public class TestScope {
 
     [Test]
     public function after_map_identifier_isSpecified():void {
-//        scope.map(null);
-//        assertTrue('for null',scope.isSpecified(null));
         scope.map(IProtocol);
         assertTrue('for IProtocol',scope.isSpecified(IProtocol));//not constructable
         scope.map(ProtocolImpl);

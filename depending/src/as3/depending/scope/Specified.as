@@ -1,11 +1,12 @@
 package as3.depending.scope {
 import as3.depending.Providing;
 import as3.depending.provider.LazyValueProvider;
+import as3.depending.provider.ProviderZero;
 import as3.depending.provider.SameInstanceProviding;
 import as3.depending.provider.ValueProvider;
 import as3.depending.provider.invokeProvider;
 
-public class Specified {
+public class Specified implements ProviderZero {
 
     private var _scope:Scope;
     public function get scope():Scope {

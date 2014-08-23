@@ -8,9 +8,8 @@ internal class TestableScope extends Scope {
         this.invokes = invokes;
     }
 
-    override public function specify(identifier:Object, ...specification):Specified {
-        var args:Array = [identifier].concat(specification);
-        invokes.invoke(specify, args);
+    override public function specify(identifier:Object, value:* = undefined):Specified {
+        invokes.invoke(specify, [identifier, value]);
         return null;
     }
 }
