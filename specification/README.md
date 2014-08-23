@@ -126,13 +126,6 @@ supporting *identifier types* without supporting *complex identifiers* only incr
         1. ***implicit resolving*** &lt;must&gt; be activated explicitly by the code that controls the [*scope*](#5-scope).
         1. when activated it &lt;must not&gt; affect the ***consistent behaviour*** of a ***resolver***.
         1. when deactivated the ***resolver*** &lt;must&gt; ***fail*** again for *identifiers* that succeeded while it was active 
-1. A ***resolver*** &lt;should&gt; support having a **parent resolver**: When it would ***fail*** to resolve a *dependency*,<br/>
-   it delegates resolving for the given *identifier* to it.
-    1. The ***consistent behaviour*** of a ***resolver*** may not be altered when a ***parent resolver*** is used, <br/>
-       independent of the ***consistent behaviour*** of the ***parent resolvers***.
-       
-- TODO: how to make sure that the current ***resolver*** is used for resolving subsequent *dependencies*? 
-- TODO: maybe we need to extract an own section about ***lax resolvers***, like the one for *identifier types*, as the feature is optional and the requirement of ***consistent behaviour*** has a lot of implications in multiple places. 
 
 
 ### 4. Provider
