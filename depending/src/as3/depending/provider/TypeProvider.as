@@ -8,9 +8,13 @@ import as3.depending.Resolver;
  *
  * Invoking a TypeProvider for an Interface results in a VerifyError with errorCode 1001.
  */
-public class TypeProvider implements ProviderExpecting {
+public class TypeProvider implements ProviderExpecting, ProvidingTyped {
 
     private var Impl:Class;
+
+    public function get type():Class {
+        return Impl;
+    }
 
     public function TypeProvider(implementation:Class) {
         if(implementation == null){

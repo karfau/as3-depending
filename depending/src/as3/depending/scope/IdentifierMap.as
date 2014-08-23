@@ -6,7 +6,7 @@ public class IdentifierMap {
     private const map:Object = {};
 
     public function has(identifier:Object):Boolean {
-        return map[identifier] != null;
+        return map[identifier] !== undefined;
     }
 
     public function hasSpecified(identifier:Object):Boolean {

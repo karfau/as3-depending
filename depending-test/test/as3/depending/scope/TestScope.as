@@ -1,6 +1,8 @@
 package as3.depending.scope {
+import as3.depending.Providing;
 import as3.depending.examples.tests.*;
 import as3.depending.provider.ProviderMock;
+import as3.depending.provider.TypeProvider;
 import as3.depending.scope.impl.*;
 
 import org.flexunit.assertThat;
@@ -112,5 +114,19 @@ public class TestScope {
         assertTrue('for ProtocolImpl',scope.isSpecified(ProtocolImpl));
     }
 
+    [Test]
+    public function specify_value_allows_to_resolve_type():void {
+        const value:Instance = new Instance();
+        scope.specify(value);
+        assertThat(scope.get(Instance), strictlyEqualTo(value));
+    }
+
+    [Test]
+    public function specify_provider_does_not_allow_to_resolve_Providing_by_type():void {
+        const providing:Providing = new TypeProvider(Instance);
+        scope.specify(providing).asSingleton();
+        assertFalse(scope.isSpecified(TypeProvider));
+//        assertThat(scope.get(Instance), strictlyEqualTo(scope.get(Instance)));
+    }
 }
 }

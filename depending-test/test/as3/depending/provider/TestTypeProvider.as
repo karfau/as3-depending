@@ -1,4 +1,5 @@
 package as3.depending.provider {
+import as3.depending.examples.tests.IProtocol;
 import as3.depending.examples.tests.Instance;
 import as3.depending.scope.impl.DependingDefinitionMock;
 import as3.depending.scope.impl.Invokes;
@@ -65,6 +66,12 @@ public class TestTypeProvider {
                 not(equalTo(provider.provide(resolver)))
         ));
         invokes.assertWasInvokedWith(first.fetchDependencies,array(resolver));
+    }
+
+    [Test]
+    public function type_returns_constructor_parameter():void {
+        provider = new TypeProvider(IProtocol);
+        assertThat(provider.type, strictlyEqualTo(IProtocol));
     }
 }
 }

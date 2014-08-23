@@ -141,7 +141,7 @@ public class TestMapping {
     public function asSingleton_specifies_LazyValueProvider():void {
         var providerMock:ProviderMock = new ProviderMock(invokes);
 
-        var singletonProvider:SameInstanceProviding = mapping.toProviding(providerMock).asSingleton();
+        var singletonProvider:ProvidingSameInstance = mapping.toProviding(providerMock).asSingleton();
 
         assertThat(mapping.providing, isA(LazyValueProvider));
 
@@ -152,7 +152,7 @@ public class TestMapping {
 
     [Test]
     public function asSingleton_keeps_specified_SameInstanceProvider():void {
-        var provider:SameInstanceProviding = new SameInstanceProviderMock();
+        var provider:ProvidingSameInstance = new SameInstanceProviderMock();
         mapping.toProviding(provider);
 
         mapping.asSingleton();

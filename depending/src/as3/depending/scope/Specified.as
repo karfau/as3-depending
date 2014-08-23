@@ -2,7 +2,7 @@ package as3.depending.scope {
 import as3.depending.Providing;
 import as3.depending.provider.LazyValueProvider;
 import as3.depending.provider.ProviderZero;
-import as3.depending.provider.SameInstanceProviding;
+import as3.depending.provider.ProvidingSameInstance;
 import as3.depending.provider.ValueProvider;
 import as3.depending.provider.invokeProvider;
 
@@ -29,8 +29,8 @@ public class Specified implements ProviderZero {
         return invokeProvider(_providing, _scope);
     }
 
-    public function asSingleton():SameInstanceProviding {
-        var valueProvider:SameInstanceProviding = _providing as SameInstanceProviding;
+    public function asSingleton():ProvidingSameInstance {
+        var valueProvider:ProvidingSameInstance = _providing as ProvidingSameInstance;
         if (valueProvider == null) {
             valueProvider = new LazyValueProvider(providing);
             setProviding(valueProvider);

@@ -63,8 +63,8 @@ public class Mapping {
         return toProviding(new FactoryProvider(method, params));
     }
 
-    public function asSingleton():SameInstanceProviding {
-        var lazyValueProvider:SameInstanceProviding = _providing as SameInstanceProviding;
+    public function asSingleton():ProvidingSameInstance {
+        var lazyValueProvider:ProvidingSameInstance = _providing as ProvidingSameInstance;
         if(lazyValueProvider == null){
             lazyValueProvider = new LazyValueProvider(_providing);
             toProviding(lazyValueProvider);

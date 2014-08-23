@@ -2,8 +2,8 @@ package as3.depending.scope {
 import as3.depending.examples.tests.Instance;
 import as3.depending.provider.LazyValueProvider;
 import as3.depending.provider.ProviderMock;
+import as3.depending.provider.ProvidingSameInstance;
 import as3.depending.provider.SameInstanceProviderMock;
-import as3.depending.provider.SameInstanceProviding;
 import as3.depending.provider.ValueProvider;
 import as3.depending.scope.impl.Invokes;
 
@@ -47,7 +47,7 @@ public class TestSpecified {
     public function asSingleton_specifies_a_LazyValueProvider_wrapping_provider():void {
         it.setProviding(provider);
 
-        var singletonProvider:SameInstanceProviding = it.asSingleton();
+        var singletonProvider:ProvidingSameInstance = it.asSingleton();
         assertThat(it.providing, instanceOf(LazyValueProvider));
 
         it.provide();
@@ -60,7 +60,7 @@ public class TestSpecified {
 
     [Test]
     public function asSingleton_keeps_specified_SameInstanceProvider():void {
-        var provider:SameInstanceProviding = new SameInstanceProviderMock();
+        var provider:ProvidingSameInstance = new SameInstanceProviderMock();
         it.setProviding(provider);
 
         it.asSingleton();

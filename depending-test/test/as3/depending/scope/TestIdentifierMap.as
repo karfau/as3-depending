@@ -54,5 +54,11 @@ public class TestIdentifierMap {
         assertThat('stored value', it.get(null), strictlyEqualTo(specified));
         assertTrue('hasSpecified returns', it.hasSpecified(null));
     }
+
+    [Test]
+    public function has_returns_true_when_Providing_null():void {
+        it.set(null, null);
+        assertTrue('has returns', it.has(null));
+    }
 }
 }

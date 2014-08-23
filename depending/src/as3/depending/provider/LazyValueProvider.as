@@ -11,7 +11,7 @@ import as3.depending.Resolver;
  *
  * It will throw an ArgumentError when created without a provider.
  */
-public class LazyValueProvider implements ProviderExpecting, SameInstanceProviding {
+public class LazyValueProvider implements ProviderExpecting, ProvidingSameInstance, ProvidingTyped {
 
     private var provider:Providing;
     private var value:Object;
@@ -30,5 +30,14 @@ public class LazyValueProvider implements ProviderExpecting, SameInstanceProvidi
         return value;
     }
 
+    public function get type():Class {
+        if(value != null){
+            return value.constructor;
+        }
+        if(provider is ProvidingTyped){
+            return ProvidingTyped(provider).type;
+        }
+        return null;
+    }
 }
 }

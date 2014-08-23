@@ -23,9 +23,6 @@ public class Scope extends BaseRelaxedResolver {
 
 //noinspection SpellCheckingInspection
     private var _specifies:IdentifierMap;
-//    public function get specifies():IdentifierMap {
-//        return _specifies;
-//    }
 
     public var implicitResolving:ProviderStrategy;
 
@@ -85,15 +82,15 @@ public class Scope extends BaseRelaxedResolver {
         if(value === undefined){
             value = identifier;
         }
-        const provider:Providing = providerStrategy.providerFor(value);
+        const providing:Providing = providerStrategy.providerFor(value);
         var specified:Specified = _specifies.get(identifier) as Specified;
         if(specified == null){
             specified = new Specified(this);
             _specifies.set(identifier, specified);
         }
-        specified.setProviding(provider);
-        if (value != null && identifier === value){
-            _specifies.set(value.constructor, provider);
+        specified.setProviding(providing);
+        if (identifier === value && value != null && !(value is Providing)) {
+            _specifies.set(value.constructor, providing/*new FactoryProvider(specified.provide)*/);
         }
         return specified;
     }

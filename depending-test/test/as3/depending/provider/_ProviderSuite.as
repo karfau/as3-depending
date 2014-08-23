@@ -13,5 +13,7 @@ public class _ProviderSuite {
     public var _TestLazyValueProvider:TestLazyValueProvider;
     //noinspection JSUnusedGlobalSymbols
     public var _TestDefaultProviderStrategy:TestDefaultProviderStrategy;
+    //noinspection JSUnusedGlobalSymbols
+    public var _TestValueProvider:TestValueProvider;
 }
 }

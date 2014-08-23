@@ -1,9 +1,11 @@
 package as3.depending.provider {
+import as3.depending.examples.tests.Instance;
 import as3.depending.scope.impl.Invokes;
 import as3.depending.scope.impl.ResolverDummy;
 
 import org.flexunit.assertThat;
 import org.hamcrest.collection.array;
+import org.hamcrest.object.nullValue;
 import org.hamcrest.object.strictlyEqualTo;
 
 public class TestLazyValueProvider {
@@ -18,7 +20,7 @@ public class TestLazyValueProvider {
         invokes = new Invokes();
         contained = new ProviderMock(invokes);
         provider = new LazyValueProvider(contained);
-        resolver = new ResolverDummy()
+        resolver = new ResolverDummy();
     }
 
     [Test]
@@ -44,5 +46,22 @@ public class TestLazyValueProvider {
         invokes.assertInvokes(contained.provide, 1);
     }
 
+    [Test]
+    public function type_is_fetched_from_ProvidingTyped():void {
+        provider = new LazyValueProvider(new TypeProvider(Instance));
+        assertThat(provider.type, strictlyEqualTo(Instance));
+    }
+
+    [Test]
+    public function type_is_fetched_from_value_after_provide():void {
+        provider = new LazyValueProvider(new FactoryProvider(createInstance));
+        assertThat(provider.type, nullValue());
+        provider.provide(resolver);
+        assertThat(provider.type, strictlyEqualTo(Instance));
+    }
+
+    private function createInstance():Instance {
+        return new Instance();
+    }
 }
 }
