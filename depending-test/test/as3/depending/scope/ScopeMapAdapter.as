@@ -56,10 +56,13 @@ public class ScopeMapAdapter extends ScopeSpecifyAdapter {
     }
 
     override public function specifyAValueForResolver(value:Object):void {
-        //pure TDD: minimal implementation to let tests pass ;)
-        if (value !== null) {
-            scope.map(value.constructor).toInstance(value);
-        }
+        //this is not supported by map(), so instead of writing
+/*
+        scope.map(value.constructor).toInstance(value);
+*/
+        //(which doesn't work for null
+        // we will fallback to specify() for this:
+        scope.specify(value);
     }
 }
 }
