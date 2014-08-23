@@ -2,7 +2,6 @@ package as3.depending.scope {
 import as3.depending.*;
 import as3.depending.provider.DefaultProviderStrategy;
 import as3.depending.provider.ProviderStrategy;
-import as3.depending.provider.invokeProvider;
 
 /**
  * This implementation of Resolver offers the possibility to specify the decisions about how to resolve dependencies at runtime.
@@ -19,35 +18,44 @@ import as3.depending.provider.invokeProvider;
  * @see https://github.com/karfau/as3-depending/blob/master/depending-test/test/as3/depending/scope/ScopeSpecifyAdapter.as
  *
  */
-public class Scope extends BaseRelaxedResolver {
+public class Scope implements RelaxedResolver {
 
 //noinspection SpellCheckingInspection
     private var _specifies:IdentifierMap;
 
-    public var implicitResolving:ProviderStrategy;
-
-    public function Scope(implicitResolving:ProviderStrategy = null) {
-        this.implicitResolving = implicitResolving;
-        _specifies = new IdentifierMap();
-        mappings = {};
-    }
-
-    override protected function doResolve(identifier:Object):* {
-        if(_specifies.has(identifier)){
-            return invokeProvider(_specifies.get(identifier), this);
-        }
-        if(implicitResolving){
-            var provider:Providing = implicitResolving.providerFor(identifier);
-            if(provider){
-                var value:Object = invokeProvider(provider, this);
-            }
-            return value;
-        }
-        throw new Error("Scope can not resolve " + identifier);
-    }
-
     public function isSpecified(identifier:*):Boolean {
         return _specifies.has(identifier);
+    }
+
+    private var _resolver:IdentifierMapResolver;
+
+    public function get resolver():RelaxedResolver {
+        return _resolver;
+    }
+
+    public function get(identifier:Object):* {
+        return _resolver.get(identifier);
+    }
+
+    public function optionally(identifier:Object):* {
+        return _resolver.optionally(identifier);
+    }
+
+    public function set implicitResolving(value:ProviderStrategy):void {
+        _resolver.implicitResolving = value;
+    }
+
+/*
+    public function get implicitResolving():ProviderStrategy {
+        return _resolver.implicitResolving;
+    }
+*/
+
+    public function Scope(implicitResolving:ProviderStrategy = null) {
+        _specifies = new IdentifierMap();
+        _resolver = new IdentifierMapResolver(_specifies);
+        _resolver.implicitResolving = implicitResolving;
+        mappings = {};
     }
 
     private var mappings:Object;

@@ -8,7 +8,6 @@ import as3.depending.scope.impl.*;
 import org.flexunit.assertThat;
 import org.flexunit.asserts.assertFalse;
 import org.flexunit.asserts.assertTrue;
-import org.hamcrest.collection.array;
 import org.hamcrest.core.*;
 import org.hamcrest.object.*;
 
@@ -55,48 +54,6 @@ public class TestScope {
     }
 
     [Test]
-    public function implicitResolving_allows_get_to_resolve_clazz():void {
-        scope.implicitResolving = new ImplicitResolvingStrategy();
-        var value:DependingDefinitionMock = scope.get(DependingDefinitionMock);
-        invokes.assertWasInvokedWith(value.fetchDependencies, array(scope));
-    }
-
-    [Test]
-    public function implicitResolving_allows_optionally_to_resolve_clazz():void {
-        scope.implicitResolving = new ImplicitResolvingStrategy();
-        var value:DependingDefinitionMock = scope.optionally(DependingDefinitionMock);
-        invokes.assertWasInvokedWith(value.fetchDependencies, array(scope));
-    }
-
-    [Test]
-    public function implicitResolving_with_get_does_not_specify_clazz():void {
-        scope.implicitResolving = new ImplicitResolvingStrategy();
-        scope.get(DependingDefinitionMock);
-        assertFalse(scope.isSpecified(DependingDefinitionMock));
-    }
-
-    [Test]
-    public function implicitResolving_with_optionally_does_not_specify_clazz():void {
-        scope.implicitResolving = new ImplicitResolvingStrategy();
-        scope.optionally(DependingDefinitionMock);
-        assertFalse(scope.isSpecified(DependingDefinitionMock));
-    }
-
-    [Test]
-    public function get_does_not_create_Mapping_for_interface():void {
-        try{
-            scope.get(IProtocol);
-        }catch(e:Error){}
-        assertFalse(scope.isSpecified(IProtocol));
-    }
-
-    [Test]
-    public function optionally_does_not_create_Mapping_for_interface():void {
-        scope.optionally(IProtocol);
-        assertFalse(scope.isSpecified(IProtocol));
-    }
-
-    [Test]
     public function after_map_identifier_isSpecified():void {
         scope.map(IProtocol);
         assertTrue('for IProtocol',scope.isSpecified(IProtocol));//not constructable
@@ -127,6 +84,13 @@ public class TestScope {
         scope.specify(providing).asSingleton();
         assertFalse(scope.isSpecified(TypeProvider));
 //        assertThat(scope.get(Instance), strictlyEqualTo(scope.get(Instance)));
+    }
+
+    [Test]
+    public function implicitResolving_delegates_to_resolver():void {
+        var strategy:ImplicitResolvingStrategy = new ImplicitResolvingStrategy();
+        scope.implicitResolving = strategy;
+        assertThat(IdentifierMapResolver(scope.resolver).implicitResolving, strictlyEqualTo(strategy));
     }
 }
 }

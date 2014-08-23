@@ -28,6 +28,8 @@ public class _ScopeSuite {
     //noinspection JSUnusedGlobalSymbols
     public var _TestIdentifierMap:TestIdentifierMap;
     //noinspection JSUnusedGlobalSymbols
+    public var _TestIdentifierMapResolver:TestIdentifierMapResolver;
+    //noinspection JSUnusedGlobalSymbols
     public var _TestMapping:TestMapping;
     //noinspection JSUnusedGlobalSymbols
     public var _TestScope:TestScope;
