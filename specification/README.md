@@ -181,6 +181,6 @@ supporting *identifier types* without supporting *complex identifiers* only incr
 1. A ***scope*** &lt;should&gt; support both ways to ***operate*** and allow to configure which one is active.
 1. A ***scope*** &lt;should&gt; allow to remove something ***specified*** with an *identifier*, <br/>
    in a way that *resolving* for the *identifier* lets the *resolver* *fail*. 
-1. A ***scope*** &lt;can&gt; allow to ***specify*** a *provider* without as an *identifier*.
+1. A ***scope*** &lt;can&gt; allow to ***specify*** a *provider* as an *identifier*.
     1. The *provider* &lt;must&gt; be invoked correctly immediately and the *type* of the returned *value* &lt;must&gt; be used as the *identifier*.
 1. A ***scope*** &lt;can&gt; allow to ask if something has been ***specified*** for an *identifier*.
