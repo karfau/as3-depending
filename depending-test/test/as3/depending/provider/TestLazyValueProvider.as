@@ -5,7 +5,6 @@ import as3.depending.scope.impl.ResolverDummy;
 
 import org.flexunit.assertThat;
 import org.hamcrest.collection.array;
-import org.hamcrest.object.nullValue;
 import org.hamcrest.object.strictlyEqualTo;
 
 public class TestLazyValueProvider {
@@ -55,9 +54,14 @@ public class TestLazyValueProvider {
     [Test]
     public function type_is_fetched_from_value_after_provide():void {
         provider = new LazyValueProvider(new FactoryProvider(createInstance));
-        assertThat(provider.type, nullValue());
         provider.provide(resolver);
         assertThat(provider.type, strictlyEqualTo(Instance));
+    }
+
+    [Test(expects="ReferenceError")]
+    public function type_throws_when_not_known():void {
+        provider = new LazyValueProvider(new FactoryProvider(createInstance));
+        provider.type;
     }
 
     private function createInstance():Instance {

@@ -5,5 +5,8 @@ public class SameInstanceProviderMock implements ProvidingSameInstance, Provider
         return null;
     }
 
+    public function get type():Class {
+        return null;
+    }
 }
 }
