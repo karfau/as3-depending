@@ -181,8 +181,12 @@ supporting *identifier types* without supporting *complex identifiers* only incr
 1. A ***scope*** &lt;should&gt; support both ways to ***operate*** and allow to configure which one is active.
 1. A ***scope*** &lt;should&gt; allow to remove something ***specified*** with an *identifier*, <br/>
     in a way that *resolving* for the *identifier* lets the *resolver* *fail*. 
-1. A ***scope*** &lt;should&gt; support having a **parent scope**, that is used to resolve dependencies that has not been ***specified*** in it self.
-   1. The ***consistent behaviour*** of a ***resolver*** may not be altered when a ***parent scope*** is used.
+1. A ***scope*** &lt;should&gt; support having a **parent scope**, that is used to resolve dependencies that have not been ***specified*** in it self.
+   1. A ***scope*** that has a ***parent scope*** is called a **child scope**.
+   1. When a dependency is resolved using the ***parent scope***:
+        - the ***consistent behaviour*** of a *resolver* may not be altered.
+        - each subsequent resolving of a dependency has to start looking at the ***child scope*** from which the request originated.
+          (When A is specified in the ***parent scope*** and depends on B that is only specified in the ***child scope***, when the resolver from the ***child scope*** is asked to resolve an instance of A it should be able to resolve B.) 
 1. A ***scope*** &lt;can&gt; allow to ***specify*** a *provider* as an *identifier*.
     1. The *provider* &lt;must&gt; be invoked correctly immediately and the *type* of the returned *value* &lt;must&gt; be used as the *identifier*.
 1. A ***scope*** &lt;can&gt; allow to ask if something has been ***specified*** for an *identifier*.
