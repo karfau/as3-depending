@@ -22,7 +22,7 @@ An attempt to define an open standard for dependency injection containers for Ac
  II. A **value** is anything that a `var`iable of a certain ***type*** can contain. (This excludes `undefined`).<br/>
  III. A **dependency** is a ***value***, that is referenced by the ***definition*** of another ***type***.<br/>
  IV. A **type reference** is a ***value*** that has the ***type*** `Class`, it points to a `class` or an `interface`.<br/>
- V. A **method** is a `function` that can be accessed using a ***type*** or a ***value***.<br.>
+ V. A **method** is a `function` that can be accessed using a ***type*** or a ***value***.<br/>
  VI. A **detectable error** is an instance of type `Error` that is distinct from other errors by its ***type***.
 
 ### requirement categories in this document
